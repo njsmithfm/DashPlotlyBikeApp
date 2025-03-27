@@ -44,4 +44,4 @@ def update_graph(n_clicks):
     return px.line(title='Press the button to fetch data')
 
 if __name__ == '__main__':
-    crashApp.run(debug=True)
+    crashApp.run(debug=True) 
