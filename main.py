@@ -36,7 +36,8 @@ def update_graph(n_clicks):
         if data:
             # Assuming the data is in a format compatible with Plotly
             df = pd.DataFrame(data)
-            fig = px.line(df, x='date', y='value', title='API Data')
+            print(df)
+            fig = px.scatter(df, x='crash_date', y='borough', title='API Data')
             return fig
         else:
             return px.line(title='No Data Available')
