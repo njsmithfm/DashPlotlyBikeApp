@@ -118,7 +118,7 @@ for i, borough in enumerate(boroughs):
 spark_fig.update_layout(
     height=600,
     margin=dict(l=0, r=0, t=50, b=0),
-    title_text="Daily Cyclist Injuries by Borough (Last 30 Days)"
+    title_text="Injuries by Borough (Last 30 Days)"
 )
 
 # Make the sparklines minimal
