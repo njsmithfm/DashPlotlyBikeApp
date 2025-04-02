@@ -1,5 +1,4 @@
 from dash import Dash, dcc, html
-from dash_mosaic import DashMosaic
 import plotly.express as px
 import requests
 from dash.dependencies import Input, Output
