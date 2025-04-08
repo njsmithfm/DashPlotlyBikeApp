@@ -20,15 +20,13 @@ crashApp = Dash(__name__,
 # Load data once for all visualizations
 df = pd.read_json('https://data.cityofnewyork.us/resource/h9gi-nx95.json?$query=SELECT%0A%20%20%60crash_date%60%2C%0A%20%20%60crash_time%60%2C%0A%20%20%60borough%60%2C%0A%20%20%60zip_code%60%2C%0A%20%20%60latitude%60%2C%0A%20%20%60longitude%60%2C%0A%20%20%60location%60%2C%0A%20%20%60on_street_name%60%2C%0A%20%20%60off_street_name%60%2C%0A%20%20%60cross_street_name%60%2C%0A%20%20%60number_of_persons_injured%60%2C%0A%20%20%60number_of_persons_killed%60%2C%0A%20%20%60number_of_pedestrians_injured%60%2C%0A%20%20%60number_of_pedestrians_killed%60%2C%0A%20%20%60number_of_cyclist_injured%60%2C%0A%20%20%60number_of_cyclist_killed%60%2C%0A%20%20%60number_of_motorist_injured%60%2C%0A%20%20%60number_of_motorist_killed%60%2C%0A%20%20%60contributing_factor_vehicle_1%60%2C%0A%20%20%60contributing_factor_vehicle_2%60%2C%0A%20%20%60contributing_factor_vehicle_3%60%2C%0A%20%20%60contributing_factor_vehicle_4%60%2C%0A%20%20%60contributing_factor_vehicle_5%60%2C%0A%20%20%60collision_id%60%2C%0A%20%20%60vehicle_type_code1%60%2C%0A%20%20%60vehicle_type_code2%60%2C%0A%20%20%60vehicle_type_code_3%60%2C%0A%20%20%60vehicle_type_code_4%60%2C%0A%20%20%60vehicle_type_code_5%60%0AWHERE%20%60number_of_cyclist_injured%60%20%3E%200%0AORDER%20BY%20%60crash_date%60%20DESC%20NULL%20LAST')
 
-# Convert crash_date to datetime
+
 df['crash_date'] = pd.to_datetime(df['crash_date'])
 
-# Get list of boroughs
 boroughs = ['MANHATTAN', 'BROOKLYN', 'QUEENS', 'BRONX', 'STATEN ISLAND']
 
-# Create a consistent color map for boroughs
-colors = px.colors.qualitative.Plotly
-borough_colors = {borough: colors[i % len(colors)] for i, borough in enumerate(boroughs)}
+# color scheme
+color_sequence = px.colors.qualitative.Vivid  # You can change this to any palette you prefer
 
 # Define function for creating figures
 def create_figures(days=7):
@@ -64,13 +62,13 @@ def create_figures(days=7):
     # Sort by borough to match the order in the sparklines
     borough_crashSums = borough_crashSums.set_index('borough').loc[boroughs].reset_index()
     
-    # Create bar chart with consistent colors
+    # Create bar chart with simplified color sequence
     bar_fig = px.bar(borough_crashSums, x='number_of_cyclist_injured', y='borough',
                  title=f'Total Cyclist Injuries by Borough (Last {days} Days)',
                  orientation='h',
                  labels={'borough': 'Borough', 'number_of_cyclist_injured': 'Cyclist Injuries'},
                  color='borough',
-                 color_discrete_map=borough_colors)
+                 color_discrete_sequence=color_sequence)  # Use color sequence directly
     
     # Improve responsiveness of bar chart
     bar_fig.update_layout(
@@ -145,38 +143,21 @@ def create_figures(days=7):
                           subplot_titles=boroughs,
                           horizontal_spacing=0.05)
     
-    # Add traces for each borough with consistent y-axis
+    # Add traces for each borough with consistent y-axis - SIMPLIFIED, NO FILLS
     for i, borough in enumerate(boroughs):
-        # Add line trace with consistent colors
+        # Add line trace with simple color assignment
         spark_fig.add_trace(
             go.Scatter(
                 x=all_borough_data[i]['crash_date'],
                 y=all_borough_data[i]['number_of_cyclist_injured'],
                 mode='lines',
                 name=borough,
-                line=dict(width=1.5, color=borough_colors[borough]),
+                line=dict(width=1.5, color=color_sequence[i % len(color_sequence)]),
                 showlegend=False
             ),
             row=1, col=i+1
         )
-        
-        # Add filled area under the line
-        color = borough_colors[borough].replace('#', '')
-        r = int(color[0:2], 16) if len(color) >= 2 else 0
-        g = int(color[2:4], 16) if len(color) >= 4 else 0
-        b = int(color[4:6], 16) if len(color) >= 6 else 0
-        
-        spark_fig.add_trace(
-            go.Scatter(
-                x=all_borough_data[i]['crash_date'],
-                y=all_borough_data[i]['number_of_cyclist_injured'],
-                mode='none',
-                fill='tozeroy',
-                fillcolor=f'rgba({r},{g},{b},0.2)',
-                showlegend=False
-            ),
-            row=1, col=i+1
-        )
+        # No more fill trace!
     
     # Update sparklines layout for desktop
     time_period = "Days"
@@ -216,40 +197,24 @@ def create_figures(days=7):
             title_text="Injuries" if i == 0 else ""
         )
     
-    # Create individual sparkline figures for mobile
+    # Create individual sparkline figures for mobile - SIMPLIFIED, NO FILLS
     mobile_figs = []
     
     for i, borough in enumerate(boroughs):
         # Create individual figure for each borough
         borough_fig = go.Figure()
         
-        # Add line trace with consistent colors
+        # Add line trace with simple color assignment
         borough_fig.add_trace(
             go.Scatter(
                 x=all_borough_data[i]['crash_date'],
                 y=all_borough_data[i]['number_of_cyclist_injured'],
                 mode='lines',
                 name=borough,
-                line=dict(width=1.5, color=borough_colors[borough])
+                line=dict(width=1.5, color=color_sequence[i % len(color_sequence)])
             )
         )
-        
-        # Add filled area under the line
-        color = borough_colors[borough].replace('#', '')
-        r = int(color[0:2], 16) if len(color) >= 2 else 0
-        g = int(color[2:4], 16) if len(color) >= 4 else 0
-        b = int(color[4:6], 16) if len(color) >= 6 else 0
-        
-        borough_fig.add_trace(
-            go.Scatter(
-                x=all_borough_data[i]['crash_date'],
-                y=all_borough_data[i]['number_of_cyclist_injured'],
-                mode='none',
-                fill='tozeroy',
-                fillcolor=f'rgba({r},{g},{b},0.2)',
-                showlegend=False
-            )
-        )
+        # No more fill trace!
         
         # Update layout for consistent y-axis
         borough_fig.update_layout(
@@ -282,10 +247,12 @@ crashApp.layout = html.Div([
     dbc.Container([
         html.H1('Where In NYC Are Cyclists Getting Injured?', className='text-center my-4'),
         
+        html.P("This map shows geospatial data of traffic collisions in NYC in which at least one cyclist was injured. Use the dropdown to select a time range from today's date. The thermal map shows densities, to suggest areas that are comparatively more dangerous for cyclists. Vehicle data and a primary contributing factor are provided where available."),
+
         # Add dropdown for timeframe selection
         dbc.Row([
             dbc.Col([
-                html.Label("Select Timeframe:", className="fw-bold me-2"),
+                html.Label("Select Timeframe", className="fw-bold me-2"),
                 dcc.Dropdown(
                     id='timeframe-dropdown',
                     options=[
@@ -295,12 +262,12 @@ crashApp.layout = html.Div([
                         {'label': 'Previous 6 Months', 'value': 180},
                         {'label': 'Previous Year', 'value': 365}
                     ],
-                    value=7,  # Default to 7 days
+                    value=7,
                     clearable=False,
-                    style={'backgroundColor': '#2c3e50', 'color': 'white'}
+                    style={'backgroundColor': '#fcfcfc', 'color': 'black'}
                 )
             ], xs=12, sm=12, md=6, lg=4, xl=3, className="mb-4")
-        ], justify="center"),
+        ], justify="left"),
         
         # First row: Map
         dbc.Row([
@@ -341,7 +308,7 @@ crashApp.layout = html.Div([
         # Footer with info
         dbc.Row([
             dbc.Col([
-                html.P("Dashboard showing NYC cyclist incidents. Data from NYC Open Data.",
+                html.P("Built by NJ Smith with Plotly + Dash. Accessed through NYC Open Data.",
                       className="text-center text-muted small")
             ], width=12)
         ])
