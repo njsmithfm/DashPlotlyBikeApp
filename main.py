@@ -157,7 +157,6 @@ def create_figures(days=7):
             ),
             row=1, col=i+1
         )
-        # No more fill trace!
     
     # Update sparklines layout for desktop
     time_period = "Days"
@@ -176,7 +175,7 @@ def create_figures(days=7):
     # Set consistent y-axis range for all subplots
     for i in range(1, 6):
         spark_fig.update_yaxes(
-            range=[0, max_y_value * 1.1],  # Add 10% padding
+            range=[0, max_y_value * 1.25],  # Add 25% padding
             row=1, col=i
         )
     
