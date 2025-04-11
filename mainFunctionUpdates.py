@@ -14,7 +14,7 @@ app = Dash(__name__,
                 meta_tags=[{'name': 'viewport', 
                           'content': 'width=device-width, initial-scale=1.0'}]
                )
-initialDays=7
+initial_days=7
 df = pd.read_json('https://data.cityofnewyork.us/resource/h9gi-nx95.json?$query=SELECT%0A%20%20%60crash_date%60%2C%0A%20%20%60crash_time%60%2C%0A%20%20%60borough%60%2C%0A%20%20%60zip_code%60%2C%0A%20%20%60latitude%60%2C%0A%20%20%60longitude%60%2C%0A%20%20%60location%60%2C%0A%20%20%60on_street_name%60%2C%0A%20%20%60off_street_name%60%2C%0A%20%20%60cross_street_name%60%2C%0A%20%20%60number_of_persons_injured%60%2C%0A%20%20%60number_of_persons_killed%60%2C%0A%20%20%60number_of_pedestrians_injured%60%2C%0A%20%20%60number_of_pedestrians_killed%60%2C%0A%20%20%60number_of_cyclist_injured%60%2C%0A%20%20%60number_of_cyclist_killed%60%2C%0A%20%20%60number_of_motorist_injured%60%2C%0A%20%20%60number_of_motorist_killed%60%2C%0A%20%20%60contributing_factor_vehicle_1%60%2C%0A%20%20%60contributing_factor_vehicle_2%60%2C%0A%20%20%60contributing_factor_vehicle_3%60%2C%0A%20%20%60contributing_factor_vehicle_4%60%2C%0A%20%20%60contributing_factor_vehicle_5%60%2C%0A%20%20%60collision_id%60%2C%0A%20%20%60vehicle_type_code1%60%2C%0A%20%20%60vehicle_type_code2%60%2C%0A%20%20%60vehicle_type_code_3%60%2C%0A%20%20%60vehicle_type_code_4%60%2C%0A%20%20%60vehicle_type_code_5%60%0AWHERE%20%60number_of_cyclist_injured%60%20%3E%200%0AORDER%20BY%20%60crash_date%60%20DESC%20NULL%20LAST')
 
 df['crash_date'] = pd.to_datetime(df['crash_date'])
@@ -25,15 +25,15 @@ color_sequence = px.colors.qualitative.Vivid
 borough_crashSums = df.groupby('borough')['number_of_cyclist_injured'].sum().reset_index()
 
 
-def create_map_fig(df,days):  
+def create_map_fig(df, days):  
         map_fig = px.density_map(df, lat='latitude', lon='longitude', z='number_of_cyclist_injured', radius=10,
-                                center=dict(lat=40.7128, lon=-73.9560), zoom=10,
-                                map_style="open-street-map",
-                                title=f'Cyclist Injury Locations (Last {days} Days)')
+                                center=dict(lat = 40.7128, lon = -73.9560), zoom = 10,
+                                map_style = "open-street-map",
+                                title = f'Cyclist Injury Locations (Last {days} Days)')
         return map_fig
 
-def create_bar_fig(df,days):   
-        bar_fig = px.bar(borough_crashSums, x='number_of_cyclist_injured', y='borough',
+def create_bar_fig(df, days):   
+        bar_fig = px.bar(borough_crashSums, x = 'number_of_cyclist_injured', y='borough',
                     title=f'Total Cyclist Injuries by Borough (Last {days} Days)',
                     orientation='h',
                     labels={'borough': 'Borough', 'number_of_cyclist_injured': 'Total Cyclist Injuries'},
@@ -47,9 +47,9 @@ def create_line_fig(df, days):
                                  labels={'crash_date': 'Date', 'number_of_cyclist_injured': 'Cyclist Injuries'},)
         return line_fig
 
-bar_fig = create_bar_fig(df,initialDays)
-map_fig=create_map_fig(df,initialDays)
-line_fig = create_line_fig(df,initialDays)
+bar_fig = create_bar_fig(df, initial_days)
+map_fig=create_map_fig(df, initial_days)
+line_fig = create_line_fig(df, initial_days)
 
 app.layout = html.Div([
     dbc.Container([
@@ -79,15 +79,18 @@ app.layout = html.Div([
 
         dbc.Row([
             dbc.Col([
-                dcc.Graph(id='map', figure=map_fig, responsive=True)
+                dcc.Graph(id='map', figure=map_fig, responsive=True,
+                    style={'height': '65vh'})
             ], className="mb-4")
         ]),
         dbc.Row([
             dbc.Col([
-                dcc.Graph(id='line-chart', figure=line_fig, responsive=True)
+                dcc.Graph(id='line-chart', figure=line_fig, responsive=True,
+                    style={'height': '50vh'})
             ], width=6, className="mb-4"),
             dbc.Col([
-                dcc.Graph(id='bar-chart', figure=bar_fig, responsive=True)
+                dcc.Graph(id='bar-chart', figure=bar_fig, responsive=True, 
+                    style={'height': '50vh'})
             ], width=6, className="mb-4")
         ]),
         ]),
@@ -97,7 +100,7 @@ app.layout = html.Div([
     Output('map', 'figure'),
     Input('timeframe-dropdown','value')
 )
-def update_X_axis(number_of_days):
+def update_map_time(number_of_days):
     updated_map_chart = create_map_fig(df=df, days=number_of_days)
     return updated_map_chart
 
@@ -106,7 +109,7 @@ def update_X_axis(number_of_days):
     Output('bar-chart', 'figure'),
     Input('timeframe-dropdown','value')
 )
-def update_X_axis(number_of_days):
+def update_bar_time(number_of_days):
     updated_bar_chart = create_bar_fig(df=df, days=number_of_days)
     return updated_bar_chart
 
@@ -115,7 +118,7 @@ def update_X_axis(number_of_days):
     Output('line-chart', 'figure'),
     Input('timeframe-dropdown','value')
 )
-def update_X_axis(number_of_days):
+def update_line_time(number_of_days):
     updated_line_chart= create_line_fig(df=df, days=number_of_days)
     return updated_line_chart
 
