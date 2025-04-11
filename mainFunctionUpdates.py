@@ -42,15 +42,14 @@ def create_bar_fig(df,days):
         return bar_fig
 
 
-def create_mobile_sparklines_fig(df, days):
-        mobile_sparklines_fig = px.line(df, x='crash_date', y='number_of_cyclist_injured', color='borough',
-                                title=f'Cyclist Injuries by Borough (Last {days} Days)',
-                                labels={'crash_date': 'Date', 'number_of_cyclist_injured': 'Injuries'})
-        return mobile_sparklines_fig
+def create_line_fig(df, days):
+        line_fig = px.line(df, x='crash_date', y='number_of_cyclist_injured', color='borough',
+                                title=f'Cyclist Injuries by Borough (Last {days} Days)',)
+        return line_fig
 
 bar_fig = create_bar_fig(df,initialDays)
 map_fig=create_map_fig(df,initialDays)
-mobile_sparklines_fig = create_mobile_sparklines_fig(df,initialDays)
+line_fig = create_line_fig(df,initialDays)
 
 app.layout = html.Div([
     dbc.Container([
@@ -83,10 +82,10 @@ app.layout = html.Div([
                 dcc.Graph(id='map', figure=map_fig, responsive=True)
             ], className="mb-4")
         ]),
-           # Second row: Mobile sparklines
+           # Second row: Line chart
         dbc.Row([
             dbc.Col([
-                dcc.Graph(id='mobile-sparklines', figure=mobile_sparklines_fig, responsive=True)
+                dcc.Graph(id='line-chart', figure=line_fig, responsive=True)
             ], width=6, className="mb-4"),
             dbc.Col([
                 dcc.Graph(id='bar-chart', figure=bar_fig, responsive=True)
@@ -112,14 +111,14 @@ def update_X_axis(number_of_days):
     updated_bar_chart = create_bar_fig(df=df, days=number_of_days)
     return updated_bar_chart
 
-#sparklines callback
+#line chart callback
 @app.callback(
-    Output('mobile-sparklines', 'figure'),
+    Output('line-chart', 'figure'),
     Input('timeframe-dropdown','value')
 )
 def update_X_axis(number_of_days):
-    updated_mobile_sparklines= create_mobile_sparklines_fig(df=df, days=number_of_days)
-    return updated_mobile_sparklines
+    updated_line_chart= create_line_fig(df=df, days=number_of_days)
+    return updated_line_chart
 
 
 if __name__ == '__main__':
