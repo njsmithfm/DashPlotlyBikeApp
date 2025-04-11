@@ -26,7 +26,6 @@ borough_crashSums = df.groupby('borough')['number_of_cyclist_injured'].sum().res
 
 
 def create_map_fig(df,days):  
-        # Create density map
         map_fig = px.density_map(df, lat='latitude', lon='longitude', z='number_of_cyclist_injured', radius=10,
                                 center=dict(lat=40.7128, lon=-73.9560), zoom=10,
                                 map_style="open-street-map",
@@ -37,14 +36,15 @@ def create_bar_fig(df,days):
         bar_fig = px.bar(borough_crashSums, x='number_of_cyclist_injured', y='borough',
                     title=f'Total Cyclist Injuries by Borough (Last {days} Days)',
                     orientation='h',
-                    labels={'borough': 'Borough', 'number_of_cyclist_injured': 'Cyclist Injuries'},
+                    labels={'borough': 'Borough', 'number_of_cyclist_injured': 'Total Cyclist Injuries'},
                     color='borough',)
         return bar_fig
 
 
 def create_line_fig(df, days):
         line_fig = px.line(df, x='crash_date', y='number_of_cyclist_injured', color='borough',
-                                title=f'Cyclist Injuries by Borough (Last {days} Days)',)
+                                title=f'Cyclist Injuries by Borough (Last {days} Days)',
+                                 labels={'crash_date': 'Date', 'number_of_cyclist_injured': 'Cyclist Injuries'},)
         return line_fig
 
 bar_fig = create_bar_fig(df,initialDays)
@@ -56,7 +56,7 @@ app.layout = html.Div([
         html.H1('Where In NYC Are Cyclists Getting Injured?', className='text-center my-4'),
         
         html.P("This map shows geospatial data of traffic collisions in NYC in which at least one cyclist was injured. Use the dropdown to select a time range from today's date. The thermal map shows densities, to suggest areas that are comparatively more dangerous for cyclists. Vehicle data and a primary contributing factor are provided where available."),
-        #  Add dropdown for timeframe selection
+
         dbc.Row([
             dbc.Col([
                 html.Label("Select Timeframe", className="fw-bold me-2"),
@@ -76,13 +76,12 @@ app.layout = html.Div([
             ], xs=12, sm=12, md=6, lg=4, xl=3, className="mb-4")
         ], justify="left"),
         
-        # First row: Map
+
         dbc.Row([
             dbc.Col([
                 dcc.Graph(id='map', figure=map_fig, responsive=True)
             ], className="mb-4")
         ]),
-           # Second row: Line chart
         dbc.Row([
             dbc.Col([
                 dcc.Graph(id='line-chart', figure=line_fig, responsive=True)
@@ -93,7 +92,7 @@ app.layout = html.Div([
         ]),
         ]),
         ])
-#map callback
+
 @app.callback(
     Output('map', 'figure'),
     Input('timeframe-dropdown','value')
@@ -102,7 +101,7 @@ def update_X_axis(number_of_days):
     updated_map_chart = create_map_fig(df=df, days=number_of_days)
     return updated_map_chart
 
-# bar chart callback
+
 @app.callback(
     Output('bar-chart', 'figure'),
     Input('timeframe-dropdown','value')
@@ -111,7 +110,7 @@ def update_X_axis(number_of_days):
     updated_bar_chart = create_bar_fig(df=df, days=number_of_days)
     return updated_bar_chart
 
-#line chart callback
+
 @app.callback(
     Output('line-chart', 'figure'),
     Input('timeframe-dropdown','value')
