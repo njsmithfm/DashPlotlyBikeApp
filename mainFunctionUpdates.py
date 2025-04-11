@@ -38,8 +38,7 @@ def create_bar_fig(df,days):
                     title=f'Total Cyclist Injuries by Borough (Last {days} Days)',
                     orientation='h',
                     labels={'borough': 'Borough', 'number_of_cyclist_injured': 'Cyclist Injuries'},
-                    color='borough',
-                    color_discrete_sequence=color_sequence)
+                    color='borough',)
         return bar_fig
 
 
@@ -88,13 +87,10 @@ app.layout = html.Div([
         dbc.Row([
             dbc.Col([
                 dcc.Graph(id='mobile-sparklines', figure=mobile_sparklines_fig, responsive=True)
-            ], className="mb-4")
-        ]),
-     # Third row: Bar Chart
-        dbc.Row([
+            ], width=6, className="mb-4"),
             dbc.Col([
                 dcc.Graph(id='bar-chart', figure=bar_fig, responsive=True)
-            ], width=12, className="mb-4")
+            ], width=6, className="mb-4")
         ]),
         ]),
         ])
