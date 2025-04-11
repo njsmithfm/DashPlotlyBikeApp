@@ -81,7 +81,7 @@ app.layout = html.Div([
         # First row: Map
         dbc.Row([
             dbc.Col([
-                dcc.Graph(id='map-graph', figure=map_fig, responsive=True)
+                dcc.Graph(id='map', figure=map_fig, responsive=True)
             ], className="mb-4")
         ]),
            # Second row: Mobile sparklines
@@ -93,19 +93,38 @@ app.layout = html.Div([
      # Third row: Bar Chart
         dbc.Row([
             dbc.Col([
-                dcc.Graph(id='bar-graph', figure=bar_fig, responsive=True)
+                dcc.Graph(id='bar-chart', figure=bar_fig, responsive=True)
             ], width=12, className="mb-4")
         ]),
         ]),
         ])
-
+#map callback
 @app.callback(
-    Output('bar-graph', 'figure'),
+    Output('map', 'figure'),
+    Input('timeframe-dropdown','value')
+)
+def update_X_axis(number_of_days):
+    updated_map_chart = create_map_fig(df=df, days=number_of_days)
+    return updated_map_chart
+
+# bar chart callback
+@app.callback(
+    Output('bar-chart', 'figure'),
     Input('timeframe-dropdown','value')
 )
 def update_X_axis(number_of_days):
     updated_bar_chart = create_bar_fig(df=df, days=number_of_days)
     return updated_bar_chart
+
+#sparklines callback
+@app.callback(
+    Output('mobile-sparklines', 'figure'),
+    Input('timeframe-dropdown','value')
+)
+def update_X_axis(number_of_days):
+    updated_mobile_sparklines= create_mobile_sparklines_fig(df=df, days=number_of_days)
+    return updated_mobile_sparklines
+
 
 if __name__ == '__main__':
     app.run(debug=True)
