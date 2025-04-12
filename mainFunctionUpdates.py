@@ -15,13 +15,21 @@ app = Dash(__name__,
                           'content': 'width=device-width, initial-scale=1.0'}]
                )
 initial_days=7
+
+brooklyn_crashes=1
+manhattan_crashes=2
+queens_crashes=3
+bronx_crashes=4
+statenisland_crashes=5
+
+
 df = pd.read_json('https://data.cityofnewyork.us/resource/h9gi-nx95.json?$query=SELECT%0A%20%20%60crash_date%60%2C%0A%20%20%60crash_time%60%2C%0A%20%20%60borough%60%2C%0A%20%20%60zip_code%60%2C%0A%20%20%60latitude%60%2C%0A%20%20%60longitude%60%2C%0A%20%20%60location%60%2C%0A%20%20%60on_street_name%60%2C%0A%20%20%60off_street_name%60%2C%0A%20%20%60cross_street_name%60%2C%0A%20%20%60number_of_persons_injured%60%2C%0A%20%20%60number_of_persons_killed%60%2C%0A%20%20%60number_of_pedestrians_injured%60%2C%0A%20%20%60number_of_pedestrians_killed%60%2C%0A%20%20%60number_of_cyclist_injured%60%2C%0A%20%20%60number_of_cyclist_killed%60%2C%0A%20%20%60number_of_motorist_injured%60%2C%0A%20%20%60number_of_motorist_killed%60%2C%0A%20%20%60contributing_factor_vehicle_1%60%2C%0A%20%20%60contributing_factor_vehicle_2%60%2C%0A%20%20%60contributing_factor_vehicle_3%60%2C%0A%20%20%60contributing_factor_vehicle_4%60%2C%0A%20%20%60contributing_factor_vehicle_5%60%2C%0A%20%20%60collision_id%60%2C%0A%20%20%60vehicle_type_code1%60%2C%0A%20%20%60vehicle_type_code2%60%2C%0A%20%20%60vehicle_type_code_3%60%2C%0A%20%20%60vehicle_type_code_4%60%2C%0A%20%20%60vehicle_type_code_5%60%0AWHERE%20%60number_of_cyclist_injured%60%20%3E%200%0AORDER%20BY%20%60crash_date%60%20DESC%20NULL%20LAST')
 
 df['crash_date'] = pd.to_datetime(df['crash_date'])
 boroughs = ['MANHATTAN', 'BROOKLYN', 'QUEENS', 'BRONX', 'STATEN ISLAND']
 color_sequence = px.colors.qualitative.Vivid
 
-# Create borough summary data for bar chart
+# Create borough sum data
 borough_crashSums = df.groupby('borough')['number_of_cyclist_injured'].sum().reset_index()
 
 
@@ -102,11 +110,22 @@ app.layout = html.Div([
              dbc.Col([
                 dbc.Card([ 
                    dbc.CardBody([
-                        html.H5("Counter Card", className="card-title", id='counter-card',
+                        html.H5("In the last {days} days, there have been:", className="card-title", id='counter-card',
                             # figure=counter_fig,
-                            )]),
-                        html.P("This is some card content that we'll reuse", className="card-text",             
-            )], className="bg-dark text-white")
+                            ),
+                     html.P([
+                        f"{brooklyn_crashes} crashes in Brooklyn", 
+                        html.Br(),
+                        f"{manhattan_crashes} crashes in Manhattan", 
+                        html.Br(),
+                        f"{queens_crashes} crashes in Queens", 
+                        html.Br(),
+                        f"{bronx_crashes} crashes in The Bronx", 
+                        html.Br(),
+                        f"{statenisland_crashes} crashes in Staten Island"
+                        ], className="card-text")
+                        ]),
+                        ], style={'backgroundColor': 'black', 'color': 'white', 'height': '100%'})
         ],  width=6, className="mb-4"
     ),
             dbc.Col([
