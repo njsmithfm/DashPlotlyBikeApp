@@ -32,6 +32,8 @@ color_sequence = px.colors.qualitative.Vivid
 # Create borough sum data
 borough_crashSums = df.groupby('borough')['number_of_cyclist_injured'].sum().reset_index()
 
+borough_crash_dict = borough_crashSums.set_index('borough')['number_of_cyclist_injured'].to_dict()
+
 
 def create_map_fig(df, days):  
         map_fig = px.density_map(df, lat='latitude', lon='longitude', z='number_of_cyclist_injured', radius=10,
@@ -56,15 +58,13 @@ def create_line_fig(df, days):
                                  labels={'crash_date': 'Date', 'number_of_cyclist_injured': 'Cyclist Injuries'},)
         return line_fig
 
-# def create_counter_fig(df, days):
-#       counter_fig = 
-
-#       return counter_fig
+def create_counter_fig(df, days):
+      return days
 
 bar_fig = create_bar_fig(df, initial_days)
 map_fig=create_map_fig(df, initial_days)
 line_fig = create_line_fig(df, initial_days)
-# counter_fig = create_counter_fig(df, initial_days)
+counter_fig = create_counter_fig(df, initial_days)
 
 
 
@@ -110,28 +110,28 @@ app.layout = html.Div([
              dbc.Col([
                 dbc.Card([ 
                    dbc.CardBody([
-                        html.H5("In the last {days} days, there have been:", className="card-title", id='counter-card',
+                        html.H5(f"In the last {initial_days} days, there have been:", className="card-title", id='counter-card',
                             # figure=counter_fig,
                             ),
-                     html.P([
-                        f"{brooklyn_crashes} crashes in Brooklyn", 
+                    html.P([
+                        f"{borough_crash_dict.get('BROOKLYN', 0)} crashes in Brooklyn", 
                         html.Br(),
-                        f"{manhattan_crashes} crashes in Manhattan", 
+                        f"{borough_crash_dict.get('MANHATTAN', 0)} crashes in Manhattan", 
                         html.Br(),
-                        f"{queens_crashes} crashes in Queens", 
+                        f"{borough_crash_dict.get('QUEENS', 0)} crashes in Queens", 
                         html.Br(),
-                        f"{bronx_crashes} crashes in The Bronx", 
+                        f"{borough_crash_dict.get('BRONX', 0)} crashes in The Bronx", 
                         html.Br(),
-                        f"{statenisland_crashes} crashes in Staten Island"
+                        f"{borough_crash_dict.get('STATEN ISLAND', 0)} crashes in Staten Island"
                         ], className="card-text")
                         ]),
                         ], style={'backgroundColor': 'black', 'color': 'white', 'height': '100%'})
-        ],  width=6, className="mb-4"
+        ],  width=3, className="mb-4"
     ),
             dbc.Col([
                 dcc.Graph(id='bar-chart', figure=bar_fig, responsive=True, 
                     style={'height': '50vh'})
-            ], width=6, className="mb-4")
+            ], width=9, className="mb-4")
         ]),
         ]),
         ])
@@ -161,13 +161,13 @@ def update_bar_time(number_of_days):
     updated_bar_chart = create_bar_fig(df=df, days=number_of_days)
     return updated_bar_chart
 
-# @app.callback(
-#       Output('counter-card', 'figure'),
-#       Input('timeframe-dropdown', 'value')
-# )
-# def update_counter_card(number_of_days):
-#     updated_counter_card = create_counter_fig(df=df, days=number_of_days)
-#     return updated_counter_card
+@app.callback(
+      Output('counter-card', 'figure'),
+      Input('timeframe-dropdown', 'value')
+)
+def update_counter_card(number_of_days):
+    updated_counter_card = create_counter_fig(df=df, days=number_of_days)
+    return updated_counter_card
 
 
 
