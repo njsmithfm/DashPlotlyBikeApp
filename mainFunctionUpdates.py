@@ -39,10 +39,10 @@ def create_map_fig(df, days):
         map_fig = px.density_map(df, lat='latitude', lon='longitude', z='number_of_cyclist_injured', radius=10,
                                  labels={'number_of_cyclist_injured': 'Cyclists Injured'},
                                 center=dict(lat = 40.7128, lon = -73.9560), zoom = 10,
-                                map_style = "open-street-map",
+                                map_style = "carto-positron",
                                 title = f'Cyclist Injury Locations (Last {days} Days)')
         return map_fig
-
+ 
 def create_bar_fig(df, days):   
         bar_fig = px.bar(borough_crashSums, x = 'number_of_cyclist_injured', y='borough',
                     title=f'Total Cyclist Injuries by Borough (Last {days} Days)',
