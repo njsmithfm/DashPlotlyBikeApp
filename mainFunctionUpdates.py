@@ -37,9 +37,10 @@ borough_crash_dict = borough_crashSums.set_index('borough')['number_of_cyclist_i
 
 def create_map_fig(df, days):  
         map_fig = px.density_map(df, lat='latitude', lon='longitude', z='number_of_cyclist_injured', radius=10,
+                                 hover_data = {'number_of_cyclist_injured', 'crash_date', 'vehicle_type_code1', 'vehicle_type_code2', 'contributing_factor_vehicle_1'},
                                  labels={'number_of_cyclist_injured': 'Cyclists Injured'},
                                 center=dict(lat = 40.7128, lon = -73.9560), zoom = 10,
-                                map_style = "carto-positron",
+                                map_style='dark',
                                 title = f'Cyclist Injury Locations (Last {days} Days)')
         return map_fig
  
