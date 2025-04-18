@@ -44,23 +44,7 @@ def create_map_fig(df, days):
                                 title = f'Cyclist Injury Locations (Last {days} Days)')
         return map_fig
  
-def create_bar_fig(df, days):   
-        bar_fig = px.bar(borough_crashSums, x = 'number_of_cyclist_injured', y='borough',
-                    title=f'Total Cyclist Injuries by Borough (Last {days} Days)',
-                    orientation='h',
-                    labels={'borough': 'Borough', 'number_of_cyclist_injured': 'Total Cyclist Injuries'},
-                    color='borough',)
-        return bar_fig
 
-
-def create_line_fig(df, days):
-        line_fig = px.line(df, x='crash_date', y='number_of_cyclist_injured', color='borough',
-                                title=f'Cyclist Injuries by Borough (Last {days} Days)',
-                                 labels={'crash_date': 'Date', 'number_of_cyclist_injured': 'Cyclist Injuries'},)
-        return line_fig
-
-def create_counter_fig(df, days):
-      return days
 
 def create_histogram_fig(df, days):
       histogram_fig = px.histogram(df, x='crash_date', y='number_of_cyclist_injured', color='borough',
@@ -68,10 +52,7 @@ def create_histogram_fig(df, days):
                                    labels={'crash_date': 'Date', 'number_of_cyclist_injured': 'Cyclist Injuries'},)
       return histogram_fig
 
-bar_fig = create_bar_fig(df, initial_days)
 map_fig=create_map_fig(df, initial_days)
-line_fig = create_line_fig(df, initial_days)
-counter_fig = create_counter_fig(df, initial_days)
 histogram_fig = create_histogram_fig(df, initial_days)
 
 
@@ -112,43 +93,10 @@ app.layout = html.Div([
               dbc.Col([
                     dcc.Graph(id='histogram', figure=histogram_fig, responsive=True,
                               style={'height': '50vh'})
-              ], width=12, className='mb-4')
-        ]),
-         dbc.Row([
-                dbc.Col([
-            dcc.Graph(id='line-chart', figure=line_fig, responsive=True,
-                style={'height': '50vh'})
-        ], width=12, className="mb-4")
-        ]),
-        dbc.Row([
-             dbc.Col([
-                dbc.Card([ 
-                   dbc.CardBody([
-                        html.H5(f"In the last {initial_days} days, there have been:", className="card-title", id='counter-card',
-                            # figure=counter_fig,
-                            ),
-                    html.P([
-                        f"{borough_crash_dict.get('BROOKLYN', 0)} crashes in Brooklyn", 
-                        html.Br(),
-                        f"{borough_crash_dict.get('MANHATTAN', 0)} crashes in Manhattan", 
-                        html.Br(),
-                        f"{borough_crash_dict.get('QUEENS', 0)} crashes in Queens", 
-                        html.Br(),
-                        f"{borough_crash_dict.get('BRONX', 0)} crashes in The Bronx", 
-                        html.Br(),
-                        f"{borough_crash_dict.get('STATEN ISLAND', 0)} crashes in Staten Island"
-                        ], className="card-text")
-                        ]),
-                        ], style={'backgroundColor': 'black', 'color': 'white', 'height': '100%'})
-        ],  width=3, className="mb-4"
-    ),
-            dbc.Col([
-                dcc.Graph(id='bar-chart', figure=bar_fig, responsive=True, 
-                    style={'height': '50vh'})
-            ], width=9, className="mb-4")
+              ], width=12, className='mb-4'),
         ]),
         ]),
-        ])
+])
 
 @app.callback(
     Output('map', 'figure'),
@@ -159,38 +107,12 @@ def update_map_time(number_of_days):
     return updated_map_chart
 
 @app.callback(
-    Output('line-chart', 'figure'),
-    Input('timeframe-dropdown','value')
-)
-def update_line_time(number_of_days):
-    updated_line_chart= create_line_fig(df=df, days=number_of_days)
-    return updated_line_chart
-
-@app.callback(
     Output('histogram', 'figure'),
     Input('timeframe-dropdown','value')
 )
 def update_hisogram_time(number_of_days):
     updated_histogram= create_histogram_fig(df=df, days=number_of_days)
     return updated_histogram
-
-@app.callback(
-    Output('bar-chart', 'figure'),
-    Input('timeframe-dropdown','value')
-)
-def update_bar_time(number_of_days):
-    updated_bar_chart = create_bar_fig(df=df, days=number_of_days)
-    return updated_bar_chart
-
-@app.callback(
-      Output('counter-card', 'figure'),
-      Input('timeframe-dropdown', 'value')
-)
-def update_counter_card(number_of_days):
-    updated_counter_card = create_counter_fig(df=df, days=number_of_days)
-    return updated_counter_card
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)
