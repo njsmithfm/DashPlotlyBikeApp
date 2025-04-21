@@ -16,7 +16,8 @@ app = Dash(
         {"name": "viewport", "content": "width=device-width, initial-scale=1.0"}
     ],
 )
-initial_days = 7
+
+days = 30
 
 import constants
 
@@ -71,8 +72,8 @@ def create_histogram_fig(df, days):
     return histogram_fig
 
 
-map_fig = create_map_fig(df, initial_days)
-histogram_fig = create_histogram_fig(df, initial_days)
+map_fig = create_map_fig(df, days)
+histogram_fig = create_histogram_fig(df, days)
 
 
 app.layout = html.Div(
@@ -85,40 +86,6 @@ app.layout = html.Div(
                 ),
                 html.P(
                     "This map shows geospatial data of traffic collisions in NYC in which at least one cyclist was injured. Use the dropdown to select a time range from today's date. The thermal map shows densities, to suggest areas that are comparatively more dangerous for cyclists. Vehicle data and a primary contributing factor are provided where available."
-                ),
-                dbc.Row(
-                    [
-                        dbc.Col(
-                            [
-                                html.Label(
-                                    "Select Timeframe", className="fw-bold me-2"
-                                ),
-                                dcc.Dropdown(
-                                    id="timeframe-dropdown",
-                                    options=[
-                                        {"label": "Previous 7 Days", "value": 7},
-                                        {"label": "Previous 2 Weeks", "value": 14},
-                                        {"label": "Previous 30 Days", "value": 30},
-                                        {"label": "Previous 6 Months", "value": 180},
-                                        {"label": "Previous Year", "value": 365},
-                                    ],
-                                    value=7,
-                                    clearable=False,
-                                    style={
-                                        "backgroundColor": "#fcfcfc",
-                                        "color": "black",
-                                    },
-                                ),
-                            ],
-                            xs=12,
-                            sm=12,
-                            md=6,
-                            lg=4,
-                            xl=3,
-                            className="mb-4",
-                        )
-                    ],
-                    justify="left",
                 ),
                 dbc.Row(
                     [
@@ -155,19 +122,6 @@ app.layout = html.Div(
         ),
     ]
 )
-
-
-@app.callback(Output("map", "figure"), Input("timeframe-dropdown", "value"))
-def update_map_time(number_of_days):
-    updated_map_chart = create_map_fig(df=df, days=number_of_days)
-    return updated_map_chart
-
-
-@app.callback(Output("histogram", "figure"), Input("timeframe-dropdown", "value"))
-def update_hisogram_time(number_of_days):
-    updated_histogram = create_histogram_fig(df=df, days=number_of_days)
-    return updated_histogram
-
 
 if __name__ == "__main__":
     app.run(debug=True)
