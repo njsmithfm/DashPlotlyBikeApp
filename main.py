@@ -26,7 +26,6 @@ df["crash_date"] = pd.to_datetime(df["crash_date"])
 boroughs = ["MANHATTAN", "BROOKLYN", "QUEENS", "BRONX", "STATEN ISLAND"]
 color_sequence = px.colors.qualitative.Vivid
 
-<<<<<<< Updated upstream
 # Create borough sum data (this was for the old bar chart)
 borough_crashSums = (
     df.groupby("borough")["number_of_cyclist_injured"].sum().reset_index()
@@ -61,52 +60,6 @@ def create_map_fig(df, days):  # scatterplot map
     #           selector=dict(mode='markers'))
 
     return map_fig
-=======
-# Create borough sum data
-borough_crashSums = df.groupby('borough')['number_of_cyclist_injured'].sum().reset_index()
-borough_crashSums_sorted = borough_crashSums.sort_values('number_of_cyclist_injured', ascending=False)
-
-
-borough_crash_dict = borough_crashSums.set_index('borough')['number_of_cyclist_injured'].to_dict()
-
-
-df_new = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/earthquakes-23k.csv')
-# print("This is df_new")
-# print(df_new)
-# print("\n")
-
-def create_map_fig(df, days):
-        print("number_of_cyclist_injured")
-        print(df["number_of_cyclist_injured"])
-
-        # map_fig = px.density_map(
-        #      df, lat='latitude', lon='longitude', z='number_of_cyclist_injured', radius=10,
-        #                         #  bin=
-        #                         #  hover_data = {'number_of_cyclist_injured', 'crash_date', 'vehicle_type_code1', 'vehicle_type_code2', 'contributing_factor_vehicle_1'},
-        #                          labels={'number_of_cyclist_injured': 'Cyclists Injured'},
-        #                         center=dict(lat = 40.7128, lon = -73.9560), zoom = 10,
-        #                         # map_style='open-street-map',
-        #                         title = f'Cyclist Injury Locations (Last {days} Days)')
-
-        map_fig = px.scatter_map(
-            df,
-            lat='latitude',
-            lon='longitude',
-            # z='number_of_cyclist_injured',
-            # radius=10,
-        )
-        return map_fig
-
-
- 
-def create_bar_fig(df, days):   
-        bar_fig = px.bar(borough_crashSums_sorted, x = 'number_of_cyclist_injured', y='borough',
-                    title=f'Total Cyclist Injuries by Borough (Last {days} Days)',
-                    orientation='h',
-                    labels={'borough': 'Borough', 'number_of_cyclist_injured': 'Total Cyclist Injuries'},
-                    color='borough',)
-        return bar_fig
->>>>>>> Stashed changes
 
 
 # def create_map_fig(df, days):  #density (heat) map
