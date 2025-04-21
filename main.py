@@ -7,7 +7,7 @@ import dash_bootstrap_components as dbc
 import plotly.io as pio
 from datetime import datetime, timedelta
 
-# Set default template
+
 pio.templates.default = "plotly_dark"
 app = Dash(
     __name__,
@@ -18,15 +18,15 @@ app = Dash(
 )
 initial_days = 7
 
-df = pd.read_json(
-    "https://data.cityofnewyork.us/resource/h9gi-nx95.json?$query=SELECT%0A%20%20%60crash_date%60%2C%0A%20%20%60crash_time%60%2C%0A%20%20%60borough%60%2C%0A%20%20%60zip_code%60%2C%0A%20%20%60latitude%60%2C%0A%20%20%60longitude%60%2C%0A%20%20%60location%60%2C%0A%20%20%60on_street_name%60%2C%0A%20%20%60off_street_name%60%2C%0A%20%20%60cross_street_name%60%2C%0A%20%20%60number_of_persons_injured%60%2C%0A%20%20%60number_of_persons_killed%60%2C%0A%20%20%60number_of_pedestrians_injured%60%2C%0A%20%20%60number_of_pedestrians_killed%60%2C%0A%20%20%60number_of_cyclist_injured%60%2C%0A%20%20%60number_of_cyclist_killed%60%2C%0A%20%20%60number_of_motorist_injured%60%2C%0A%20%20%60number_of_motorist_killed%60%2C%0A%20%20%60contributing_factor_vehicle_1%60%2C%0A%20%20%60contributing_factor_vehicle_2%60%2C%0A%20%20%60contributing_factor_vehicle_3%60%2C%0A%20%20%60contributing_factor_vehicle_4%60%2C%0A%20%20%60contributing_factor_vehicle_5%60%2C%0A%20%20%60collision_id%60%2C%0A%20%20%60vehicle_type_code1%60%2C%0A%20%20%60vehicle_type_code2%60%2C%0A%20%20%60vehicle_type_code_3%60%2C%0A%20%20%60vehicle_type_code_4%60%2C%0A%20%20%60vehicle_type_code_5%60%0AWHERE%20%60number_of_cyclist_injured%60%20%3E%200%0AORDER%20BY%20%60crash_date%60%20DESC%20NULL%20LAST"
-)
+import constants
+
+df =  constants.NYC_BIKE_API_LINK
 
 df["crash_date"] = pd.to_datetime(df["crash_date"])
 boroughs = ["MANHATTAN", "BROOKLYN", "QUEENS", "BRONX", "STATEN ISLAND"]
 color_sequence = px.colors.qualitative.Vivid
 
-# Create borough sum data (this was for the old bar chart)
+
 borough_crashSums = (
     df.groupby("borough")["number_of_cyclist_injured"].sum().reset_index()
 )
@@ -35,7 +35,7 @@ borough_crash_dict = borough_crashSums.set_index("borough")[
 ].to_dict()
 
 
-def create_map_fig(df, days):  # scatterplot map
+def create_map_fig(df, days):  
     map_fig = px.scatter_map(
         df,
         lat="latitude",
@@ -54,25 +54,9 @@ def create_map_fig(df, days):  # scatterplot map
         map_style="dark",
         title=f"Cyclist Injury Locations (Last {days} Days)",
     )
-    # map_fig.update_traces(marker=dict(size=12,
-    #                       line=dict(width=2,
-    #                                 color='DarkSlateGrey')),
-    #           selector=dict(mode='markers'))
-
+ 
     return map_fig
 
-
-# def create_map_fig(df, days):  #density (heat) map
-#         map_fig = px.density_map(df, lat='latitude', lon='longitude',
-#                                 #   z='number_of_cyclist_injured',
-#                                 #  radius=10,
-#                                  color='borough',
-#                                  hover_data = {'number_of_cyclist_injured', 'crash_date', 'vehicle_type_code1', 'vehicle_type_code2', 'contributing_factor_vehicle_1'},
-#                                  labels={'number_of_cyclist_injured': 'Cyclists Injured'},
-#                                 center=dict(lat = 40.7128, lon = -73.9560), zoom = 10,
-#                                 map_style='dark',
-#                                 title = f'Cyclist Injury Locations (Last {days} Days)')
-#         return map_fig
 
 
 def create_histogram_fig(df, days):
