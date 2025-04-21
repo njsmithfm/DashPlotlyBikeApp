@@ -171,3 +171,4 @@ def update_hisogram_time(number_of_days):
 
 if __name__ == "__main__":
     app.run(debug=True)
+ 
