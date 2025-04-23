@@ -6,7 +6,7 @@ import pandas as pd
 import dash_bootstrap_components as dbc
 import plotly.io as pio
 from datetime import datetime, timedelta
-
+import constants
 
 pio.templates.default = "plotly_dark"
 app = Dash(
@@ -18,10 +18,7 @@ app = Dash(
 )
 
 days = 30
-
-import constants
-
-df =  constants.NYC_BIKE_API_LINK
+df = constants.NYC_BIKE_API_LINK
 
 df["crash_date"] = pd.to_datetime(df["crash_date"])
 boroughs = ["MANHATTAN", "BROOKLYN", "QUEENS", "BRONX", "STATEN ISLAND"]
@@ -36,28 +33,37 @@ borough_crash_dict = borough_crashSums.set_index("borough")[
 ].to_dict()
 
 
-def create_map_fig(df, days):  
+def create_map_fig(df, days):
     map_fig = px.scatter_map(
         df,
         lat="latitude",
         lon="longitude",
         color="borough",
+        'crash_date'= pd.to_datetime(df["crash_date"]),
         hover_data={
-            "number_of_cyclist_injured",
-            "crash_date",
-            "vehicle_type_code1",
-            "vehicle_type_code2",
-            "contributing_factor_vehicle_1",
+            "crash_date": True,
+            "latitude": False,
+            "longitude": False,
+            "number_of_cyclist_injured": True,
+            "vehicle_type_code1": True,
+            "vehicle_type_code2": True,
+            "contributing_factor_vehicle_1": True,
         },
-        labels={"number_of_cyclist_injured": "Cyclists Injured"},
+        labels={
+            "crash_date": 'Date',
+            "borough": 'Borough',
+            "number_of_cyclist_injured": "Cyclists Injured",
+            "vehicle_type_code1": "Vehicle 1",
+            "vehicle_type_code2": "Vehicle 2",
+            "contributing_factor_vehicle_1": "Contributing Factor",
+        },
         center=dict(lat=40.7128, lon=-73.9560),
         zoom=10,
         map_style="dark",
         title=f"Cyclist Injury Locations (Last {days} Days)",
     )
- 
+    
     return map_fig
-
 
 
 def create_histogram_fig(df, days):
@@ -67,7 +73,7 @@ def create_histogram_fig(df, days):
         y="number_of_cyclist_injured",
         color="borough",
         title=f"Cyclist Injuries By Borough (Last {days} Days)",
-        labels={"crash_date": "Date", "number_of_cyclist_injured": "Cyclist Injuries"},
+        labels={"crash_date": "Week", "number_of_cyclist_injured": f"Cyclist Injuries"},
     )
     return histogram_fig
 
@@ -115,14 +121,13 @@ app.layout = html.Div(
                             ],
                             width=12,
                             className="mb-4",
-                        ),
+                        )
                     ]
                 ),
             ]
-        ),
+        )
     ]
 )
 
 if __name__ == "__main__":
     app.run(debug=True)
- 
