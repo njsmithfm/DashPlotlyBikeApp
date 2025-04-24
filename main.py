@@ -69,7 +69,6 @@ def create_histogram_fig(df, days):
         x="Date",
         y="Cyclists_Injured",
         color="Borough",
-        # marginal='violin',
         title="Recent Cyclist Injuries By Borough",
         labels={"Date": "Week", "Cyclists_Injured": f"Cyclist Injuries"},
     )
