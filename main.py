@@ -25,22 +25,21 @@ boroughs = ["MANHATTAN", "BROOKLYN", "QUEENS", "BRONX", "STATEN ISLAND"]
 color_sequence = px.colors.qualitative.Vivid
 
 
-borough_crashSums = (
-    df.groupby("Borough")["Cyclists_Injured"].sum().reset_index()
-)
+borough_crashSums = df.groupby("Borough")["Cyclists_Injured"].sum().reset_index()
 borough_crash_dict = borough_crashSums.set_index("Borough")[
     "Cyclists_Injured"
 ].to_dict()
 
 
 def create_map_fig(df, days):
+    df["crash_date_str"] = df["Date"].dt.strftime("%m/%d/%Y")
     map_fig = px.scatter_map(
         df,
         lat="Latitude",
         lon="Longitude",
         color="Borough",
         hover_data={
-            "Date": True,
+            "crash_date_str": True,
             "Latitude": False,
             "Longitude": False,
             "Cyclists_Injured": True,
@@ -49,8 +48,8 @@ def create_map_fig(df, days):
             "Contributing_Factor": True,
         },
         labels={
-            "Date": 'Date',
-            "borough": 'Borough',
+            "crash_date_str": "Date",
+            "borough": "Borough",
             "Cyclists_Injured": "Cyclists Injured",
             "Vehicle_1": "Vehicle 1",
             "Vehicle_2": "Vehicle 2",
@@ -71,9 +70,10 @@ def create_histogram_fig(df, days):
         y="Cyclists_Injured",
         color="Borough",
         # marginal='violin',
-        title=f"Cyclist Injuries By Borough (Last {days} Days)",
+        title="Recent Cyclist Injuries By Borough",
         labels={"Date": "Week", "Cyclists_Injured": f"Cyclist Injuries"},
     )
+    histogram_fig.update_layout(bargap=0.1)
     return histogram_fig
 
 
@@ -89,7 +89,7 @@ app.layout = html.Div(
                     className="text-center my-4",
                 ),
                 html.P(
-                    "This map shows geospatial data of traffic crash events in NYC in which at least one cyclist was injured. Crash events inolving cyclist deaths are also marked with a {} icon. Use the dropdown to select a time range from today's date. The thermal map shows densities, to suggest areas that are comparatively more dangerous for cyclists. Vehicle data and a primary contributing factor are provided where available."
+                    "This map shows geospatial data of traffic crash events in NYC in which at least one cyclist was injured. Crash events inolving cyclist deaths are also marked with an 'X' icon. Vehicle data and a primary contributing factor are provided where available."
                 ),
                 dbc.Row(
                     [
@@ -102,9 +102,10 @@ app.layout = html.Div(
                                     style={"height": "65vh"},
                                 )
                             ],
+                            width=12,
                             className="mb-4",
                         )
-                    ]
+                    ],
                 ),
                 dbc.Row(
                     [
@@ -120,7 +121,7 @@ app.layout = html.Div(
                             width=12,
                             className="mb-4",
                         )
-                    ]
+                    ],
                 ),
             ]
         )
