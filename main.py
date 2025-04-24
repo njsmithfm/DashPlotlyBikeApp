@@ -20,67 +20,65 @@ app = Dash(
 days = 30
 df = constants.NYC_BIKE_API_LINK
 
-df["crash_date"] = pd.to_datetime(df["crash_date"])
+df["crash_date"] = pd.to_datetime(df["Date"])
 boroughs = ["MANHATTAN", "BROOKLYN", "QUEENS", "BRONX", "STATEN ISLAND"]
 color_sequence = px.colors.qualitative.Vivid
 
 
 borough_crashSums = (
-    df.groupby("borough")["number_of_cyclist_injured"].sum().reset_index()
+    df.groupby("Borough")["Cyclists_Injured"].sum().reset_index()
 )
-borough_crash_dict = borough_crashSums.set_index("borough")[
-    "number_of_cyclist_injured"
+borough_crash_dict = borough_crashSums.set_index("Borough")[
+    "Cyclists_Injured"
 ].to_dict()
 
 
 def create_map_fig(df, days):
     map_fig = px.scatter_map(
         df,
-        lat="latitude",
-        lon="longitude",
-        color="borough",
-        'crash_date'= pd.to_datetime(df["crash_date"]),
+        lat="Latitude",
+        lon="Longitude",
+        color="Borough",
         hover_data={
-            "crash_date": True,
-            "latitude": False,
-            "longitude": False,
-            "number_of_cyclist_injured": True,
-            "vehicle_type_code1": True,
-            "vehicle_type_code2": True,
-            "contributing_factor_vehicle_1": True,
+            "Date": True,
+            "Latitude": False,
+            "Longitude": False,
+            "Cyclists_Injured": True,
+            "Vehicle_1": True,
+            "Vehicle_2": True,
+            "Contributing_Factor": True,
         },
         labels={
-            "crash_date": 'Date',
+            "Date": 'Date',
             "borough": 'Borough',
-            "number_of_cyclist_injured": "Cyclists Injured",
-            "vehicle_type_code1": "Vehicle 1",
-            "vehicle_type_code2": "Vehicle 2",
-            "contributing_factor_vehicle_1": "Contributing Factor",
+            "Cyclists_Injured": "Cyclists Injured",
+            "Vehicle_1": "Vehicle 1",
+            "Vehicle_2": "Vehicle 2",
+            "Contributing_Factor": "Contributing Factor",
         },
         center=dict(lat=40.7128, lon=-73.9560),
         zoom=10,
         map_style="dark",
         title=f"Cyclist Injury Locations (Last {days} Days)",
     )
-    
     return map_fig
 
 
 def create_histogram_fig(df, days):
     histogram_fig = px.histogram(
         df,
-        x="crash_date",
-        y="number_of_cyclist_injured",
-        color="borough",
+        x="Date",
+        y="Cyclists_Injured",
+        color="Borough",
+        # marginal='violin',
         title=f"Cyclist Injuries By Borough (Last {days} Days)",
-        labels={"crash_date": "Week", "number_of_cyclist_injured": f"Cyclist Injuries"},
+        labels={"Date": "Week", "Cyclists_Injured": f"Cyclist Injuries"},
     )
     return histogram_fig
 
 
 map_fig = create_map_fig(df, days)
 histogram_fig = create_histogram_fig(df, days)
-
 
 app.layout = html.Div(
     [
@@ -91,7 +89,7 @@ app.layout = html.Div(
                     className="text-center my-4",
                 ),
                 html.P(
-                    "This map shows geospatial data of traffic collisions in NYC in which at least one cyclist was injured. Use the dropdown to select a time range from today's date. The thermal map shows densities, to suggest areas that are comparatively more dangerous for cyclists. Vehicle data and a primary contributing factor are provided where available."
+                    "This map shows geospatial data of traffic crash events in NYC in which at least one cyclist was injured. Crash events inolving cyclist deaths are also marked with a {} icon. Use the dropdown to select a time range from today's date. The thermal map shows densities, to suggest areas that are comparatively more dangerous for cyclists. Vehicle data and a primary contributing factor are provided where available."
                 ),
                 dbc.Row(
                     [
@@ -116,7 +114,7 @@ app.layout = html.Div(
                                     id="histogram",
                                     figure=histogram_fig,
                                     responsive=True,
-                                    style={"height": "50vh"},
+                                    style={"height": "65vh"},
                                 )
                             ],
                             width=12,
