@@ -17,7 +17,7 @@ app = Dash(
     ],
 )
 
-days = 30
+
 df = constants.NYC_BIKE_API_LINK
 
 df["crash_date"] = pd.to_datetime(df["Date"])
@@ -60,8 +60,11 @@ def create_map_fig(df, days):
         map_style="dark",
         title=f"Cyclist Injury Locations (Last {days} Days)",
     )
+
     return map_fig
 
+
+    return map_fig
 
 def create_histogram_fig(df, days):
     histogram_fig = px.histogram(
