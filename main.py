@@ -20,7 +20,7 @@ initial_days = 7
 
 import constants
 
-df =  constants.NYC_BIKE_API_LINK
+df = constants.NYC_BIKE_API_LINK
 
 df["crash_date"] = pd.to_datetime(df["crash_date"])
 boroughs = ["MANHATTAN", "BROOKLYN", "QUEENS", "BRONX", "STATEN ISLAND"]
@@ -35,7 +35,7 @@ borough_crash_dict = borough_crashSums.set_index("borough")[
 ].to_dict()
 
 
-def create_map_fig(df, days):  
+def create_map_fig(df, days):
     map_fig = px.scatter_map(
         df,
         lat="latitude",
@@ -54,9 +54,8 @@ def create_map_fig(df, days):
         map_style="dark",
         title=f"Cyclist Injury Locations (Last {days} Days)",
     )
- 
-    return map_fig
 
+    return map_fig
 
 
 def create_histogram_fig(df, days):
