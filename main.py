@@ -99,7 +99,7 @@ app.layout = html.Div(
                                     "This map shows geospatial data of traffic crash events in NYC in which at least one cyclist was injured. Crash events inolving cyclist deaths are also marked with an 'X' icon. Vehicle data and a primary contributing factor are provided where available."
                                 ),
                             ],
-                            width=2,
+                            width=3,
                             align="start",
                         ),
                         dbc.Col(
@@ -126,9 +126,11 @@ app.layout = html.Div(
                         ),
                     ]
                 )
-            ]
+            ],
+            fluid=True,
         )
     ]
+
 )
 
 
