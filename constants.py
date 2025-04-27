@@ -5,7 +5,10 @@ NYC_BIKE_API_LINK = pd.read_json(
 )
 
 
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 NYC_BIKE_API_LINK["crash_date"] = pd.to_datetime(NYC_BIKE_API_LINK["crash_date"])
 
 
@@ -35,3 +38,8 @@ NYC_BIKE_API_LINK = NYC_BIKE_API_LINK[
         "Vehicle_2",
     ]
 ]
+<<<<<<< Updated upstream
+=======
+
+days = 30
+>>>>>>> Stashed changes

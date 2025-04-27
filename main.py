@@ -7,6 +7,13 @@ import dash_bootstrap_components as dbc
 import plotly.io as pio
 from datetime import datetime, timedelta
 import constants
+<<<<<<< Updated upstream
+=======
+from constants import (
+    NYC_BIKE_API_LINK,
+    days
+)
+>>>>>>> Stashed changes
 
 pio.templates.default = "plotly_dark"
 app = Dash(
@@ -60,7 +67,6 @@ def create_map_fig(df, days):
         map_style="dark",
         title=f"Cyclist Injury Locations (Last {days} Days)",
     )
-
     return map_fig
 
 
