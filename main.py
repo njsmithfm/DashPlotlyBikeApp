@@ -102,36 +102,30 @@ app.layout = html.Div(
                             width=2,
                             align="start",
                         ),
-                    dbc.Col(
-                        [
-                            dbc.Row(
-                                [
-                                    dcc.Graph(
-                                        id="map",
-                                        figure=map_fig,
-                                        responsive=True,
-                                        style={"height": "65vh"},
-                                    )
-                                ],
-                                className="mb-4",
-                            ),
-                            dbc.Row(
-                                [
-                                    dcc.Graph(
-                                        id="histogram",
-                                        figure=histogram_fig,
-                                        responsive=True,
-                                        style={"height": "65vh"},
-                                    )
-                                ],
-                                className="mb-4",
-                            ),
-                        ],
-                        width=9,
-                        align="end",
-                    ),
-                   ]
-                ),
+                        dbc.Col(
+                            [
+                                dbc.Stack(
+                                    [
+                                        dcc.Graph(
+                                            id="map",
+                                            figure=map_fig,
+                                            responsive=True,
+                                            style={"height": "65vh"},
+                                        ),
+                                        dcc.Graph(
+                                            id="histogram",
+                                            figure=histogram_fig,
+                                            responsive=True,
+                                            style={"height": "65vh"},
+                                        ),
+                                    ],
+                                ),
+                            ],
+                            width=9,
+                            align="end",
+                        ),
+                    ]
+                )
             ]
         )
     ]
