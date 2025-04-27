@@ -6,7 +6,7 @@ import pandas as pd
 import dash_bootstrap_components as dbc
 import plotly.io as pio
 from datetime import datetime, timedelta
-
+import constants
 
 pio.templates.default = "plotly_dark"
 app = Dash(
@@ -16,39 +16,45 @@ app = Dash(
         {"name": "viewport", "content": "width=device-width, initial-scale=1.0"}
     ],
 )
-initial_days = 7
 
-import constants
 
 df = constants.NYC_BIKE_API_LINK
 
-df["crash_date"] = pd.to_datetime(df["crash_date"])
+df["crash_date"] = pd.to_datetime(df["Date"])
 boroughs = ["MANHATTAN", "BROOKLYN", "QUEENS", "BRONX", "STATEN ISLAND"]
 color_sequence = px.colors.qualitative.Vivid
 
 
-borough_crashSums = (
-    df.groupby("borough")["number_of_cyclist_injured"].sum().reset_index()
-)
-borough_crash_dict = borough_crashSums.set_index("borough")[
-    "number_of_cyclist_injured"
+borough_crashSums = df.groupby("Borough")["Cyclists_Injured"].sum().reset_index()
+borough_crash_dict = borough_crashSums.set_index("Borough")[
+    "Cyclists_Injured"
 ].to_dict()
 
 
 def create_map_fig(df, days):
+    df["crash_date_str"] = df["Date"].dt.strftime("%m/%d/%Y")
     map_fig = px.scatter_map(
         df,
-        lat="latitude",
-        lon="longitude",
-        color="borough",
+        lat="Latitude",
+        lon="Longitude",
+        color="Borough",
         hover_data={
-            "number_of_cyclist_injured",
-            "crash_date",
-            "vehicle_type_code1",
-            "vehicle_type_code2",
-            "contributing_factor_vehicle_1",
+            "crash_date_str": True,
+            "Latitude": False,
+            "Longitude": False,
+            "Cyclists_Injured": True,
+            "Vehicle_1": True,
+            "Vehicle_2": True,
+            "Contributing_Factor": True,
         },
-        labels={"number_of_cyclist_injured": "Cyclists Injured"},
+        labels={
+            "crash_date_str": "Date",
+            "borough": "Borough",
+            "Cyclists_Injured": "Cyclists Injured",
+            "Vehicle_1": "Vehicle 1",
+            "Vehicle_2": "Vehicle 2",
+            "Contributing_Factor": "Contributing Factor",
+        },
         center=dict(lat=40.7128, lon=-73.9560),
         zoom=10,
         map_style="dark",
@@ -58,21 +64,23 @@ def create_map_fig(df, days):
     return map_fig
 
 
+    return map_fig
+
 def create_histogram_fig(df, days):
     histogram_fig = px.histogram(
         df,
-        x="crash_date",
-        y="number_of_cyclist_injured",
-        color="borough",
-        title=f"Cyclist Injuries By Borough (Last {days} Days)",
-        labels={"crash_date": "Date", "number_of_cyclist_injured": "Cyclist Injuries"},
+        x="Date",
+        y="Cyclists_Injured",
+        color="Borough",
+        title="Recent Cyclist Injuries By Borough",
+        labels={"Date": "Week", "Cyclists_Injured": f"Cyclist Injuries"},
     )
+    histogram_fig.update_layout(bargap=0.1)
     return histogram_fig
 
 
-map_fig = create_map_fig(df, initial_days)
-histogram_fig = create_histogram_fig(df, initial_days)
-
+map_fig = create_map_fig(df, days)
+histogram_fig = create_histogram_fig(df, days)
 
 app.layout = html.Div(
     [
@@ -83,41 +91,7 @@ app.layout = html.Div(
                     className="text-center my-4",
                 ),
                 html.P(
-                    "This map shows geospatial data of traffic collisions in NYC in which at least one cyclist was injured. Use the dropdown to select a time range from today's date. The thermal map shows densities, to suggest areas that are comparatively more dangerous for cyclists. Vehicle data and a primary contributing factor are provided where available."
-                ),
-                dbc.Row(
-                    [
-                        dbc.Col(
-                            [
-                                html.Label(
-                                    "Select Timeframe", className="fw-bold me-2"
-                                ),
-                                dcc.Dropdown(
-                                    id="timeframe-dropdown",
-                                    options=[
-                                        {"label": "Previous 7 Days", "value": 7},
-                                        {"label": "Previous 2 Weeks", "value": 14},
-                                        {"label": "Previous 30 Days", "value": 30},
-                                        {"label": "Previous 6 Months", "value": 180},
-                                        {"label": "Previous Year", "value": 365},
-                                    ],
-                                    value=7,
-                                    clearable=False,
-                                    style={
-                                        "backgroundColor": "#fcfcfc",
-                                        "color": "black",
-                                    },
-                                ),
-                            ],
-                            xs=12,
-                            sm=12,
-                            md=6,
-                            lg=4,
-                            xl=3,
-                            className="mb-4",
-                        )
-                    ],
-                    justify="left",
+                    "This map shows geospatial data of traffic crash events in NYC in which at least one cyclist was injured. Crash events inolving cyclist deaths are also marked with an 'X' icon. Vehicle data and a primary contributing factor are provided where available."
                 ),
                 dbc.Row(
                     [
@@ -130,9 +104,10 @@ app.layout = html.Div(
                                     style={"height": "65vh"},
                                 )
                             ],
+                            width=12,
                             className="mb-4",
                         )
-                    ]
+                    ],
                 ),
                 dbc.Row(
                     [
@@ -142,31 +117,18 @@ app.layout = html.Div(
                                     id="histogram",
                                     figure=histogram_fig,
                                     responsive=True,
-                                    style={"height": "50vh"},
+                                    style={"height": "65vh"},
                                 )
                             ],
                             width=12,
                             className="mb-4",
-                        ),
-                    ]
+                        )
+                    ],
                 ),
             ]
-        ),
+        )
     ]
 )
-
-
-@app.callback(Output("map", "figure"), Input("timeframe-dropdown", "value"))
-def update_map_time(number_of_days):
-    updated_map_chart = create_map_fig(df=df, days=number_of_days)
-    return updated_map_chart
-
-
-@app.callback(Output("histogram", "figure"), Input("timeframe-dropdown", "value"))
-def update_hisogram_time(number_of_days):
-    updated_histogram = create_histogram_fig(df=df, days=number_of_days)
-    return updated_histogram
-
 
 if __name__ == "__main__":
     app.run(debug=True)
