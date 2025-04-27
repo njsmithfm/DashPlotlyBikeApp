@@ -7,13 +7,8 @@ import dash_bootstrap_components as dbc
 import plotly.io as pio
 from datetime import datetime, timedelta
 import constants
-<<<<<<< Updated upstream
-=======
-from constants import (
-    NYC_BIKE_API_LINK,
-    days
-)
->>>>>>> Stashed changes
+
+from constants import NYC_BIKE_API_LINK, days
 
 pio.templates.default = "plotly_dark"
 app = Dash(
@@ -69,8 +64,8 @@ def create_map_fig(df, days):
     )
     return map_fig
 
-
     return map_fig
+
 
 def create_histogram_fig(df, days):
     histogram_fig = px.histogram(
@@ -92,44 +87,50 @@ app.layout = html.Div(
     [
         dbc.Container(
             [
-                html.H1(
-                    "Where In NYC Are Cyclists Getting Injured?",
-                    className="text-center my-4",
-                ),
-                html.P(
-                    "This map shows geospatial data of traffic crash events in NYC in which at least one cyclist was injured. Crash events inolving cyclist deaths are also marked with an 'X' icon. Vehicle data and a primary contributing factor are provided where available."
-                ),
                 dbc.Row(
                     [
                         dbc.Col(
                             [
-                                dcc.Graph(
-                                    id="map",
-                                    figure=map_fig,
-                                    responsive=True,
-                                    style={"height": "65vh"},
-                                )
+                                html.H1(
+                                    "Where In NYC Are Cyclists Getting Injured?",
+                                    className="text-center my-4",
+                                ),
+                                html.P(
+                                    "This map shows geospatial data of traffic crash events in NYC in which at least one cyclist was injured. Crash events inolving cyclist deaths are also marked with an 'X' icon. Vehicle data and a primary contributing factor are provided where available."
+                                ),
                             ],
-                            width=12,
-                            className="mb-4",
-                        )
-                    ],
-                ),
-                dbc.Row(
-                    [
-                        dbc.Col(
-                            [
-                                dcc.Graph(
-                                    id="histogram",
-                                    figure=histogram_fig,
-                                    responsive=True,
-                                    style={"height": "65vh"},
-                                )
-                            ],
-                            width=12,
-                            className="mb-4",
-                        )
-                    ],
+                            width=2,
+                            align="start",
+                        ),
+                    dbc.Col(
+                        [
+                            dbc.Row(
+                                [
+                                    dcc.Graph(
+                                        id="map",
+                                        figure=map_fig,
+                                        responsive=True,
+                                        style={"height": "65vh"},
+                                    )
+                                ],
+                                className="mb-4",
+                            ),
+                            dbc.Row(
+                                [
+                                    dcc.Graph(
+                                        id="histogram",
+                                        figure=histogram_fig,
+                                        responsive=True,
+                                        style={"height": "65vh"},
+                                    )
+                                ],
+                                className="mb-4",
+                            ),
+                        ],
+                        width=9,
+                        align="end",
+                    ),
+                   ]
                 ),
             ]
         )
