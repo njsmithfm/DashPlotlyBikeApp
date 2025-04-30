@@ -7,8 +7,10 @@ import dash_bootstrap_components as dbc
 import plotly.io as pio
 from datetime import datetime, timedelta
 import constants
+import api
+from api import NYC_BIKE_API_LINK
+from constants import NYC_BIKE_API_LINK,days
 
-from constants import NYC_BIKE_API_LINK, days
 
 pio.templates.default = "plotly_dark"
 app = Dash(
@@ -77,11 +79,12 @@ def create_histogram_fig(df, days):
         y="Cyclists_Injured",
         color="Borough",
         title="Recent Cyclist Injuries By Borough",
-        labels={"Date": "Week", "Cyclists_Injured": f"Cyclist Injuries"},
+        labels={"Date": "Week", "Cyclists_Injured": "Cyclist Injuries"},
+        height=400
     )
 
     histogram_fig.update_layout(
-        margin=dict(l=20, r=20, t=30, b=20),
+        margin=dict(l=20, r=20, t=30, b=5),
         bargap=0.1)
 
     return histogram_fig
@@ -103,7 +106,7 @@ app.layout = html.Div(
                                     className="text-center my-4",
                                 ),
                                 html.P(
-                                    "This map shows geospatial data of traffic crash events in NYC in which at least one cyclist was injured. Crash events inolving cyclist deaths are also marked with an 'X' icon. Vehicle data and a primary contributing factor are provided where available."
+                                    "This map shows geospatial data of traffic crash events in NYC in which at least one cyclist was injured. Vehicle data and a primary contributing factor are provided where available."
                                 ),
                             ],
                             width=3,
