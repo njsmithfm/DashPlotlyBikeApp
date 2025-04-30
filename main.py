@@ -64,7 +64,6 @@ def create_map_fig(df, days):
     )
     return map_fig
 
-    return map_fig
 
 
 def create_histogram_fig(df, days):
@@ -110,13 +109,14 @@ app.layout = html.Div(
                                             id="map",
                                             figure=map_fig,
                                             responsive=True,
-                                            style={"height": "65vh"},
+                                            style={'height': '50vh', 'margin': '4px'},
+                                            config={}
                                         ),
                                         dcc.Graph(
                                             id="histogram",
                                             figure=histogram_fig,
                                             responsive=True,
-                                            style={"height": "65vh"},
+                                            style={'height': '50vh', 'margin': '4px'},
                                         ),
                                     ],
                                 ),
