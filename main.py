@@ -62,6 +62,10 @@ def create_map_fig(df, days):
         map_style="dark",
         title=f"Cyclist Injury Locations (Last {days} Days)",
     )
+    map_fig.update_layout(
+        margin=dict(l=20, r=20, t=75, b=75,)
+    )
+
     return map_fig
 
 
@@ -75,7 +79,11 @@ def create_histogram_fig(df, days):
         title="Recent Cyclist Injuries By Borough",
         labels={"Date": "Week", "Cyclists_Injured": f"Cyclist Injuries"},
     )
-    histogram_fig.update_layout(bargap=0.1)
+
+    histogram_fig.update_layout(
+        margin=dict(l=20, r=20, t=30, b=20),
+        bargap=0.1)
+
     return histogram_fig
 
 
@@ -109,14 +117,13 @@ app.layout = html.Div(
                                             id="map",
                                             figure=map_fig,
                                             responsive=True,
-                                            style={'height': '50vh', 'margin': '4px'},
-                                            config={}
+                                            style={'height': '65vh'},
                                         ),
                                         dcc.Graph(
                                             id="histogram",
                                             figure=histogram_fig,
                                             responsive=True,
-                                            style={'height': '50vh', 'margin': '4px'},
+                                            style={'height': '35vh'},
                                         ),
                                     ],
                                 ),
