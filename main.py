@@ -63,11 +63,15 @@ def create_map_fig(df, days):
         title=f"Cyclist Injury Locations",
     )
     map_fig.update_layout(
-        margin=dict(l=20, r=20, t=75, b=75,)
+        margin=dict(
+            l=20,
+            r=20,
+            t=75,
+            b=75,
+        )
     )
 
     return map_fig
-
 
 
 def create_histogram_fig(df, days):
@@ -79,12 +83,10 @@ def create_histogram_fig(df, days):
         nbins=30,
         title="Recent Cyclist Injuries By Borough",
         labels={"Date": "Day", "Cyclists_Injured": "Cyclist Injuries"},
-        height=400
+        height=400,
     )
 
-    histogram_fig.update_layout(
-        margin=dict(l=20, r=20, t=30, b=5),
-        bargap=0.1)
+    histogram_fig.update_layout(margin=dict(l=20, r=20, t=30, b=5), bargap=0.1)
 
     return histogram_fig
 
@@ -108,7 +110,9 @@ app.layout = html.Div(
                                     "This map displays geospatial data of traffic crash events in NYC in which at least one cyclist was injured, within the past 30 days. Vehicle data and a primary contributing factor are provided where available."
                                 ),
                             ],
-                            xs=12, md=3, lg=3,
+                            xs=12,
+                            md=3,
+                            lg=3,
                             align="start",
                         ),
                         dbc.Col(
@@ -119,32 +123,33 @@ app.layout = html.Div(
                                             id="map",
                                             figure=map_fig,
                                             responsive=True,
-                                            style={'height': '65vh'},
+                                            style={"height": "65vh"},
                                         )
-                                        ]),
-                                dbc.Row([
+                                    ]
+                                ),
+                                dbc.Row(
+                                    [
                                         dcc.Graph(
                                             id="histogram",
                                             figure=histogram_fig,
                                             responsive=True,
-                                            style={'height': '35vh'},
+                                            style={"height": "35vh"},
                                         )
-                                        ]),
-                                    ],
-
-                            align="end",
-                            xs=12, md=9, lg=9
+                                    ]
                                 ),
                             ],
-                           
+                            align="end",
+                            xs=12,
+                            md=9,
+                            lg=9,
                         ),
                     ],
-                                fluid=True,
                 ),
             ],
-
-        )
-
+            fluid=True,
+        ),
+    ],
+)
 
 
 if __name__ == "__main__":
