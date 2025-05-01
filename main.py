@@ -7,8 +7,6 @@ import dash_bootstrap_components as dbc
 import plotly.io as pio
 from datetime import datetime, timedelta
 import constants
-import api
-# from api import NYC_BIKE_API_LINK
 from constants import NYC_BIKE_API_LINK,days
 
 
@@ -78,8 +76,9 @@ def create_histogram_fig(df, days):
         x="Date",
         y="Cyclists_Injured",
         color="Borough",
+        nbins=30,
         title="Recent Cyclist Injuries By Borough",
-        labels={"Date": "Week", "Cyclists_Injured": "Cyclist Injuries"},
+        labels={"Date": "Day", "Cyclists_Injured": "Cyclist Injuries"},
         height=400
     )
 
