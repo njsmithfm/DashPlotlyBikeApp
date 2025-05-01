@@ -1,17 +1,35 @@
 import pandas as pd
 import api
-from api import NYC_BIKE_API_LINK
+# from api import NYC_BIKE_API_LINK
 
+from datetime import datetime, timedelta
+import requests
 
+# Calculate the date 30 days ago from today
+today = datetime.now()
+thirty_days_ago = today - timedelta(days=30)
+thirty_days_ago_str = thirty_days_ago.strftime('%Y-%m-%d')
 
+# Use the Socrata Query Language (SoQL) with proper URL structure
+base_url = "https://data.cityofnewyork.us/resource/h9gi-nx95.json"
 
-# NYC_BIKE_API_LINK = pd.read_json(
-#     "https://data.cityofnewyork.us/resource/h9gi-nx95.json?$query=SELECT%0A%20%20%60crash_date%60%2C%0A%20%20%60crash_time%60%2C%0A%20%20%60borough%60%2C%0A%20%20%60zip_code%60%2C%0A%20%20%60latitude%60%2C%0A%20%20%60longitude%60%2C%0A%20%20%60location%60%2C%0A%20%20%60on_street_name%60%2C%0A%20%20%60off_street_name%60%2C%0A%20%20%60cross_street_name%60%2C%0A%20%20%60number_of_persons_injured%60%2C%0A%20%20%60number_of_persons_killed%60%2C%0A%20%20%60number_of_pedestrians_injured%60%2C%0A%20%20%60number_of_pedestrians_killed%60%2C%0A%20%20%60number_of_cyclist_injured%60%2C%0A%20%20%60number_of_cyclist_killed%60%2C%0A%20%20%60number_of_motorist_injured%60%2C%0A%20%20%60number_of_motorist_killed%60%2C%0A%20%20%60contributing_factor_vehicle_1%60%2C%0A%20%20%60contributing_factor_vehicle_2%60%2C%0A%20%20%60contributing_factor_vehicle_3%60%2C%0A%20%20%60contributing_factor_vehicle_4%60%2C%0A%20%20%60contributing_factor_vehicle_5%60%2C%0A%20%20%60collision_id%60%2C%0A%20%20%60vehicle_type_code1%60%2C%0A%20%20%60vehicle_type_code2%60%2C%0A%20%20%60vehicle_type_code_3%60%2C%0A%20%20%60vehicle_type_code_4%60%2C%0A%20%20%60vehicle_type_code_5%60%0AWHERE%20%60number_of_cyclist_injured%60%20%3E%200%0AORDER%20BY%20%60crash_date%60%20DESC%20NULL%20LAST"
-# )
+# Build parameters dict - this handles proper URL encoding
+params = {
+    "$select": "crash_date, borough, latitude, longitude, number_of_cyclist_injured, number_of_cyclist_killed, contributing_factor_vehicle_1, vehicle_type_code1, vehicle_type_code2",
+    "$where": f"number_of_cyclist_injured > 0 AND crash_date >= '{thirty_days_ago_str}'",
+    "$order": "crash_date DESC"
+}
 
+# Make the request
+response = requests.get(base_url, params=params)
+
+# Convert to DataFrame
+NYC_BIKE_API_LINK = pd.DataFrame(response.json())
+
+# Convert crash_date to datetime
 NYC_BIKE_API_LINK["crash_date"] = pd.to_datetime(NYC_BIKE_API_LINK["crash_date"])
 
-
+# Rename columns
 NYC_BIKE_API_LINK = NYC_BIKE_API_LINK.rename(
     columns={
         "crash_date": "Date",
@@ -25,20 +43,6 @@ NYC_BIKE_API_LINK = NYC_BIKE_API_LINK.rename(
         "contributing_factor_vehicle_1": "Contributing_Factor",
     }
 )
-NYC_BIKE_API_LINK = NYC_BIKE_API_LINK[
-    [
-        "Date",
-        "Borough",
-        "Latitude",
-        "Longitude",
-        "Cyclists_Injured",
-        "Cyclists_Killed",
-        "Contributing_Factor",
-        "Vehicle_1",
-        "Vehicle_2",
-    ]
-]
-
 
 days = 30
 
