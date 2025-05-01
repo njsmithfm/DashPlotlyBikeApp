@@ -7,7 +7,7 @@ import dash_bootstrap_components as dbc
 import plotly.io as pio
 from datetime import datetime, timedelta
 import constants
-from constants import NYC_BIKE_API_LINK,days
+from constants import NYC_BIKE_API_LINK_INJURED, NYC_BIKE_API_LINK_KILLED, days
 
 
 pio.templates.default = "plotly_dark"
@@ -20,7 +20,7 @@ app = Dash(
 )
 
 
-df = constants.NYC_BIKE_API_LINK
+df = constants.NYC_BIKE_API_LINK_INJURED
 
 df["crash_date"] = pd.to_datetime(df["Date"])
 boroughs = ["MANHATTAN", "BROOKLYN", "QUEENS", "BRONX", "STATEN ISLAND"]
@@ -60,7 +60,7 @@ def create_map_fig(df, days):
         center=dict(lat=40.7128, lon=-73.9560),
         zoom=10,
         map_style="dark",
-        title=f"Cyclist Injury Locations (Last {days} Days)",
+        title=f"Cyclist Injury Locations",
     )
     map_fig.update_layout(
         margin=dict(l=20, r=20, t=75, b=75,)
@@ -105,42 +105,46 @@ app.layout = html.Div(
                                     className="text-center my-4",
                                 ),
                                 html.P(
-                                    "This map shows geospatial data of traffic crash events in NYC in which at least one cyclist was injured. Vehicle data and a primary contributing factor are provided where available."
+                                    "This map displays geospatial data of traffic crash events in NYC in which at least one cyclist was injured, within the past 30 days. Vehicle data and a primary contributing factor are provided where available."
                                 ),
                             ],
-                            width=3,
+                            xs=12, md=3, lg=3,
                             align="start",
                         ),
                         dbc.Col(
                             [
-                                dbc.Stack(
+                                dbc.Row(
                                     [
                                         dcc.Graph(
                                             id="map",
                                             figure=map_fig,
                                             responsive=True,
                                             style={'height': '65vh'},
-                                        ),
+                                        )
+                                        ]),
+                                dbc.Row([
                                         dcc.Graph(
                                             id="histogram",
                                             figure=histogram_fig,
                                             responsive=True,
                                             style={'height': '35vh'},
-                                        ),
+                                        )
+                                        ]),
                                     ],
+
+                            align="end",
+                            xs=12, md=9, lg=9
                                 ),
                             ],
-                            width=9,
-                            align="end",
+                           
                         ),
-                    ]
-                )
+                    ],
+                                fluid=True,
+                ),
             ],
-            fluid=True,
-        )
-    ]
 
-)
+        )
+
 
 
 if __name__ == "__main__":
