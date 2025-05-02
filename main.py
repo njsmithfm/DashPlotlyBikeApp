@@ -64,7 +64,7 @@ def create_map_fig(df, days):
     )
     map_fig.update_layout(
         margin=dict(
-            l=20,
+            l=30,
             r=20,
             t=75,
             b=75,
@@ -86,7 +86,7 @@ def create_histogram_fig(df, days):
         height=400,
     )
 
-    histogram_fig.update_layout(margin=dict(l=20, r=20, t=30, b=5), bargap=0.1)
+    histogram_fig.update_layout(margin=dict(l=40, r=20, t=30, b=5), bargap=0.1)
 
     return histogram_fig
 
@@ -111,9 +111,10 @@ app.layout = html.Div(
                                 ),
                             ],
                             xs=12,
-                            md=3,
-                            lg=3,
-                            align="start",
+                            md=2,
+                            lg=2,
+                            align="start"
+
                         ),
                         dbc.Col(
                             [
@@ -124,6 +125,7 @@ app.layout = html.Div(
                                             figure=map_fig,
                                             responsive=True,
                                             style={"height": "65vh"},
+                                            className="bg-dark"
                                         )
                                     ]
                                 ),
@@ -134,21 +136,25 @@ app.layout = html.Div(
                                             figure=histogram_fig,
                                             responsive=True,
                                             style={"height": "35vh"},
+                                            className="bg-dark"
                                         )
                                     ]
                                 ),
                             ],
                             align="end",
                             xs=12,
-                            md=9,
-                            lg=9,
+                            md=10,
+                            lg=10,
+                            className="bg-dark"
                         ),
                     ],
                 ),
             ],
             fluid=True,
+            className="bg-dark"
         ),
     ],
+    className="app-header--title"
 )
 
 
