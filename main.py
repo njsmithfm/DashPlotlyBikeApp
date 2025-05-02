@@ -102,9 +102,9 @@ app.layout = html.Div(
                     [
                         dbc.Col(
                             [
-                                html.H1(
+                                html.H3(
                                     "Where In NYC Are Cyclists Getting Injured?",
-                                    className="text-center my-4",
+                                    className="text-center my-4"
                                 ),
                                 html.P(
                                     "This map displays geospatial data of traffic crash events in NYC in which at least one cyclist was injured, within the past 30 days. Vehicle data and a primary contributing factor are provided where available."

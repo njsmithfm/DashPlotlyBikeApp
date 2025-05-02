@@ -1,1 +1,1 @@
-alert('Warning! Give me your soul')
+// alert('Warning! Give me your soul')
