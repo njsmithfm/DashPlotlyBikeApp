@@ -68,7 +68,9 @@ def create_map_fig(df, days):
             r=20,
             t=75,
             b=75,
-        )
+        ),
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)", 
     )
 
     return map_fig
@@ -84,9 +86,16 @@ def create_histogram_fig(df, days):
         title="Recent Cyclist Injuries By Borough",
         labels={"Date": "Day", "Cyclists_Injured": "Cyclist Injuries"},
         height=400,
+
+
     )
 
-    histogram_fig.update_layout(margin=dict(l=40, r=20, t=30, b=5), bargap=0.1)
+    histogram_fig.update_layout(
+        margin=dict(l=40, r=20, t=30, b=5),
+        bargap=0.1,
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)", 
+        )
 
     return histogram_fig
 
@@ -104,7 +113,7 @@ app.layout = html.Div(
                             [
                                 html.H3(
                                     "Where In NYC Are Cyclists Getting Injured?",
-                                    className="app-header--title",
+                                    className="app-header--title my-10"
                                 ),
                                 html.P(
                                     "This map displays geospatial data of traffic crash events in NYC in which at least one cyclist was injured, within the past 30 days. Vehicle data and a primary contributing factor are provided where available."
@@ -128,7 +137,7 @@ app.layout = html.Div(
                                             },
                                         )
                                     ],
-                                    className="bg-light",
+                                    className="bg-black",
                                 ),
                                 dbc.Row(
                                     [
@@ -137,7 +146,7 @@ app.layout = html.Div(
                                             figure=histogram_fig,
                                             responsive=True,
                                             style={"height": "35vh"},
-                                            className="bg-dark",
+                                            className="bg-black",
                                         )
                                     ]
                                 ),
@@ -146,13 +155,13 @@ app.layout = html.Div(
                             xs=12,
                             md=10,
                             lg=10,
-                            className="bg-dark",
+                            className="bg-black",
                         ),
                     ],
                 ),
             ],
             fluid=True,
-            className="bg-dark",
+            className="bg-black",
         ),
     ],
     className="app-header--title",
