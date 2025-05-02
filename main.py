@@ -104,7 +104,7 @@ app.layout = html.Div(
                             [
                                 html.H3(
                                     "Where In NYC Are Cyclists Getting Injured?",
-                                    className="text-center my-4"
+                                    className="app-header--title",
                                 ),
                                 html.P(
                                     "This map displays geospatial data of traffic crash events in NYC in which at least one cyclist was injured, within the past 30 days. Vehicle data and a primary contributing factor are provided where available."
@@ -113,8 +113,7 @@ app.layout = html.Div(
                             xs=12,
                             md=2,
                             lg=2,
-                            align="start"
-
+                            align="start",
                         ),
                         dbc.Col(
                             [
@@ -124,10 +123,12 @@ app.layout = html.Div(
                                             id="map",
                                             figure=map_fig,
                                             responsive=True,
-                                            style={"height": "65vh"},
-                                            className="bg-dark"
+                                            style={
+                                                "height": "65vh",
+                                            },
                                         )
-                                    ]
+                                    ],
+                                    className="bg-light",
                                 ),
                                 dbc.Row(
                                     [
@@ -136,7 +137,7 @@ app.layout = html.Div(
                                             figure=histogram_fig,
                                             responsive=True,
                                             style={"height": "35vh"},
-                                            className="bg-dark"
+                                            className="bg-dark",
                                         )
                                     ]
                                 ),
@@ -145,16 +146,16 @@ app.layout = html.Div(
                             xs=12,
                             md=10,
                             lg=10,
-                            className="bg-dark"
+                            className="bg-dark",
                         ),
                     ],
                 ),
             ],
             fluid=True,
-            className="bg-dark"
+            className="bg-dark",
         ),
     ],
-    className="app-header--title"
+    className="app-header--title",
 )
 
 
