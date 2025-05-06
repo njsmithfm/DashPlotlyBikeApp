@@ -7,8 +7,7 @@ import dash_bootstrap_components as dbc
 import plotly.io as pio
 from datetime import datetime, timedelta
 import constants
-from constants import NYC_BIKE_API_LINK_INJURED, NYC_BIKE_API_LINK_KILLED, days
-
+from constants import DAYS, NYC_BIKE_API_LINK_INJURED, NYC_BIKE_API_LINK_KILLED, days
 
 pio.templates.default = "plotly_dark"
 app = Dash(
@@ -19,13 +18,8 @@ app = Dash(
     ],
 )
 
-
 df = constants.NYC_BIKE_API_LINK_INJURED
-
 df["crash_date"] = pd.to_datetime(df["Date"])
-boroughs = ["MANHATTAN", "BROOKLYN", "QUEENS", "BRONX", "STATEN ISLAND"]
-color_sequence = px.colors.qualitative.Vivid
-
 
 borough_crashSums = df.groupby("Borough")["Cyclists_Injured"].sum().reset_index()
 borough_crash_dict = borough_crashSums.set_index("Borough")[
@@ -33,7 +27,7 @@ borough_crash_dict = borough_crashSums.set_index("Borough")[
 ].to_dict()
 
 
-def create_map_fig(df, days):
+def create_map_fig(df, DAYS):
     df["crash_date_str"] = df["Date"].dt.strftime("%m/%d/%Y")
     map_fig = px.scatter_map(
         df,
@@ -70,13 +64,12 @@ def create_map_fig(df, days):
             b=75,
         ),
         paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(0,0,0,0)", 
+        plot_bgcolor="rgba(0,0,0,0)",
     )
-
     return map_fig
 
 
-def create_histogram_fig(df, days):
+def create_histogram_fig(df, DAYS):
     histogram_fig = px.histogram(
         df,
         x="Date",
@@ -86,22 +79,18 @@ def create_histogram_fig(df, days):
         title="Recent Cyclist Injuries By Borough",
         labels={"Date": "Day", "Cyclists_Injured": "Cyclist Injuries"},
         height=400,
-
-
     )
-
     histogram_fig.update_layout(
         margin=dict(l=40, r=20, t=30, b=5),
         bargap=0.1,
         paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(0,0,0,0)", 
-        )
-
+        plot_bgcolor="rgba(0,0,0,0)",
+    )
     return histogram_fig
 
 
-map_fig = create_map_fig(df, days)
-histogram_fig = create_histogram_fig(df, days)
+map_fig = create_map_fig(df, DAYS)
+histogram_fig = create_histogram_fig(df, DAYS)
 
 app.layout = html.Div(
     [
@@ -113,7 +102,7 @@ app.layout = html.Div(
                             [
                                 html.H3(
                                     "Where In NYC Are Cyclists Getting Injured?",
-                                    className="app-header--title my-10"
+                                    className="app-header--title my-10",
                                 ),
                                 html.P(
                                     "This map displays geospatial data of traffic crash events in NYC in which at least one cyclist was injured, within the past 30 days. Vehicle data and a primary contributing factor are provided where available."
@@ -166,7 +155,6 @@ app.layout = html.Div(
     ],
     className="app-header--title",
 )
-
 
 if __name__ == "__main__":
     app.run(debug=True)
