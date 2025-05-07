@@ -21,11 +21,6 @@ app = Dash(
 df = constants.NYC_BIKE_API_LINK_INJURED
 df["crash_date"] = pd.to_datetime(df["Date"])
 
-borough_crashSums = df.groupby("Borough")["Cyclists_Injured"].sum().reset_index()
-borough_crash_dict = borough_crashSums.set_index("Borough")[
-    "Cyclists_Injured"
-].to_dict()
-
 
 def create_map_fig(df, DAYS):
     df["crash_date_str"] = df["Date"].dt.strftime("%m/%d/%Y")
