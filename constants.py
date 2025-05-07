@@ -2,8 +2,16 @@ import pandas as pd
 from datetime import datetime, timedelta
 import requests
 
-DAYS = 30,
-COLOR_SEQUENCE = ['#FF3D7F','#00E5FF','#7CFF4A','#FF9E00','#E066FF']
+DAYS = (30,)
+boroughs = ["MANHATTAN", "BROOKLYN", "QUEENS", "BRONX", "STATEN ISLAND"]
+
+borough_colors = {
+   'MANHATTAN': '#d01c8b', 
+    'BROOKLYN': '#b8e186',  
+    'QUEENS': '#0571b0', 
+    'BRONX': '#4dac26',     
+    'STATEN ISLAND': '#5e3c99'  
+}
 
 today = datetime.now()
 thirty_days_ago = today - timedelta(days=30)

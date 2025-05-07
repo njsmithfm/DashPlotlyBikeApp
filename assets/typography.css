@@ -6,4 +6,12 @@ h1, h2, h3, h4, h5, h6 {
     color: powderblue;
     font-weight: bolder;
     font-variant: small-caps;
+    margin-left: 30px; 
+    margin-top: 20px;
+
+}
+p {
+    font-family: Helvetica, Arial, serif;
+    margin-left: 30px; 
+
 }

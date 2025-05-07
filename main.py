@@ -7,7 +7,7 @@ import dash_bootstrap_components as dbc
 import plotly.io as pio
 from datetime import datetime, timedelta
 import constants
-from constants import DAYS, NYC_BIKE_API_LINK_INJURED, NYC_BIKE_API_LINK_KILLED
+from constants import DAYS, NYC_BIKE_API_LINK_INJURED, NYC_BIKE_API_LINK_KILLED,borough_colors
 
 pio.templates.default = "plotly_dark"
 app = Dash(
@@ -28,6 +28,7 @@ def create_map_fig(df, DAYS):
         df,
         lat="Latitude",
         lon="Longitude",
+        color_discrete_map=borough_colors,
         color="Borough",
         hover_data={
             "crash_date_str": True,
@@ -69,6 +70,7 @@ def create_histogram_fig(df, DAYS):
         df,
         x="Date",
         y="Cyclists_Injured",
+        color_discrete_map=borough_colors,
         color="Borough",
         nbins=30,
         title="Recent Cyclist Injuries By Borough",
@@ -97,7 +99,6 @@ app.layout = html.Div(
                             [
                                 html.H1(
                                     "Where In NYC Are Cyclists Getting Injured?",
-                                    className="app-header--title my-10",
                                 ),
                                 html.P(
                                     "This map displays geospatial data of traffic crash events in NYC in which at least one cyclist was injured, within the past 30 days. Vehicle data and a primary contributing factor are provided where available."
@@ -116,9 +117,7 @@ app.layout = html.Div(
                                             id="map",
                                             figure=map_fig,
                                             responsive=True,
-                                            style={
-                                                "height": "65vh",
-                                            },
+                                            style={"height": "65vh"},
                                         )
                                     ],
                                     className="bg-black",
@@ -129,7 +128,10 @@ app.layout = html.Div(
                                             id="histogram",
                                             figure=histogram_fig,
                                             responsive=True,
-                                            style={"height": "35vh"},
+                                            style={
+                                                "height": "35vh",
+                                                "margin-bottom": "10px",
+                                            },
                                             className="bg-black",
                                         )
                                     ]
