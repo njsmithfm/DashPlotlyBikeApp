@@ -6,11 +6,11 @@ DAYS = (30,)
 boroughs = ["MANHATTAN", "BROOKLYN", "QUEENS", "BRONX", "STATEN ISLAND"]
 
 borough_colors = {
-   'MANHATTAN': '#d01c8b', 
-    'BROOKLYN': '#b8e186',  
-    'QUEENS': '#0571b0', 
-    'BRONX': '#4dac26',     
-    'STATEN ISLAND': '#5e3c99'  
+    "MANHATTAN": "#d01c8b",
+    "BROOKLYN": "#b8e186",
+    "QUEENS": "#0571b0",
+    "BRONX": "#4dac26",
+    "STATEN ISLAND": "#5e3c99",
 }
 
 today = datetime.now()
