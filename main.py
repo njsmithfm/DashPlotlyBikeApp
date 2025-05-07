@@ -7,7 +7,7 @@ import dash_bootstrap_components as dbc
 import plotly.io as pio
 from datetime import datetime, timedelta
 import constants
-from constants import DAYS, NYC_BIKE_API_LINK_INJURED, NYC_BIKE_API_LINK_KILLED, days
+from constants import DAYS, NYC_BIKE_API_LINK_INJURED, NYC_BIKE_API_LINK_KILLED
 
 pio.templates.default = "plotly_dark"
 app = Dash(
