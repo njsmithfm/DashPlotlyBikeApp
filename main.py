@@ -100,7 +100,7 @@ app.layout = html.Div(
                     [
                         dbc.Col(
                             [
-                                html.H3(
+                                html.H1(
                                     "Where In NYC Are Cyclists Getting Injured?",
                                     className="app-header--title my-10",
                                 ),

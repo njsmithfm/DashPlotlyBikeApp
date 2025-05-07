@@ -2,7 +2,8 @@ import pandas as pd
 from datetime import datetime, timedelta
 import requests
 
-DAYS = 30
+DAYS = 30,
+COLOR_SEQUENCE = ['#FF3D7F','#00E5FF','#7CFF4A','#FF9E00','#E066FF']
 
 today = datetime.now()
 thirty_days_ago = today - timedelta(days=30)
