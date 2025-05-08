@@ -67,6 +67,19 @@ def create_map_fig(df, DAYS):
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
     )
+    # map_fig.add_annotation(
+    #     text='<a href="https://carto.com/attributions">CARTO</a> and' '<a href="https://openstreetmap.org/copyright">OpenStreetMap</a>',
+    #     xref="paper", yref="paper",
+    #     x=0.01, y=0.01, 
+    #     showarrow=False,
+    #     font=dict(size=10, color="black"),
+    #     bgcolor="rgba(255, 255, 255, 0.7)",
+    #     bordercolor="rgba(0, 0, 0, 0)",
+    #     borderwidth=0,
+    #     borderpad=4,
+    #     align="left",
+    #     )
+
     return map_fig
 
 
@@ -126,9 +139,11 @@ app.layout = html.Div(
                                 ),
                             ],
                             xs=12,
+                            sm=12,
                             md=2,
                             lg=2,
                             align="start",
+                            className="bg-black-80"
                         ),
                         dbc.Col(
                             [
@@ -160,6 +175,7 @@ app.layout = html.Div(
                             ],
                             align="end",
                             xs=12,
+                            sm=12,
                             md=10,
                             lg=10,
                             className="bg-black",
@@ -168,7 +184,7 @@ app.layout = html.Div(
                 ),
             ],
             fluid=True,
-            className="bg-black",
+            className="bg-black-80",
         ),
     ],
     className="app-header--title",
