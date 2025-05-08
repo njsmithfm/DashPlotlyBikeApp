@@ -11,11 +11,11 @@ thirty_days_ago_str = thirty_days_ago.strftime("%Y-%m-%d")
 # base API url
 base_url = "https://data.cityofnewyork.us/resource/h9gi-nx95.json"
 
-borough_colors = {
+BOROUGH_COLORS = {
     "Manhattan": "#d01c8b",
-    "Brooklyn": "#b8e186",
+    "Brooklyn": "#31a354",
     "Queens": "#0571b0",
-    "Bronx": "#4dac26",
+    "Bronx": "#b8e186",
     "Staten Island": "#5e3c99",
 }
 

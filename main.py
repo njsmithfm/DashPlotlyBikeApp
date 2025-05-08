@@ -11,7 +11,7 @@ from constants import (
     DAYS,
     NYC_BIKE_API_LINK_INJURED,
     NYC_BIKE_API_LINK_KILLED,
-    borough_colors,
+    BOROUGH_COLORS,
 )
 
 pio.templates.default = "plotly_dark"
@@ -33,7 +33,7 @@ def create_map_fig(df, DAYS):
         df,
         lat="Latitude",
         lon="Longitude",
-        color_discrete_map=borough_colors,
+        color_discrete_map=BOROUGH_COLORS,
         color="Borough",
         hover_data={
             "crash_date_str": True,
@@ -75,7 +75,7 @@ def create_histogram_fig(df, DAYS):
         df,
         x="Date",
         y="Cyclists_Injured",
-        color_discrete_map=borough_colors,
+        color_discrete_map=BOROUGH_COLORS,
         color="Borough",
         hover_data={
             "Borough": True,
@@ -85,7 +85,7 @@ def create_histogram_fig(df, DAYS):
             # "Total Daily Cyclists Injured: True,
         },
         labels={
-            "crash_date_str": "Date",
+            "crash_date_str": "",
             "borough": "Borough",
             "Cyclists_Injured": "Borough Cyclists Injured",
             # "f{Borough} Cyclists Injured": True,
@@ -102,6 +102,7 @@ def create_histogram_fig(df, DAYS):
         plot_bgcolor="rgba(0,0,0,0)",
     )
     histogram_fig.update_yaxes(title_text="Cyclist Injuries")
+    histogram_fig.update_xaxes(title_text="")
 
     return histogram_fig
 
