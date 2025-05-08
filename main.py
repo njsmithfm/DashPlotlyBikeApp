@@ -146,7 +146,7 @@ app.layout = html.Div(
                         dbc.Col(
                             [
                                 html.H2(
-                                    "Where In NYC Are Cyclists Getting Injured?",
+                                    "Where In NYC Are Cyclists Getting Hurt?",
                                 ),
                                 html.P(
                                     "This map displays geospatial data of traffic crash events in NYC in which at least one cyclist was injured, within the past 30 days. Vehicle data and a primary contributing factor are provided where available."
@@ -168,7 +168,6 @@ app.layout = html.Div(
                             md=12,
                             lg=3,
                             align="start",
-                            className="bg-black-80",
                         ),
                         dbc.Col(
                             [
@@ -181,7 +180,6 @@ app.layout = html.Div(
                                             style={"height": "65vh"},
                                         )
                                     ],
-                                    className="bg-black",
                                 ),
                                 dbc.Row(
                                     [
@@ -193,7 +191,6 @@ app.layout = html.Div(
                                                 "height": "35vh",
                                                 "margin-bottom": "10px",
                                             },
-                                            className="bg-black",
                                         )
                                     ]
                                 ),
@@ -209,7 +206,7 @@ app.layout = html.Div(
                 ),
             ],
             fluid=True,
-            className="bg-black-80",
+            className="bg-black bg-opacity-50",
         ),
     ],
     className="app-header--title",

@@ -5,9 +5,9 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: bolder;
     font-variant: small-caps;
     text-shadow: 2px 2px 4px #000000;
-    margin-left: 30px; 
+    margin-left: 25px; 
     margin-top: 50px;
-    margin-right: 10px;
+    margin-right: 25px;
 
 }
 p {
@@ -16,18 +16,16 @@ p {
     margin-left: 30px; 
     margin-top: 30px;
     text-align: left;
-    margin-right: 10px;
-    padding-right: 2px;
+    margin-right: 30px;
 }
 
 footer {
     font-family: Verdana, Arial, serif;
     font-size: 10px;
     margin-left: 30px; 
-    margin-top: 10px;
+    margin-top: 30px;
     margin-bottom: 5px;
     text-align: left;
     font-style: italic;
-    margin-right: 10px;
-    padding-right: 2px;
+    margin-right: 30px;
 }
