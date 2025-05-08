@@ -67,26 +67,14 @@ def create_map_fig(df, DAYS):
         legend=dict(
             title_text="Legend: ",
             orientation="h",
-    yanchor="top",
-    xanchor="right",
-    y=1.15,
-    x=1
-),
+            yanchor="top",
+            xanchor="right",
+            y=1.15,
+            x=1,
+        ),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
     )
-    # map_fig.add_annotation(
-    #     text='<a href="https://carto.com/attributions">CARTO</a> and' '<a href="https://openstreetmap.org/copyright">OpenStreetMap</a>',
-    #     xref="paper", yref="paper",
-    #     x=0.01, y=0.01, 
-    #     showarrow=False,
-    #     font=dict(size=10, color="black"),
-    #     bgcolor="rgba(255, 255, 255, 0.7)",
-    #     bordercolor="rgba(0, 0, 0, 0)",
-    #     borderwidth=0,
-    #     borderpad=4,
-    #     align="left",
-    #     )
 
     return map_fig
 
@@ -98,7 +86,6 @@ def create_histogram_fig(df, DAYS):
         y="Cyclists_Injured",
         color_discrete_map=BOROUGH_COLORS,
         color="Borough",
-
         hover_data={
             "Borough": True,
             "crash_date_str": True,
@@ -125,11 +112,11 @@ def create_histogram_fig(df, DAYS):
         legend=dict(
             title_text="Legend: ",
             orientation="h",
-    yanchor="top",
-    xanchor="right",
-    y=1.3,
-    x=1
-)
+            yanchor="top",
+            xanchor="right",
+            y=1.3,
+            x=1,
+        ),
     )
     histogram_fig.update_yaxes(title_text="Cyclist Injuries")
     histogram_fig.update_xaxes(title_text="")
@@ -160,7 +147,7 @@ app.layout = html.Div(
                             md=2,
                             lg=2,
                             align="start",
-                            className="bg-black-80"
+                            className="bg-black-80",
                         ),
                         dbc.Col(
                             [
