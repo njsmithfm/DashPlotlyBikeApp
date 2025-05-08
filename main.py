@@ -92,11 +92,11 @@ def create_histogram_fig(df, DAYS):
             # "Total Daily Cyclists Injured: True,
         },
         nbins=30,
-        title="Recent Cyclist Injuries By Borough",
+        title="Cyclist Injuries By Day",
         height=400,
     )
     histogram_fig.update_layout(
-        margin=dict(l=40, r=20, t=30, b=5),
+        margin=dict(l=80, r=20, t=30, b=5),
         bargap=0.1,
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
