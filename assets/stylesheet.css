@@ -4,6 +4,7 @@ h1, h2, h3, h4, h5, h6 {
     color: powderblue;
     font-weight: bolder;
     font-variant: small-caps;
+    text-shadow: 2px 2px 4px #000000;
     margin-left: 30px; 
     margin-top: 70px;
     margin-right: 10px;

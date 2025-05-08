@@ -11,7 +11,7 @@ from constants import (
     DAYS,
     NYC_BIKE_API_LINK_INJURED,
     NYC_BIKE_API_LINK_KILLED,
-    BOROUGH_COLORS,
+    BOROUGH_COLORS
 )
 
 pio.templates.default = "plotly_dark"
@@ -55,7 +55,8 @@ def create_map_fig(df, DAYS):
         center=dict(lat=40.7128, lon=-73.9560),
         zoom=10,
         map_style="dark",
-        title=f"Cyclist Injury Locations",
+        title=f"Cyclist Injuries By Location",
+        
     )
     map_fig.update_layout(
         margin=dict(
@@ -64,14 +65,7 @@ def create_map_fig(df, DAYS):
             t=75,
             b=75,
         ),
-        legend=dict(
-            title_text="Legend: ",
-            orientation="h",
-            yanchor="top",
-            xanchor="right",
-            y=1.15,
-            x=1,
-        ),
+        showlegend=False,
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
     )
@@ -109,15 +103,17 @@ def create_histogram_fig(df, DAYS):
         bargap=0.1,
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
-        legend=dict(
-            title_text="Legend: ",
-            orientation="h",
-            yanchor="top",
-            xanchor="right",
-            y=1.3,
-            x=1,
-        ),
+        # legend=dict(
+        #     title_text="Legend: ",
+        #     orientation="h",
+        #     yanchor="top",
+        #     xanchor="right",
+        #     y=1.45,
+        # #     x=1,
+        # ),
     )
+
+
     histogram_fig.update_yaxes(title_text="Cyclist Injuries")
     histogram_fig.update_xaxes(title_text="")
 
