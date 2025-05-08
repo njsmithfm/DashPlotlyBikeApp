@@ -11,7 +11,7 @@ from constants import (
     DAYS,
     NYC_BIKE_API_LINK_INJURED,
     NYC_BIKE_API_LINK_KILLED,
-    BOROUGH_COLORS
+    BOROUGH_COLORS,
 )
 
 pio.templates.default = "plotly_dark"
@@ -55,8 +55,6 @@ def create_map_fig(df, DAYS):
         center=dict(lat=40.7128, lon=-73.9560),
         zoom=10,
         map_style="dark",
-        title=f"Cyclist Injuries By Location",
-        
     )
     map_fig.update_layout(
         margin=dict(
@@ -65,6 +63,20 @@ def create_map_fig(df, DAYS):
             t=75,
             b=75,
         ),
+        title={
+            "text": "Cyclist Injuries By Location",
+            "font": {
+                "size": 24,
+                "color": "powderblue",
+                "family": "verdana",
+                "weight": "bold",
+                "variant": "small-caps",
+            },
+            "x": 0.5,
+            "y": 0.9,
+            "xanchor": "center",
+            "yanchor": "top",
+        },
         showlegend=False,
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
@@ -84,15 +96,11 @@ def create_histogram_fig(df, DAYS):
             "Borough": True,
             "crash_date_str": True,
             "Cyclists_Injured": True,
-            # "f{Borough} Cyclists Injured": True,
-            # "Total Daily Cyclists Injured: True,
         },
         labels={
             "crash_date_str": "",
             "borough": "Borough",
             "Cyclists_Injured": "Borough Cyclists Injured",
-            # "f{Borough} Cyclists Injured": True,
-            # "Total Daily Cyclists Injured: True,
         },
         nbins=30,
         title="Cyclist Injuries By Day",
@@ -103,16 +111,22 @@ def create_histogram_fig(df, DAYS):
         bargap=0.1,
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
-        # legend=dict(
-        #     title_text="Legend: ",
-        #     orientation="h",
-        #     yanchor="top",
-        #     xanchor="right",
-        #     y=1.45,
-        # #     x=1,
-        # ),
+        title={
+            "text": "Cyclist Injuries By Day",
+            "font": {
+                "size": 24,
+                "color": "powderblue",
+                "family": "verdana",
+                "weight": "bold",
+                "variant": "small-caps",
+            },
+            "x": 0.5,
+            "y": 1,
+            "xanchor": "center",
+            "yanchor": "top",
+        },
+        legend=dict(title_text=" "),
     )
-
 
     histogram_fig.update_yaxes(title_text="Cyclist Injuries")
     histogram_fig.update_xaxes(title_text="")
@@ -130,22 +144,24 @@ app.layout = html.Div(
                 dbc.Row(
                     [
                         dbc.Col(
-                            [ 
+                            [
                                 html.H2(
                                     "Where In NYC Are Cyclists Getting Injured?",
                                 ),
                                 html.P(
                                     "This map displays geospatial data of traffic crash events in NYC in which at least one cyclist was injured, within the past 30 days. Vehicle data and a primary contributing factor are provided where available."
                                 ),
-                                html.Footer([
-        "Data is sourced from the NYC Open Data ",
-        html.A(
-            "Motor Vehicle Collisions-Crashes",
-            href="https://data.cityofnewyork.us/Public-Safety/Motor-Vehicle-Collisions-Crashes/h9gi-nx95/about_data",
-            target="_blank" 
-        ),
-        " API, which is stated to receive daily updates (although it is usually not current up to the present day)."
-    ])
+                                html.Footer(
+                                    [
+                                        "Data is sourced from the NYC Open Data ",
+                                        html.A(
+                                            "Motor Vehicle Collisions-Crashes",
+                                            href="https://data.cityofnewyork.us/Public-Safety/Motor-Vehicle-Collisions-Crashes/h9gi-nx95/about_data",
+                                            target="_blank",
+                                        ),
+                                        " API, which is stated to receive daily updates (although it is usually not current up to the present day).",
+                                    ]
+                                ),
                             ],
                             xs=12,
                             sm=12,
