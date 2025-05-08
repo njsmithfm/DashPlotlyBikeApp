@@ -1,8 +1,6 @@
-body {
-    font-family: sans-serif;
-}
-h1, h2, h3, h4, h5, h6 {
-    font-family: Arial, Verdana, sans-serif;
+
+h2, h3, h4, h5, h6 {
+    font-family: Helvetica, Arial, sans-serif;
     color: powderblue;
     font-weight: bolder;
     font-variant: small-caps;

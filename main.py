@@ -79,12 +79,20 @@ def create_histogram_fig(df, DAYS):
         color="Borough",
         hover_data={
             "Borough": True,
-            "crash_date_str": "Day",
-            "Cyclists_Injured": False,
+            "crash_date_str": True,
+            "Cyclists_Injured": True,
+            # "f{Borough} Cyclists Injured": True,
+            # "Total Daily Cyclists Injured: True,
+        },
+        labels={
+            "crash_date_str": "Date",
+            "borough": "Borough",
+            "Cyclists_Injured": "Borough Cyclists Injured",
+            # "f{Borough} Cyclists Injured": True,
+            # "Total Daily Cyclists Injured: True,
         },
         nbins=30,
         title="Recent Cyclist Injuries By Borough",
-        labels={"Date": "", "Cyclists_Injured": "Cyclist Injuries"},
         height=400,
     )
     histogram_fig.update_layout(
@@ -109,7 +117,7 @@ app.layout = html.Div(
                     [
                         dbc.Col(
                             [
-                                html.H1(
+                                html.H2(
                                     "Where In NYC Are Cyclists Getting Injured?",
                                 ),
                                 html.P(

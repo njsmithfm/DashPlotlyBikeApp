@@ -3,15 +3,6 @@ from datetime import datetime, timedelta
 import requests
 
 DAYS = (30,)
-boroughs = ["MANHATTAN", "BROOKLYN", "QUEENS", "BRONX", "STATEN ISLAND"]
-
-borough_colors = {
-    "MANHATTAN": "#d01c8b",
-    "BROOKLYN": "#b8e186",
-    "QUEENS": "#0571b0",
-    "BRONX": "#4dac26",
-    "STATEN ISLAND": "#5e3c99",
-}
 
 today = datetime.now()
 thirty_days_ago = today - timedelta(days=30)
@@ -19,6 +10,15 @@ thirty_days_ago_str = thirty_days_ago.strftime("%Y-%m-%d")
 
 # base API url
 base_url = "https://data.cityofnewyork.us/resource/h9gi-nx95.json"
+
+borough_colors = {
+    "Manhattan": "#d01c8b",
+    "Brooklyn": "#b8e186",
+    "Queens": "#0571b0",
+    "Bronx": "#4dac26",
+    "Staten Island": "#5e3c99",
+}
+
 
 # Create Injuries variable
 params_injured = {
@@ -67,3 +67,6 @@ NYC_BIKE_API_LINK_KILLED = NYC_BIKE_API_LINK_KILLED.rename(
         "contributing_factor_vehicle_1": "Contributing_Factor",
     }
 )
+
+NYC_BIKE_API_LINK_INJURED["Borough"] = NYC_BIKE_API_LINK_INJURED["Borough"].str.title()
+NYC_BIKE_API_LINK_KILLED["Borough"] = NYC_BIKE_API_LINK_KILLED["Borough"].str.title()
