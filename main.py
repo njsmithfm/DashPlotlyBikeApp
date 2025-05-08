@@ -130,13 +130,22 @@ app.layout = html.Div(
                 dbc.Row(
                     [
                         dbc.Col(
-                            [
+                            [ 
                                 html.H2(
                                     "Where In NYC Are Cyclists Getting Injured?",
                                 ),
                                 html.P(
                                     "This map displays geospatial data of traffic crash events in NYC in which at least one cyclist was injured, within the past 30 days. Vehicle data and a primary contributing factor are provided where available."
                                 ),
+                                html.Footer([
+        "Data is sourced from the NYC Open Data ",
+        html.A(
+            "Motor Vehicle Collisions-Crashes",
+            href="https://data.cityofnewyork.us/Public-Safety/Motor-Vehicle-Collisions-Crashes/h9gi-nx95/about_data",
+            target="_blank" 
+        ),
+        " API, which is stated to receive daily updates (although it is usually not current up to the present day)."
+    ])
                             ],
                             xs=12,
                             sm=12,
