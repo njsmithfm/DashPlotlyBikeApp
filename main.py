@@ -121,7 +121,7 @@ def create_histogram_fig(df, DAYS):
                 "variant": "small-caps",
             },
             "x": 0.5,
-            "y": 1,
+            "y": 0.975,
             "xanchor": "center",
             "yanchor": "top",
         },
