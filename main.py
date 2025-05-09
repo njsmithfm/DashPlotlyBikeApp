@@ -153,7 +153,7 @@ app.layout = html.Div(
                                 ),
                                 html.Footer(
                                     [
-                                        "Data is sourced from the NYC Open Data ",
+                                        "Data courtesy of the NYC Open Data ",
                                         html.A(
                                             "Motor Vehicle Collisions-Crashes",
                                             href="https://data.cityofnewyork.us/Public-Safety/Motor-Vehicle-Collisions-Crashes/h9gi-nx95/about_data",
