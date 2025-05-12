@@ -149,7 +149,7 @@ app.layout = html.Div(
                                     "Where In NYC Are Cyclists Getting Hurt?",
                                 ),
                                 html.P(
-                                    "This map displays geospatial data of traffic crash events in NYC in which at least one cyclist was injured, within the past 30 days. Vehicle data and a primary contributing factor are provided where available."
+                                    "This map displays geospatial data of traffic crash events in NYC wherein at least one cyclist was injured, within the past 30 days. Vehicle data and a contributing factor are provided where available."
                                 ),
                                 html.Footer(
                                     [
