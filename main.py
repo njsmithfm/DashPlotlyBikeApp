@@ -159,8 +159,8 @@ app.layout = html.Div(
                                             href="https://data.cityofnewyork.us/Public-Safety/Motor-Vehicle-Collisions-Crashes/h9gi-nx95/about_data",
                                             target="_blank",
                                         ),
-                                        " API, which is stated to receive daily updates (although it is usually not current up to the present day).",
-                                    ]
+                                        " API, which is stated to receive daily updates. (although it is usually not current up to the present day)",
+                                    ],
                                 ),
                             ],
                             xs=12,
@@ -192,7 +192,7 @@ app.layout = html.Div(
                                                 "margin-bottom": "10px",
                                             },
                                         )
-                                    ]
+                                    ],
                                 ),
                             ],
                             align="end",
@@ -206,10 +206,10 @@ app.layout = html.Div(
                 ),
             ],
             fluid=True,
-            className="bg-black bg-opacity-50",
         ),
     ],
-    className="app-header--title",
+    style={"overflow": "hidden", "min-height": "100vh", "margin": "0", "padding": "0"},
+    className="bg-black bg-opacity-50",
 )
 
 if __name__ == "__main__":
