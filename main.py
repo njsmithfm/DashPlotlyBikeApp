@@ -189,7 +189,6 @@ app.layout = html.Div(
                                             responsive=True,
                                             style={
                                                 "height": "35vh",
-                                                "margin-bottom": "10px",
                                             },
                                         )
                                     ],
@@ -206,10 +205,9 @@ app.layout = html.Div(
                 ),
             ],
             fluid=True,
+            className="bg-black bg-opacity-75",
         ),
     ],
-    style={"overflow": "hidden", "min-height": "100vh", "margin": "0", "padding": "0"},
-    className="bg-black bg-opacity-50",
 )
 
 if __name__ == "__main__":

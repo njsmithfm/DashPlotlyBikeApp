@@ -4,7 +4,6 @@ h1, h2, h3, h4, h5, h6 {
     color: powderblue;
     font-weight: bolder;
     font-variant: small-caps;
-    text-shadow: 2px 2px 4px #000000;
     margin-left: 25px; 
     margin-top: 50px;
     margin-right: 25px;
@@ -28,5 +27,12 @@ footer {
     text-align: left;
     font-style: italic;
     margin-right: 30px;
-    float: bottom;
 }
+
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+
