@@ -2,7 +2,7 @@ import pandas as pd
 from datetime import datetime, timedelta
 import requests
 
-DAYS = (30,)
+DAYS = 30
 
 today = datetime.now()
 thirty_days_ago = today - timedelta(days=30)
