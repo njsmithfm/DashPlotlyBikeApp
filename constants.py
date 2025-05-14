@@ -2,7 +2,7 @@ import pandas as pd
 from datetime import datetime, timedelta
 import requests
 
-DAYS = 30
+DAYS = (30,)
 
 today = datetime.now()
 thirty_days_ago = today - timedelta(days=30)
@@ -10,6 +10,15 @@ thirty_days_ago_str = thirty_days_ago.strftime("%Y-%m-%d")
 
 # base API url
 base_url = "https://data.cityofnewyork.us/resource/h9gi-nx95.json"
+
+BOROUGH_COLORS = {
+    "Manhattan": "rgb(208, 28, 139)",
+    "Brooklyn": "rgb(49, 163, 84)",
+    "Queens": "rgb(5,113,176)",
+    "Bronx": "rgb(184,225,134)",
+    "Staten Island": "rgb(94,60,153)",
+}
+
 
 # Create Injuries variable
 params_injured = {
@@ -58,3 +67,6 @@ NYC_BIKE_API_LINK_KILLED = NYC_BIKE_API_LINK_KILLED.rename(
         "contributing_factor_vehicle_1": "Contributing_Factor",
     }
 )
+
+NYC_BIKE_API_LINK_INJURED["Borough"] = NYC_BIKE_API_LINK_INJURED["Borough"].str.title()
+NYC_BIKE_API_LINK_KILLED["Borough"] = NYC_BIKE_API_LINK_KILLED["Borough"].str.title()

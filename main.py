@@ -7,7 +7,12 @@ import dash_bootstrap_components as dbc
 import plotly.io as pio
 from datetime import datetime, timedelta
 import constants
-from constants import DAYS, NYC_BIKE_API_LINK_INJURED, NYC_BIKE_API_LINK_KILLED
+from constants import (
+    DAYS,
+    NYC_BIKE_API_LINK_INJURED,
+    NYC_BIKE_API_LINK_KILLED,
+    BOROUGH_COLORS,
+)
 
 pio.templates.default = "plotly_dark"
 app = Dash(
@@ -21,11 +26,6 @@ app = Dash(
 df = constants.NYC_BIKE_API_LINK_INJURED
 df["crash_date"] = pd.to_datetime(df["Date"])
 
-borough_crashSums = df.groupby("Borough")["Cyclists_Injured"].sum().reset_index()
-borough_crash_dict = borough_crashSums.set_index("Borough")[
-    "Cyclists_Injured"
-].to_dict()
-
 
 def create_map_fig(df, DAYS):
     df["crash_date_str"] = df["Date"].dt.strftime("%m/%d/%Y")
@@ -33,6 +33,7 @@ def create_map_fig(df, DAYS):
         df,
         lat="Latitude",
         lon="Longitude",
+        color_discrete_map=BOROUGH_COLORS,
         color="Borough",
         hover_data={
             "crash_date_str": True,
@@ -54,7 +55,6 @@ def create_map_fig(df, DAYS):
         center=dict(lat=40.7128, lon=-73.9560),
         zoom=10,
         map_style="dark",
-        title=f"Cyclist Injury Locations",
     )
     map_fig.update_layout(
         margin=dict(
@@ -63,9 +63,25 @@ def create_map_fig(df, DAYS):
             t=75,
             b=75,
         ),
+        title={
+            "text": "Cyclist Injuries By Location",
+            "font": {
+                "size": 24,
+                "color": "powderblue",
+                "family": "verdana",
+                "weight": "bold",
+                "variant": "small-caps",
+            },
+            "x": 0.5,
+            "y": 0.9,
+            "xanchor": "center",
+            "yanchor": "top",
+        },
+        showlegend=False,
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
     )
+
     return map_fig
 
 
@@ -74,18 +90,47 @@ def create_histogram_fig(df, DAYS):
         df,
         x="Date",
         y="Cyclists_Injured",
+        color_discrete_map=BOROUGH_COLORS,
         color="Borough",
+        hover_data={
+            "Borough": True,
+            "crash_date_str": True,
+            "Cyclists_Injured": True,
+        },
+        labels={
+            "crash_date_str": "",
+            "borough": "Borough",
+            "Cyclists_Injured": "Borough Cyclists Injured",
+        },
         nbins=30,
-        title="Recent Cyclist Injuries By Borough",
-        labels={"Date": "Day", "Cyclists_Injured": "Cyclist Injuries"},
+        title="Cyclist Injuries By Day",
         height=400,
     )
     histogram_fig.update_layout(
-        margin=dict(l=40, r=20, t=30, b=5),
+        margin=dict(l=80, r=20, t=30, b=5),
         bargap=0.1,
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
+        title={
+            "text": "Cyclist Injuries By Day",
+            "font": {
+                "size": 24,
+                "color": "powderblue",
+                "family": "verdana",
+                "weight": "bold",
+                "variant": "small-caps",
+            },
+            "x": 0.5,
+            "y": 0.975,
+            "xanchor": "center",
+            "yanchor": "top",
+        },
+        legend=dict(title_text=" "),
     )
+
+    histogram_fig.update_yaxes(title_text="Cyclist Injuries")
+    histogram_fig.update_xaxes(title_text="")
+
     return histogram_fig
 
 
@@ -100,17 +145,28 @@ app.layout = html.Div(
                     [
                         dbc.Col(
                             [
-                                html.H3(
-                                    "Where In NYC Are Cyclists Getting Injured?",
-                                    className="app-header--title my-10",
+                                html.H2(
+                                    "Where In NYC Are Cyclists Getting Hurt?",
                                 ),
                                 html.P(
-                                    "This map displays geospatial data of traffic crash events in NYC in which at least one cyclist was injured, within the past 30 days. Vehicle data and a primary contributing factor are provided where available."
+                                    "This map displays geospatial data of traffic crash events in NYC wherein at least one cyclist was injured, within the past 30 days. Vehicle data and a contributing factor are provided where available."
+                                ),
+                                html.Footer(
+                                    [
+                                        "Data courtesy of the NYC Open Data ",
+                                        html.A(
+                                            "Motor Vehicle Collisions-Crashes",
+                                            href="https://data.cityofnewyork.us/Public-Safety/Motor-Vehicle-Collisions-Crashes/h9gi-nx95/about_data",
+                                            target="_blank",
+                                        ),
+                                        " API, which is stated to receive daily updates. (although it is usually not current up to the present day)",
+                                    ],
                                 ),
                             ],
                             xs=12,
-                            md=2,
-                            lg=2,
+                            sm=12,
+                            md=12,
+                            lg=3,
                             align="start",
                         ),
                         dbc.Col(
@@ -121,12 +177,9 @@ app.layout = html.Div(
                                             id="map",
                                             figure=map_fig,
                                             responsive=True,
-                                            style={
-                                                "height": "65vh",
-                                            },
+                                            style={"height": "65vh"},
                                         )
                                     ],
-                                    className="bg-black",
                                 ),
                                 dbc.Row(
                                     [
@@ -134,26 +187,27 @@ app.layout = html.Div(
                                             id="histogram",
                                             figure=histogram_fig,
                                             responsive=True,
-                                            style={"height": "35vh"},
-                                            className="bg-black",
+                                            style={
+                                                "height": "35vh",
+                                            },
                                         )
-                                    ]
+                                    ],
                                 ),
                             ],
                             align="end",
                             xs=12,
-                            md=10,
-                            lg=10,
+                            sm=12,
+                            md=12,
+                            lg=9,
                             className="bg-black",
                         ),
                     ],
                 ),
             ],
             fluid=True,
-            className="bg-black",
+            className="bg-black bg-opacity-75",
         ),
     ],
-    className="app-header--title",
 )
 
 if __name__ == "__main__":
