@@ -17,6 +17,8 @@ from constants import (
 pio.templates.default = "plotly_dark"
 app = Dash(
     __name__,
+    title="NYC Bike Crashes",
+    update_title="workin on it...",
     external_stylesheets=[dbc.themes.DARKLY, dbc.icons.BOOTSTRAP],
     meta_tags=[
         {"name": "viewport", "content": "width=device-width, initial-scale=1.0"}
@@ -205,7 +207,7 @@ app.layout = html.Div(
                 ),
             ],
             fluid=True,
-            className="bg-black bg-opacity-75",
+            className="bg-black bg-opacity-50",
         ),
     ],
 )
