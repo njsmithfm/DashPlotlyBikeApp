@@ -31,12 +31,12 @@ df["crash_date"] = pd.to_datetime(df["Date"])
 
 def create_map_fig(df, DAYS):
     df["crash_date_str"] = df["Date"].dt.strftime("%m/%d/%Y")
-    map_fig = px.density_map(
+    map_fig = px.scatter_map(
         df,
         lat="Latitude",
         lon="Longitude",
-        # color_discrete_map=BOROUGH_COLORS,
-        # color="Borough",
+        color_discrete_map=BOROUGH_COLORS,
+        color="Borough",
         hover_data={
             "crash_date_str": True,
             "Latitude": False,
@@ -46,7 +46,6 @@ def create_map_fig(df, DAYS):
             "Vehicle_2": True,
             "Contributing_Factor": True,
         },
-        radius=10,
         labels={
             "crash_date_str": "Date",
             "borough": "Borough",
@@ -56,7 +55,7 @@ def create_map_fig(df, DAYS):
             "Contributing_Factor": "Contributing Factor",
         },
         center=dict(lat=40.7128, lon=-73.9560),
-        zoom=10.7,
+        zoom=10,
         map_style="dark",
     )
     map_fig.update_layout(
