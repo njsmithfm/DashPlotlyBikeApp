@@ -93,7 +93,9 @@ def create_density_fig(df, DAYS):
         df,
         lat="Latitude",
         lon="Longitude",
+        color_continuous_scale=px.colors.sequential.Turbo,
         hover_data={
+        "Borough": True,
             "crash_date_str": True,
             "Latitude": False,
             "Longitude": False,
@@ -104,8 +106,10 @@ def create_density_fig(df, DAYS):
         },
         radius=7.5,
         labels={
-            "crash_date_str": "Date",
-            "borough": "Borough",
+            
+                        "borough": "Borough",
+                        "crash_date_str": "Date",
+
             "Cyclists_Injured": "Cyclists Injured",
             "Vehicle_1": "Vehicle 1",
             "Vehicle_2": "Vehicle 2",
@@ -136,6 +140,7 @@ def create_density_fig(df, DAYS):
             "xanchor": "center",
             "yanchor": "top",
         },
+        coloraxis_showscale=False,
         showlegend=False,
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
@@ -210,7 +215,7 @@ app.layout = html.Div(
                                     "Where In NYC Are Cyclists Getting Hurt?",
                                 ),
                                 html.P(
-                                    "This map displays geospatial data of traffic crash events in NYC wherein at least one cyclist was injured, within the past 30 days. Vehicle data and a contributing factor are provided where available."
+                                    "This map displays geospatial data of traffic crash events in NYC wherein at least one cyclist was injured, within the past 30 days. Toggle the map options below to compare views of the data. Vehicle information and a contributing factor are provided where available."
                                 ),
                                 html.Footer(
                                     [
