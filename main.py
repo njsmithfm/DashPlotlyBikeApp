@@ -31,12 +31,12 @@ df["crash_date"] = pd.to_datetime(df["Date"])
 
 def create_map_fig(df, DAYS):
     df["crash_date_str"] = df["Date"].dt.strftime("%m/%d/%Y")
-    map_fig = px.density_map(
+    map_fig = px.scatter_map(
         df,
         lat="Latitude",
         lon="Longitude",
-        # color_discrete_map=BOROUGH_COLORS,
-        # color="Borough",
+        color_discrete_map=BOROUGH_COLORS,
+        color="Borough",
         hover_data={
             "crash_date_str": True,
             "Latitude": False,
@@ -46,7 +46,6 @@ def create_map_fig(df, DAYS):
             "Vehicle_2": True,
             "Contributing_Factor": True,
         },
-        radius=10,
         labels={
             "crash_date_str": "Date",
             "borough": "Borough",
@@ -56,7 +55,7 @@ def create_map_fig(df, DAYS):
             "Contributing_Factor": "Contributing Factor",
         },
         center=dict(lat=40.7128, lon=-73.9560),
-        zoom=10.7,
+        zoom=10,
         map_style="dark",
     )
     map_fig.update_layout(
@@ -88,7 +87,65 @@ def create_map_fig(df, DAYS):
     return map_fig
 
 
+def create_density_fig(df, DAYS):
+    df["crash_date_str"] = df["Date"].dt.strftime("%m/%d/%Y")
+    density_fig = px.density_map(
+        df,
+        lat="Latitude",
+        lon="Longitude",
+        hover_data={
+            "crash_date_str": True,
+            "Latitude": False,
+            "Longitude": False,
+            "Cyclists_Injured": True,
+            "Vehicle_1": True,
+            "Vehicle_2": True,
+            "Contributing_Factor": True,
+        },
+        radius=7.5,
+        labels={
+            "crash_date_str": "Date",
+            "borough": "Borough",
+            "Cyclists_Injured": "Cyclists Injured",
+            "Vehicle_1": "Vehicle 1",
+            "Vehicle_2": "Vehicle 2",
+            "Contributing_Factor": "Contributing Factor",
+        },
+        center=dict(lat=40.7128, lon=-73.9560),
+        zoom=10,
+        map_style="dark",
+    )
+    density_fig.update_layout(
+        margin=dict(
+            l=30,
+            r=20,
+            t=75,
+            b=75,
+        ),
+        title={
+            "text": "Cyclist Injuries By Location",
+            "font": {
+                "size": 24,
+                "color": "powderblue",
+                "family": "verdana",
+                "weight": "bold",
+                "variant": "small-caps",
+            },
+            "x": 0.5,
+            "y": 0.9,
+            "xanchor": "center",
+            "yanchor": "top",
+        },
+        showlegend=False,
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+    )
+
+    return density_fig
+
+
 def create_histogram_fig(df, DAYS):
+    # citywide_crashes =
     histogram_fig = px.histogram(
         df,
         x="Date",
@@ -101,8 +158,8 @@ def create_histogram_fig(df, DAYS):
             "Cyclists_Injured": True,
         },
         labels={
-            "crash_date_str": "",
-            "borough": "Borough",
+            "crash_date_str": " ",
+            "borough": "Borough ",
             "Cyclists_Injured": "Borough Cyclists Injured",
         },
         nbins=30,
@@ -137,6 +194,7 @@ def create_histogram_fig(df, DAYS):
     return histogram_fig
 
 
+density_fig = create_density_fig(df, DAYS)
 map_fig = create_map_fig(df, DAYS)
 histogram_fig = create_histogram_fig(df, DAYS)
 
@@ -164,6 +222,33 @@ app.layout = html.Div(
                                         ),
                                         " API, which is stated to receive daily updates. (although it is usually not current up to the present day)",
                                     ],
+                                ),
+                                html.Div(
+                                    [
+                                        html.Label(
+                                            "Select Map Options",
+                                            className="fw-bold me-2",
+                                        ),
+                                        dcc.Dropdown(
+                                            id="timeframe-dropdown",
+                                            options=[
+                                                {
+                                                    "label": "Density Map",
+                                                    "value": "density",
+                                                },
+                                                {
+                                                    "label": "Scatter Map",
+                                                    "value": "scatter",
+                                                },
+                                            ],
+                                            value="density",
+                                            clearable=False,
+                                            style={
+                                                "backgroundColor": "#fcfcfc",
+                                                "color": "black",
+                                            },
+                                        ),
+                                    ]
                                 ),
                             ],
                             xs=12,
@@ -212,6 +297,17 @@ app.layout = html.Div(
         ),
     ],
 )
+
+
+@app.callback(Output("map", "figure"), Input("timeframe-dropdown", "value"))
+def update_graph(selected_value):
+    if selected_value == "density":
+        return density_fig
+    elif selected_value == "scatter":
+        return map_fig
+    else:
+        return density_fig
+
 
 if __name__ == "__main__":
     app.run(debug=True)
