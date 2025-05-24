@@ -40,6 +40,10 @@ html, body {
     margin: 0;
 }
 
+A{
+    color: #87CEEB;
+}
+
 label, dropdown {
     font-family: Verdana, Arial, serif;
     font-size: 10px;

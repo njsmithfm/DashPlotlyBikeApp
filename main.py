@@ -96,8 +96,8 @@ def create_density_fig(df, DAYS):
                 y=0.01,
                 xanchor="left",
                 yanchor="bottom",
-                font=dict(size=10, color="rgba(255,255,255,0.7)"),
-                bgcolor="rgba(0,0,0,0.5)",
+                font=dict(size=10, color="rgba(255,255,255)"),
+                bgcolor="rgba(0,0,0,0.75)",
                 bordercolor="rgba(255,255,255,0.2)",
                 borderwidth=1,
             )
@@ -170,8 +170,8 @@ def create_scatter_fig(df, DAYS):
                 y=0.01, 
                 xanchor="left",
                 yanchor="bottom",
-                font=dict(size=10, color="rgba(255,255,255,0.7)"),
-                bgcolor="rgba(0,0,0,0.5)",
+                font=dict(size=10, color="rgba(255,255,255)"),
+                bgcolor="rgba(0,0,0,0.75)",
                 bordercolor="rgba(255,255,255,0.2)",
                 borderwidth=1,
             )
