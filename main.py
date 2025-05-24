@@ -29,64 +29,6 @@ df = constants.NYC_BIKE_API_LINK_INJURED
 df["crash_date"] = pd.to_datetime(df["Date"])
 
 
-def create_map_fig(df, DAYS):
-    df["crash_date_str"] = df["Date"].dt.strftime("%m/%d/%Y")
-    map_fig = px.scatter_map(
-        df,
-        lat="Latitude",
-        lon="Longitude",
-        color_discrete_map=BOROUGH_COLORS,
-        color="Borough",
-        hover_data={
-            "crash_date_str": True,
-            "Latitude": False,
-            "Longitude": False,
-            "Cyclists_Injured": True,
-            "Vehicle_1": True,
-            "Vehicle_2": True,
-            "Contributing_Factor": True,
-        },
-        labels={
-            "crash_date_str": "Date",
-            "borough": "Borough",
-            "Cyclists_Injured": "Cyclists Injured",
-            "Vehicle_1": "Vehicle 1",
-            "Vehicle_2": "Vehicle 2",
-            "Contributing_Factor": "Contributing Factor",
-        },
-        center=dict(lat=40.7128, lon=-73.9560),
-        zoom=10,
-        map_style="dark",
-    )
-    map_fig.update_layout(
-        margin=dict(
-            l=30,
-            r=20,
-            t=75,
-            b=75,
-        ),
-        title={
-            "text": "Cyclist Injuries By Location",
-            "font": {
-                "size": 24,
-                "color": "powderblue",
-                "family": "verdana",
-                "weight": "bold",
-                "variant": "small-caps",
-            },
-            "x": 0.5,
-            "y": 0.9,
-            "xanchor": "center",
-            "yanchor": "top",
-        },
-        showlegend=False,
-        paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(0,0,0,0)",
-    )
-
-    return map_fig
-
-
 def create_density_fig(df, DAYS):
     df["crash_date_str"] = df["Date"].dt.strftime("%m/%d/%Y")
     density_fig = px.density_map(
@@ -94,6 +36,7 @@ def create_density_fig(df, DAYS):
         lat="Latitude",
         lon="Longitude",
         color_continuous_scale=px.colors.sequential.Turbo,
+        range_color=[0.7,1],
         hover_data={
         "Borough": True,
             "crash_date_str": True,
@@ -104,7 +47,8 @@ def create_density_fig(df, DAYS):
             "Vehicle_2": True,
             "Contributing_Factor": True,
         },
-        radius=7.5,
+        radius=15,
+        opacity=0.90,
         labels={
             
                         "borough": "Borough",
@@ -116,7 +60,7 @@ def create_density_fig(df, DAYS):
             "Contributing_Factor": "Contributing Factor",
         },
         center=dict(lat=40.7128, lon=-73.9560),
-        zoom=10,
+        zoom=12,
         map_style="dark",
     )
     density_fig.update_layout(
@@ -147,6 +91,64 @@ def create_density_fig(df, DAYS):
     )
 
     return density_fig
+
+
+def create_scatter_fig(df, DAYS):
+    df["crash_date_str"] = df["Date"].dt.strftime("%m/%d/%Y")
+    scatter_fig = px.scatter_map(
+        df,
+        lat="Latitude",
+        lon="Longitude",
+        color_discrete_map=BOROUGH_COLORS,
+        color="Borough",
+        hover_data={
+            "crash_date_str": True,
+            "Latitude": False,
+            "Longitude": False,
+            "Cyclists_Injured": True,
+            "Vehicle_1": True,
+            "Vehicle_2": True,
+            "Contributing_Factor": True,
+        },
+        labels={
+            "crash_date_str": "Date",
+            "borough": "Borough",
+            "Cyclists_Injured": "Cyclists Injured",
+            "Vehicle_1": "Vehicle 1",
+            "Vehicle_2": "Vehicle 2",
+            "Contributing_Factor": "Contributing Factor",
+        },
+        center=dict(lat=40.7128, lon=-73.9560),
+        zoom=12,
+        map_style="dark",
+    )
+    scatter_fig.update_layout(
+        margin=dict(
+            l=30,
+            r=20,
+            t=75,
+            b=75,
+        ),
+        title={
+            "text": "Cyclist Injuries By Location",
+            "font": {
+                "size": 24,
+                "color": "powderblue",
+                "family": "verdana",
+                "weight": "bold",
+                "variant": "small-caps",
+            },
+            "x": 0.5,
+            "y": 0.9,
+            "xanchor": "center",
+            "yanchor": "top",
+        },
+        showlegend=False,
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+    )
+
+    return scatter_fig
 
 
 def create_histogram_fig(df, DAYS):
@@ -200,7 +202,7 @@ def create_histogram_fig(df, DAYS):
 
 
 density_fig = create_density_fig(df, DAYS)
-map_fig = create_map_fig(df, DAYS)
+scatter_fig = create_scatter_fig(df, DAYS)
 histogram_fig = create_histogram_fig(df, DAYS)
 
 app.layout = html.Div(
@@ -215,7 +217,7 @@ app.layout = html.Div(
                                     "Where In NYC Are Cyclists Getting Hurt?",
                                 ),
                                 html.P(
-                                    "This map displays geospatial data of traffic crash events in NYC wherein at least one cyclist was injured, within the past 30 days. Toggle the map options below to compare views of the data. Vehicle information and a contributing factor are provided where available."
+                                    "This map displays traffic crash events in NYC wherein at least one cyclist was injured, within the past 30 days. Toggle the map options below to compare views of the data. Vehicle information and a contributing factor are provided where available."
                                 ),
                                 html.Footer(
                                     [
@@ -268,7 +270,7 @@ app.layout = html.Div(
                                     [
                                         dcc.Graph(
                                             id="map",
-                                            figure=map_fig,
+                                            figure=density_fig,
                                             responsive=True,
                                             style={"height": "65vh"},
                                         )
@@ -309,7 +311,7 @@ def update_graph(selected_value):
     if selected_value == "density":
         return density_fig
     elif selected_value == "scatter":
-        return map_fig
+        return scatter_fig
     else:
         return density_fig
 

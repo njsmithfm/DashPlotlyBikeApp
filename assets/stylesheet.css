@@ -47,3 +47,22 @@ label, dropdown {
     margin-right: 30px;
 }
 
+#timeframe-dropdown .Select-control {
+    background-color: #fcfcfc !important;
+    border: 1px solid #ccc !important;
+    color: black !important;
+}
+
+#timeframe-dropdown .Select-menu-outer {
+    background-color: #fcfcfc !important;
+}
+
+#timeframe-dropdown .Select-option {
+    background-color: #fcfcfc !important;
+    color: black !important;
+}
+
+#timeframe-dropdown .Select-option:hover {
+    background-color: #e8e8e8 !important;
+}
+
