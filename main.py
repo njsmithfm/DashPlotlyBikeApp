@@ -88,7 +88,7 @@ def create_density_fig(df, DAYS):
         plot_bgcolor="rgba(0,0,0,0)",
         annotations=[
             dict(
-                text='© <a href="https://carto.com/about-carto/" style="color: #87CEEB;">CARTO</a>, © <a href="https://www.openstreetmap.org/copyright" style="color: #87CEEB;">OpenStreetMap</a> contributors',
+                text='© <a href="https://carto.com/about-carto/" style="color: #87CEEB;">CARTO</a>, © <a href="https://www.openstreetmap.org/copyright" style="color: #87CEEB;">OpenStreetMap</a>',
                 showarrow=False,
                 xref="paper",
                 yref="paper",
@@ -162,7 +162,7 @@ def create_scatter_fig(df, DAYS):
         plot_bgcolor="rgba(0,0,0,0)",
         annotations=[
             dict(
-                text='© <a href="https://carto.com/about-carto/" style="color: #87CEEB;">CARTO</a>, © <a href="https://www.openstreetmap.org/copyright" style="color: #87CEEB;">OpenStreetMap</a> contributors',
+                text='© <a href="https://carto.com/about-carto/" style="color: #87CEEB;">CARTO</a>, © <a href="https://www.openstreetmap.org/copyright" style="color: #87CEEB;">OpenStreetMap</a>',
                 showarrow=False,
                 xref="paper",
                 yref="paper",
@@ -182,6 +182,11 @@ def create_scatter_fig(df, DAYS):
 
 
 def create_histogram_fig(df, DAYS):
+    ordered_boroughs = list(BOROUGH_COLORS.keys())
+    df["Borough"] = pd.Categorical(
+        df["Borough"], categories=ordered_boroughs, ordered=True
+    )
+    df = df.sort_values("Borough")
     # citywide_crashes =
     histogram_fig = px.histogram(
         df,

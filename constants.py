@@ -14,9 +14,9 @@ base_url = "https://data.cityofnewyork.us/resource/h9gi-nx95.json"
 BOROUGH_COLORS = {
     "Manhattan": "rgb(208, 28, 139)",
     "Brooklyn": "rgb(49, 163, 84)",
-    "Queens": "rgb(5,113,176)",
-    "Bronx": "rgb(184,225,134)",
-    "Staten Island": "rgb(94,60,153)",
+    "Queens": "rgb(94,60,153)",
+    "Bronx": "rgb(5,113,176)",
+    "Staten Island": "rgb(184,225,134)",
 }
 
 
