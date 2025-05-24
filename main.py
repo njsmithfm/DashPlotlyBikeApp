@@ -167,7 +167,7 @@ def create_scatter_fig(df, DAYS):
                 xref="paper",
                 yref="paper",
                 x=0.01,
-                y=0.01, 
+                y=0.01,
                 xanchor="left",
                 yanchor="bottom",
                 font=dict(size=10, color="rgba(255,255,255)"),
@@ -285,7 +285,12 @@ app.layout = html.Div(
                                                 "color": "black",
                                             },
                                         ),
-                                    ]
+                                    ],
+                                    style={
+                                        "margin-left": "30px",
+                                        "margin-right": "30px",
+                                        "margin-bottom": "10px",
+                                    },
                                 ),
                             ],
                             xs=12,
