@@ -19,6 +19,10 @@ p {
     margin-right: 30px;
 }
 
+.maplibregl-ctrl-attrib {
+    display: none !important;
+}
+
 footer {
     font-family: Verdana, Arial, serif;
     font-size: 10px;
@@ -47,9 +51,8 @@ label, dropdown {
     margin-right: 30px;
 }
 
-#timeframe-dropdown .Select-control {
-    background-color: #fcfcfc !important;
-    border: 1px solid #ccc !important;
+#timeframe-dropdown .Select-control {z
+    border: 1px solid #ccc !important;s
     color: black !important;
 }
 

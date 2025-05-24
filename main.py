@@ -36,9 +36,9 @@ def create_density_fig(df, DAYS):
         lat="Latitude",
         lon="Longitude",
         color_continuous_scale=px.colors.sequential.Turbo,
-        range_color=[0.7,1],
+        range_color=[0.75, 1],
         hover_data={
-        "Borough": True,
+            "Borough": True,
             "crash_date_str": True,
             "Latitude": False,
             "Longitude": False,
@@ -47,13 +47,11 @@ def create_density_fig(df, DAYS):
             "Vehicle_2": True,
             "Contributing_Factor": True,
         },
-        radius=15,
+        radius=10,
         opacity=0.90,
         labels={
-            
-                        "borough": "Borough",
-                        "crash_date_str": "Date",
-
+            "borough": "Borough",
+            "crash_date_str": "Date",
             "Cyclists_Injured": "Cyclists Injured",
             "Vehicle_1": "Vehicle 1",
             "Vehicle_2": "Vehicle 2",
@@ -68,7 +66,7 @@ def create_density_fig(df, DAYS):
             l=30,
             r=20,
             t=75,
-            b=75,
+            b=30,
         ),
         title={
             "text": "Cyclist Injuries By Location",
@@ -88,6 +86,22 @@ def create_density_fig(df, DAYS):
         showlegend=False,
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
+        annotations=[
+            dict(
+                text='© <a href="https://carto.com/about-carto/" style="color: #87CEEB;">CARTO</a>, © <a href="https://www.openstreetmap.org/copyright" style="color: #87CEEB;">OpenStreetMap</a> contributors',
+                showarrow=False,
+                xref="paper",
+                yref="paper",
+                x=0.01,
+                y=0.01,
+                xanchor="left",
+                yanchor="bottom",
+                font=dict(size=10, color="rgba(255,255,255,0.7)"),
+                bgcolor="rgba(0,0,0,0.5)",
+                bordercolor="rgba(255,255,255,0.2)",
+                borderwidth=1,
+            )
+        ],
     )
 
     return density_fig
@@ -127,7 +141,7 @@ def create_scatter_fig(df, DAYS):
             l=30,
             r=20,
             t=75,
-            b=75,
+            b=30,
         ),
         title={
             "text": "Cyclist Injuries By Location",
@@ -146,6 +160,22 @@ def create_scatter_fig(df, DAYS):
         showlegend=False,
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
+        annotations=[
+            dict(
+                text='© <a href="https://carto.com/about-carto/" style="color: #87CEEB;">CARTO</a>, © <a href="https://www.openstreetmap.org/copyright" style="color: #87CEEB;">OpenStreetMap</a> contributors',
+                showarrow=False,
+                xref="paper",
+                yref="paper",
+                x=0.01,
+                y=0.01, 
+                xanchor="left",
+                yanchor="bottom",
+                font=dict(size=10, color="rgba(255,255,255,0.7)"),
+                bgcolor="rgba(0,0,0,0.5)",
+                bordercolor="rgba(255,255,255,0.2)",
+                borderwidth=1,
+            )
+        ],
     )
 
     return scatter_fig
