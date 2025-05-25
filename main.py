@@ -35,10 +35,10 @@ def create_density_fig(df, DAYS):
         df,
         lat="Latitude",
         lon="Longitude",
+        hover_name="Borough",
         color_continuous_scale=px.colors.sequential.Turbo,
         range_color=[0.75, 1],
         hover_data={
-            "Borough": True,
             "crash_date_str": True,
             "Latitude": False,
             "Longitude": False,
@@ -50,7 +50,6 @@ def create_density_fig(df, DAYS):
         radius=10,
         opacity=0.90,
         labels={
-            "borough": "Borough",
             "crash_date_str": "Date",
             "Cyclists_Injured": "Cyclists Injured",
             "Vehicle_1": "Vehicle 1",
@@ -58,9 +57,10 @@ def create_density_fig(df, DAYS):
             "Contributing_Factor": "Contributing Factor",
         },
         center=dict(lat=40.7128, lon=-73.9560),
-        zoom=12,
+        zoom=11,
         map_style="dark",
     )
+
     density_fig.update_layout(
         margin=dict(
             l=30,
@@ -115,7 +115,9 @@ def create_scatter_fig(df, DAYS):
         lon="Longitude",
         color_discrete_map=BOROUGH_COLORS,
         color="Borough",
+        hover_name="Borough",
         hover_data={
+            "Borough": False,
             "crash_date_str": True,
             "Latitude": False,
             "Longitude": False,
@@ -126,14 +128,13 @@ def create_scatter_fig(df, DAYS):
         },
         labels={
             "crash_date_str": "Date",
-            "borough": "Borough",
             "Cyclists_Injured": "Cyclists Injured",
             "Vehicle_1": "Vehicle 1",
             "Vehicle_2": "Vehicle 2",
             "Contributing_Factor": "Contributing Factor",
         },
         center=dict(lat=40.7128, lon=-73.9560),
-        zoom=12,
+        zoom=11,
         map_style="dark",
     )
     scatter_fig.update_layout(
@@ -187,13 +188,13 @@ def create_histogram_fig(df, DAYS):
         df["Borough"], categories=ordered_boroughs, ordered=True
     )
     df = df.sort_values("Borough")
-    # citywide_crashes =
     histogram_fig = px.histogram(
         df,
         x="Date",
         y="Cyclists_Injured",
         color_discrete_map=BOROUGH_COLORS,
         color="Borough",
+        # text_auto=True,
         hover_data={
             "Borough": True,
             "crash_date_str": True,
@@ -229,7 +230,6 @@ def create_histogram_fig(df, DAYS):
         },
         legend=dict(title_text=" "),
     )
-
     histogram_fig.update_yaxes(title_text="Cyclist Injuries")
     histogram_fig.update_xaxes(title_text="")
 

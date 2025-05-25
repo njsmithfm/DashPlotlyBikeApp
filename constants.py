@@ -12,11 +12,11 @@ thirty_days_ago_str = thirty_days_ago.strftime("%Y-%m-%d")
 base_url = "https://data.cityofnewyork.us/resource/h9gi-nx95.json"
 
 BOROUGH_COLORS = {
-    "Manhattan": "rgb(208, 28, 139)",
-    "Brooklyn": "rgb(49, 163, 84)",
-    "Queens": "rgb(94,60,153)",
-    "Bronx": "rgb(5,113,176)",
-    "Staten Island": "rgb(184,225,134)",
+    "Manhattan": "#58B4E9",
+    "Brooklyn": "#009E74",
+    "Queens": "#CD7AA7",
+    "Bronx": "#F0E442",
+    "Staten Island": "#E0862B",
 }
 
 
