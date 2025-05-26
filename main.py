@@ -29,15 +29,19 @@ df = constants.NYC_BIKE_API_LINK_INJURED
 df["crash_date"] = pd.to_datetime(df["Date"])
 
 
-def create_density_fig(df, DAYS):
+def create_density_fig(df, DAYS, BOROUGH_COLORS):
     df["crash_date_str"] = df["Date"].dt.strftime("%m/%d/%Y")
-    density_fig = px.density_map(
+
+    # Create your original scatter map
+    density_fig = px.scatter_map(
         df,
         lat="Latitude",
         lon="Longitude",
-        hover_name='Borough',
-        range_color=[0.55, 1],
+        color_discrete_map=BOROUGH_COLORS,
+        color="Borough",
+        hover_name="Borough",
         hover_data={
+            "Borough": False,
             "crash_date_str": True,
             "Latitude": False,
             "Longitude": False,
@@ -46,8 +50,6 @@ def create_density_fig(df, DAYS):
             "Vehicle_2": True,
             "Contributing_Factor": True,
         },
-        radius=10,
-        opacity=0.90,
         labels={
             "crash_date_str": "Date",
             "Cyclists_Injured": "Cyclists Injured",
@@ -60,15 +62,27 @@ def create_density_fig(df, DAYS):
         map_style="dark",
     )
 
+    # Add density heatmap on top
+    density_fig.add_trace(
+        go.Densitymap(
+            lat=df["Latitude"],
+            lon=df["Longitude"],
+            hoverinfo="skip",
+            radius=10,
+            opacity=0.90,
+            zmin=0.55,
+            zmax=1,
+            showscale=False,
+        )
+    )
 
+    # Make scatter points invisible
+    for trace in density_fig.data[:-1]:  # All except the density trace we just added
+        trace.marker.opacity = 0
 
+    # Add your styling
     density_fig.update_layout(
-        margin=dict(
-            l=30,
-            r=20,
-            t=75,
-            b=30,
-        ),
+        margin=dict(l=30, r=20, t=75, b=30),
         title={
             "text": "Cyclist Injuries By Location",
             "font": {
@@ -83,7 +97,6 @@ def create_density_fig(df, DAYS):
             "xanchor": "center",
             "yanchor": "top",
         },
-        coloraxis_showscale=False,
         showlegend=False,
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
@@ -116,7 +129,7 @@ def create_scatter_fig(df, DAYS):
         lon="Longitude",
         color_discrete_map=BOROUGH_COLORS,
         color="Borough",
-        hover_name='Borough',
+        hover_name="Borough",
         hover_data={
             "Borough": False,
             "crash_date_str": True,
@@ -237,7 +250,7 @@ def create_histogram_fig(df, DAYS):
     return histogram_fig
 
 
-density_fig = create_density_fig(df, DAYS)
+density_fig = create_density_fig(df, DAYS, BOROUGH_COLORS)
 scatter_fig = create_scatter_fig(df, DAYS)
 histogram_fig = create_histogram_fig(df, DAYS)
 
