@@ -20,7 +20,7 @@ p {
 }
 
 .maplibregl-ctrl-attrib {
-    display: none !important;
+    display: none;
 }
 
 footer {
@@ -49,27 +49,35 @@ Label{
     font-size: 10px;
     margin-top: 30px;
     margin-bottom: 10px;
+    font-style: italic;
+    font-weight: bold;
     text-align: left;
     margin-right: 30px;
 }
 
-#dropdown .Select-control {z
-    border: 1px solid #ccc !important;s
-    color: black !important;
-    border: 2px solid black;
-    border-radius:20px;
+#dropdown .Select-control {
+    border: 1px solid white ;
+    color: white !important;
+    font-style: italic;
+    background-color: #1a2026;
+    border-radius: 5px;
+}
+
+#react-select-2--value-item {
+    color: white !important;
 }
 
 #dropdown .Select-menu-outer {
-    background-color: #fcfcfc !important;
+    background-color: #1a2026;
+    color: white;
 }
 
 #dropdown .Select-option {
-    background-color: #fcfcfc !important;
-    color: black !important;
+    background-color: #1a2026;
+    color: white ;
 }
 
 #dropdown .Select-option:hover {
-    background-color: #e8e8e8 !important;
+    background-color: #1a2026;
 }
 
