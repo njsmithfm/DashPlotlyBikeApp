@@ -29,10 +29,10 @@ df = constants.NYC_BIKE_API_LINK_INJURED
 df["crash_date"] = pd.to_datetime(df["Date"])
 
 
+# Density fig is actually a scatter map with invisible markers and Go density traces added on top
 def create_density_fig(df, DAYS, BOROUGH_COLORS):
     df["crash_date_str"] = df["Date"].dt.strftime("%m/%d/%Y")
 
-    # Create your original scatter map
     density_fig = px.scatter_map(
         df,
         lat="Latitude",
@@ -62,7 +62,6 @@ def create_density_fig(df, DAYS, BOROUGH_COLORS):
         map_style="dark",
     )
 
-    # Add density heatmap on top
     density_fig.add_trace(
         go.Densitymap(
             lat=df["Latitude"],
@@ -76,11 +75,9 @@ def create_density_fig(df, DAYS, BOROUGH_COLORS):
         )
     )
 
-    # Make scatter points invisible
-    for trace in density_fig.data[:-1]:  # All except the density trace we just added
+    for trace in density_fig.data[:-1]: 
         trace.marker.opacity = 0
 
-    # Add your styling
     density_fig.update_layout(
         margin=dict(l=30, r=20, t=75, b=30),
         title={
