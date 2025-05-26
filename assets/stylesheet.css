@@ -53,21 +53,23 @@ Label{
     margin-right: 30px;
 }
 
-#timeframe-dropdown .Select-control {z
+#dropdown .Select-control {z
     border: 1px solid #ccc !important;s
     color: black !important;
+    border: 2px solid black;
+    border-radius:20px;
 }
 
-#timeframe-dropdown .Select-menu-outer {
+#dropdown .Select-menu-outer {
     background-color: #fcfcfc !important;
 }
 
-#timeframe-dropdown .Select-option {
+#dropdown .Select-option {
     background-color: #fcfcfc !important;
     color: black !important;
 }
 
-#timeframe-dropdown .Select-option:hover {
+#dropdown .Select-option:hover {
     background-color: #e8e8e8 !important;
 }
 

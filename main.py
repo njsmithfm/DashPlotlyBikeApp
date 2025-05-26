@@ -61,6 +61,8 @@ def create_density_fig(df, DAYS, BOROUGH_COLORS):
         zoom=11,
         map_style="dark",
     )
+    for trace in density_fig.data[:-1]: 
+        trace.marker.opacity = 0
 
     density_fig.add_trace(
         go.Densitymap(
@@ -74,9 +76,6 @@ def create_density_fig(df, DAYS, BOROUGH_COLORS):
             showscale=False,
         )
     )
-
-    for trace in density_fig.data[:-1]: 
-        trace.marker.opacity = 0
 
     density_fig.update_layout(
         margin=dict(l=30, r=20, t=75, b=30),
@@ -283,7 +282,7 @@ app.layout = html.Div(
                                             className="fw-bold me-2",
                                         ),
                                         dcc.Dropdown(
-                                            id="timeframe-dropdown",
+                                            id="dropdown",
                                             options=[
                                                 {
                                                     "label": "Density Map",
@@ -357,7 +356,9 @@ app.layout = html.Div(
 )
 
 
-@app.callback(Output("map", "figure"), Input("timeframe-dropdown", "value"))
+@app.callback(
+    Output("map", "figure"), 
+    Input("dropdown", "value"))
 def update_graph(selected_value):
     if selected_value == "density":
         return density_fig
