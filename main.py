@@ -35,9 +35,8 @@ def create_density_fig(df, DAYS):
         df,
         lat="Latitude",
         lon="Longitude",
-        hover_name="Borough",
-        color_continuous_scale=px.colors.sequential.Turbo,
-        range_color=[0.75, 1],
+        hover_name='Borough',
+        range_color=[0.55, 1],
         hover_data={
             "crash_date_str": True,
             "Latitude": False,
@@ -60,6 +59,8 @@ def create_density_fig(df, DAYS):
         zoom=11,
         map_style="dark",
     )
+
+
 
     density_fig.update_layout(
         margin=dict(
@@ -115,7 +116,7 @@ def create_scatter_fig(df, DAYS):
         lon="Longitude",
         color_discrete_map=BOROUGH_COLORS,
         color="Borough",
-        hover_name="Borough",
+        hover_name='Borough',
         hover_data={
             "Borough": False,
             "crash_date_str": True,
