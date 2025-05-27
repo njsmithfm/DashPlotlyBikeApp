@@ -207,7 +207,6 @@ def create_histogram_fig(df, DAYS):
         y="Cyclists_Injured",
         color_discrete_map=BOROUGH_COLORS,
         color="Borough",
-        # text_auto=True,
         hover_data={
             "Borough": True,
             "crash_date_str": True,
@@ -241,8 +240,9 @@ def create_histogram_fig(df, DAYS):
             "xanchor": "center",
             "yanchor": "top",
         },
-        legend=dict(title_text=" "),
-    )
+        legend=dict(title_text=" ")
+        ),
+
     histogram_fig.update_yaxes(title_text="Cyclist Injuries")
     histogram_fig.update_xaxes(title_text="")
 
@@ -281,7 +281,7 @@ app.layout = html.Div(
                                 html.Div(
                                     [
                                         html.Label(
-                                            "Select Map Options",
+                                            "Select Map View",
                                         ),
                                         dcc.Dropdown(
                                             id="dropdown",
@@ -297,7 +297,7 @@ app.layout = html.Div(
                                             ],
                                             value="density",
                                             clearable=False,
-                                            
+
                                         ),
                                     ],
                                     style={
@@ -368,4 +368,4 @@ def update_graph(selected_value):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)
