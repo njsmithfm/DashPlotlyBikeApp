@@ -265,7 +265,7 @@ app.layout = html.Div(
                                     "Where In NYC Are Cyclists Getting Hurt?",
                                 ),
                                 html.P(
-                                    "This map displays traffic crash events in NYC wherein at least one cyclist was injured, within the past 30 days. Toggle the map options below to compare views of the data. Vehicle information and a contributing factor are provided where available."
+                                    "This map displays traffic crash events in NYC wherein at least one cyclist was injured. Adjust the options below to explore different views of crash data. Vehicle information and a contributing factor are provided where available."
                                 ),
                                 html.Footer(
                                     [
@@ -281,7 +281,7 @@ app.layout = html.Div(
                                 html.Div(
                                     [
                                         html.Label(
-                                            "Adjust Timeframe (In Days)",
+                                            f"Currently Showing {DAYS} Days Of Crashes", 
                                         ),
                                         dcc.Slider(7, 45,
                                                    value=30,
