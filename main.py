@@ -9,6 +9,20 @@ from datetime import datetime, timedelta
 import constants
 from constants import DAYS, BOROUGH_COLORS, NYC_BIKE_API_LINK_INJURED, NYC_BIKE_API_LINK_KILLED
 
+# Load the full API return
+MAX_DAYS = 60 
+FULL_DF_INJURED, FULL_DF_KILLED = constants.get_crash_data(MAX_DAYS)
+FULL_DF_INJURED["crash_date"] = pd.to_datetime(FULL_DF_INJURED["Date"])
+
+def filter_dataframe_by_days(df, days):
+    if df.empty:
+        return df
+
+    max_date = df["crash_date"].max()
+    cutoff_date = max_date - timedelta(days=days-1)
+    filtered_df = df[df["crash_date"] >= cutoff_date].copy()
+    return filtered_df
+
 
 pio.templates.default = "plotly_dark"
 app = Dash(
@@ -261,7 +275,7 @@ app.layout = html.Div(
                                     "Where In NYC Are Cyclists Getting Hurt?",
                                 ),
                                 html.P(
-                                    "This map displays traffic crash events in NYC wherein at least one cyclist was injured. Adjust the options below to explore different views of crash data. Vehicle information and a contributing factor are provided where available."
+                                    "This map displays traffic crash events in NYC wherein at least one cyclist was injured. Adjust the options below to explore different views of the most recent crash events. Hover over the graphs to see more granular contextual data, provided where available."
                                 ),
                                 html.Footer(
                                     [
@@ -277,14 +291,19 @@ app.layout = html.Div(
                                 html.Div(
                                         [
                                             html.Label(id="slider-label"), 
-                                            dcc.Slider(7, 60, 1,
-                                                       value=constants.DAYS,
-                                                       marks={
-                                                       7: 'Week', 
-                                                       30: 'Month', 
-                                                       60: '2 Months'},
-                                                       id='slider',
-                                                       updatemode='drag')
+                                            dcc.Slider(
+                                            min=7, 
+                                            max=MAX_DAYS, 
+                                            step=1,
+                                            value=30, 
+                                            marks={
+                                                7: {'label':'Week', 'style':{'font-size': '10px'}}, 
+                                                30: {'label':'Month', 'style':{'font-size': '10px'}}, 
+                                                60: {'label':'2 Months', 'style':{'font-size': '10px','white-space': 'nowrap'}}
+                                            },
+                                            id='slider',
+                                            updatemode='drag'
+                                        )
                                         ],
                                         style={
                                             "margin-left": "30px",
@@ -378,23 +397,21 @@ app.layout = html.Div(
     Input("slider", "value")
 )
 def update_all(selected_value, slider_value):
-    # Get fresh data when slider changes
-    if slider_value != constants.DAYS:
-        constants.DAYS = slider_value
-        constants.NYC_BIKE_API_LINK_INJURED, constants.NYC_BIKE_API_LINK_KILLED = constants.get_crash_data(slider_value)
-    
-    df = constants.NYC_BIKE_API_LINK_INJURED
+    df = filter_dataframe_by_days(FULL_DF_INJURED, slider_value)
     
     if selected_value == "density":
-        map_fig = create_density_fig(df, constants.DAYS, BOROUGH_COLORS)
+        map_fig = create_density_fig(df, slider_value, BOROUGH_COLORS)
     else:
-        map_fig = create_scatter_fig(df, constants.DAYS)
+        map_fig = create_scatter_fig(df, slider_value)
     
-    histogram_fig = create_histogram_fig(df, constants.DAYS)
+    histogram_fig = create_histogram_fig(df, slider_value)
     
     label_text = f"Currently Showing {slider_value} Days Of Crashes"
+
+    crash_count = len(df)
     
     return map_fig, histogram_fig, label_text
+
 
 if __name__ == "__main__":
     app.run(debug=True)
