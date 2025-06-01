@@ -281,6 +281,22 @@ app.layout = html.Div(
                                 html.Div(
                                     [
                                         html.Label(
+                                            "Adjust Timeframe (In Days)",
+                                        ),
+                                        dcc.Slider(7, 45,
+                                                   value=30,
+                                                   id='slider')
+                                            
+                                         
+                                            ],
+                                    style={
+                                        "margin-left": "30px",
+                                        "margin-right": "30px",
+                                    },
+                                ),
+                                html.Div(
+                                    [
+                                        html.Label(
                                             "Select Map View",
                                         ),
                                         dcc.Dropdown(
@@ -370,7 +386,7 @@ def update_graph(selected_value):
 #     Output(),
 #     Input())
 # def update_time(selected_time):
-    
+
     
 
 
