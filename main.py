@@ -281,22 +281,6 @@ app.layout = html.Div(
                                 html.Div(
                                     [
                                         html.Label(
-                                            f"Currently Showing {DAYS} Days Of Crashes", 
-                                        ),
-                                        dcc.Slider(7, 45,
-                                                   value=30,
-                                                   id='slider')
-                                            
-                                         
-                                            ],
-                                    style={
-                                        "margin-left": "30px",
-                                        "margin-right": "30px",
-                                    },
-                                ),
-                                html.Div(
-                                    [
-                                        html.Label(
                                             "Select Map View",
                                         ),
                                         dcc.Dropdown(
@@ -381,15 +365,6 @@ def update_graph(selected_value):
         return scatter_fig
     else:
         return density_fig
-
-# @app.callback(
-#     Output(),
-#     Input())
-# def update_time(selected_time):
-
-    
-
-
 
 if __name__ == "__main__":
     app.run(debug=True)
