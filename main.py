@@ -217,7 +217,7 @@ def create_histogram_fig(df, DAYS):
             "borough": "Borough ",
             "Cyclists_Injured": "Borough Cyclists Injured",
         },
-        nbins=30,
+        nbins=DAYS,
         title="Cyclist Injuries By Day",
         height=400,
     )
@@ -366,6 +366,14 @@ def update_graph(selected_value):
     else:
         return density_fig
 
+# @app.callback(
+#     Output(),
+#     Input())
+# def update_time(selected_time):
+    
+    
+
+
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(debug=True)
