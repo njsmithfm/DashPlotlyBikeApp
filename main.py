@@ -7,12 +7,8 @@ import dash_bootstrap_components as dbc
 import plotly.io as pio
 from datetime import datetime, timedelta
 import constants
-from constants import (
-    DAYS,
-    NYC_BIKE_API_LINK_INJURED,
-    NYC_BIKE_API_LINK_KILLED,
-    BOROUGH_COLORS,
-)
+from constants import DAYS, BOROUGH_COLORS, NYC_BIKE_API_LINK_INJURED, NYC_BIKE_API_LINK_KILLED
+
 
 pio.templates.default = "plotly_dark"
 app = Dash(
@@ -279,6 +275,25 @@ app.layout = html.Div(
                                     ],
                                 ),
                                 html.Div(
+                                        [
+                                            html.Label(id="slider-label"), 
+                                            dcc.Slider(7, 60, 1,
+                                                       value=constants.DAYS,
+                                                       marks={
+                                                       7: 'Week', 
+                                                       30: 'Month', 
+                                                       60: '2 Months'},
+                                                       id='slider',
+                                                       updatemode='drag')
+                                        ],
+                                        style={
+                                            "margin-left": "30px",
+                                            "margin-right": "30px",
+                                            "margin-bottom": "10px",
+                                        },
+                                    ),
+
+                                    html.Div(
                                     [
                                         html.Label(
                                             "Select Map View",
@@ -356,15 +371,30 @@ app.layout = html.Div(
 
 
 @app.callback(
-    Output("map", "figure"), 
-    Input("dropdown", "value"))
-def update_graph(selected_value):
+    Output("map", "figure"),
+    Output("histogram", "figure"), 
+    Output("slider-label", "children"),
+    Input("dropdown", "value"),
+    Input("slider", "value")
+)
+def update_all(selected_value, slider_value):
+    # Get fresh data when slider changes
+    if slider_value != constants.DAYS:
+        constants.DAYS = slider_value
+        constants.NYC_BIKE_API_LINK_INJURED, constants.NYC_BIKE_API_LINK_KILLED = constants.get_crash_data(slider_value)
+    
+    df = constants.NYC_BIKE_API_LINK_INJURED
+    
     if selected_value == "density":
-        return density_fig
-    elif selected_value == "scatter":
-        return scatter_fig
+        map_fig = create_density_fig(df, constants.DAYS, BOROUGH_COLORS)
     else:
-        return density_fig
+        map_fig = create_scatter_fig(df, constants.DAYS)
+    
+    histogram_fig = create_histogram_fig(df, constants.DAYS)
+    
+    label_text = f"Currently Showing {slider_value} Days Of Crashes"
+    
+    return map_fig, histogram_fig, label_text
 
 if __name__ == "__main__":
     app.run(debug=True)
