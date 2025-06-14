@@ -40,6 +40,7 @@ app = Dash(
         {"name": "viewport", "content": "width=device-width, initial-scale=1.0"}
     ],
 )
+server = app.server
 
 df = constants.NYC_BIKE_API_LINK_INJURED
 df["crash_date"] = pd.to_datetime(df["Date"])
