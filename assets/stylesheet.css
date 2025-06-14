@@ -19,6 +19,14 @@ p {
     margin-right: 30px;
 }
 
+section {
+    font-family: Verdana, Arial, serif;
+    font-size: 16px;
+    text-align: left;
+    margin-top: 30px;
+        font-weight: bolder;
+}
+
 .maplibregl-ctrl-attrib {
     display: none;
 }

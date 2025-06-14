@@ -7,19 +7,25 @@ import dash_bootstrap_components as dbc
 import plotly.io as pio
 from datetime import datetime, timedelta
 import constants
-from constants import DAYS, BOROUGH_COLORS, NYC_BIKE_API_LINK_INJURED, NYC_BIKE_API_LINK_KILLED
+from constants import (
+    DAYS,
+    BOROUGH_COLORS,
+    NYC_BIKE_API_LINK_INJURED,
+    NYC_BIKE_API_LINK_KILLED,
+)
 
 # Load the full API return
-MAX_DAYS = 60 
+MAX_DAYS = 60
 FULL_DF_INJURED, FULL_DF_KILLED = constants.get_crash_data(MAX_DAYS)
 FULL_DF_INJURED["crash_date"] = pd.to_datetime(FULL_DF_INJURED["Date"])
+
 
 def filter_dataframe_by_days(df, days):
     if df.empty:
         return df
 
     max_date = df["crash_date"].max()
-    cutoff_date = max_date - timedelta(days=days-1)
+    cutoff_date = max_date - timedelta(days=days - 1)
     filtered_df = df[df["crash_date"] >= cutoff_date].copy()
     return filtered_df
 
@@ -71,7 +77,7 @@ def create_density_fig(df, DAYS, BOROUGH_COLORS):
         zoom=11,
         map_style="dark",
     )
-    for trace in density_fig.data[:-1]: 
+    for trace in density_fig.data[:-1]:
         trace.marker.opacity = 0
 
     density_fig.add_trace(
@@ -191,10 +197,7 @@ def create_scatter_fig(df, DAYS):
                 y=0.01,
                 xanchor="left",
                 yanchor="bottom",
-                font=dict(
-                    size=10,
-                    color="rgba(255,255,255)"
-                    ),
+                font=dict(size=10, color="rgba(255,255,255)"),
                 bgcolor="rgba(0,0,0,0.75)",
                 bordercolor="rgba(255,255,255,0.2)",
                 borderwidth=1,
@@ -250,8 +253,8 @@ def create_histogram_fig(df, DAYS):
             "xanchor": "center",
             "yanchor": "top",
         },
-        legend=dict(title_text=" ")
-        ),
+        legend=dict(title_text=" "),
+    ),
 
     histogram_fig.update_yaxes(title_text="Cyclist Injuries")
     histogram_fig.update_xaxes(title_text="")
@@ -289,30 +292,41 @@ app.layout = html.Div(
                                     ],
                                 ),
                                 html.Div(
-                                        [
-                                            html.Label(id="slider-label"), 
-                                            dcc.Slider(
-                                            min=7, 
-                                            max=MAX_DAYS, 
+                                    [
+                                        html.Label(id="slider-label"),
+                                        dcc.Slider(
+                                            min=7,
+                                            max=MAX_DAYS,
                                             step=1,
-                                            value=30, 
+                                            value=30,
                                             marks={
-                                                7: {'label':'Week', 'style':{'font-size': '10px'}}, 
-                                                30: {'label':'Month', 'style':{'font-size': '10px'}}, 
-                                                60: {'label':'2 Months', 'style':{'font-size': '10px','white-space': 'nowrap'}}
+                                                7: {
+                                                    "label": "Week",
+                                                    "style": {"font-size": "10px"},
+                                                },
+                                                30: {
+                                                    "label": "Month",
+                                                    "style": {"font-size": "10px"},
+                                                },
+                                                60: {
+                                                    "label": "2 Months",
+                                                    "style": {
+                                                        "font-size": "10px",
+                                                        "white-space": "nowrap",
+                                                    },
+                                                },
                                             },
-                                            id='slider',
-                                            updatemode='drag'
-                                        )
-                                        ],
-                                        style={
-                                            "margin-left": "30px",
-                                            "margin-right": "30px",
-                                            "margin-bottom": "10px",
-                                        },
-                                    ),
-
-                                    html.Div(
+                                            id="slider",
+                                            updatemode="drag",
+                                        ),
+                                    ],
+                                    style={
+                                        "margin-left": "30px",
+                                        "margin-right": "30px",
+                                        "margin-bottom": "10px",
+                                    },
+                                ),
+                                html.Div(
                                     [
                                         html.Label(
                                             "Select Map View",
@@ -331,7 +345,18 @@ app.layout = html.Div(
                                             ],
                                             value="density",
                                             clearable=False,
-
+                                        ),
+                                    ],
+                                    style={
+                                        "margin-left": "30px",
+                                        "margin-right": "30px",
+                                        "margin-bottom": "10px",
+                                    },
+                                ),
+                                html.Div(
+                                    [
+                                        html.Section(
+                                            id="crash-count",
                                         ),
                                     ],
                                     style={
@@ -391,26 +416,28 @@ app.layout = html.Div(
 
 @app.callback(
     Output("map", "figure"),
-    Output("histogram", "figure"), 
+    Output("histogram", "figure"),
     Output("slider-label", "children"),
+    Output("crash-count", "children"),
     Input("dropdown", "value"),
-    Input("slider", "value")
+    Input("slider", "value"),
 )
 def update_all(selected_value, slider_value):
     df = filter_dataframe_by_days(FULL_DF_INJURED, slider_value)
-    
+
     if selected_value == "density":
         map_fig = create_density_fig(df, slider_value, BOROUGH_COLORS)
     else:
         map_fig = create_scatter_fig(df, slider_value)
-    
+
     histogram_fig = create_histogram_fig(df, slider_value)
-    
+
     label_text = f"Currently Showing {slider_value} Days Of Crashes"
 
     crash_count = len(df)
-    
-    return map_fig, histogram_fig, label_text
+    crash_count_display = f"In the past {slider_value} days, there have been {crash_count:,} total reported cyclist injuries across NYC."
+
+    return map_fig, histogram_fig, label_text, crash_count_display
 
 
 if __name__ == "__main__":
