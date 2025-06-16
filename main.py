@@ -168,7 +168,7 @@ def create_scatter_fig(df, DAYS):
         margin=dict(
             l=30,
             r=20,
-            t=45,
+            t=75,
             b=0,
         ),
         title={
