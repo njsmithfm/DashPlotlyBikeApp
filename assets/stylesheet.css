@@ -1,10 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Francois+One&display=swap');
-
-
 h1, h2, h3, h4, h5, h6 {
     font-family: Helvetica, Arial, sans-serif;
     color: powderblue;
-    font-weight: bolder;
+    font-weight: 700;
     font-variant: small-caps;
     text-shadow: 1px 1px #000000;
     margin-left: 25px; 
