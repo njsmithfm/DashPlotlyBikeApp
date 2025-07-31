@@ -14,7 +14,6 @@ from constants import (
     NYC_BIKE_API_LINK_KILLED,
 )
 
-# Load the full API return
 MAX_DAYS = 60
 FULL_DF_INJURED, FULL_DF_KILLED = constants.get_crash_data(MAX_DAYS)
 FULL_DF_INJURED["crash_date"] = pd.to_datetime(FULL_DF_INJURED["Date"])
