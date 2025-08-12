@@ -14,6 +14,7 @@ from constants import (
     NYC_BIKE_API_LINK_KILLED,
 )
 
+
 MAX_DAYS = 60
 FULL_DF_INJURED, FULL_DF_KILLED = constants.get_crash_data(MAX_DAYS)
 FULL_DF_INJURED["crash_date"] = pd.to_datetime(FULL_DF_INJURED["Date"])
@@ -32,6 +33,7 @@ def filter_dataframe_by_days(df, days):
 pio.templates.default = "plotly_dark"
 app = Dash(
     __name__,
+    pages_folder="",
     title="NYC Bike Crashes",
     update_title="workin on it...",
     external_stylesheets=[dbc.themes.DARKLY, dbc.icons.BOOTSTRAP],
@@ -231,7 +233,7 @@ def create_histogram_fig(df, DAYS):
             "Cyclists_Injured": "Borough Cyclists Injured",
         },
         nbins=DAYS,
-        title=""
+        title="",
     )
     histogram_fig.update_layout(
         margin=dict(l=80, r=20, t=30, b=5),
