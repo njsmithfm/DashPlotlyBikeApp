@@ -437,6 +437,3 @@ def update_all(selected_value, slider_value):
 
     return map_fig, histogram_fig, label_text, crash_count_display
 
-
-if __name__ == "__main__":
-    app.run(debug=False)
