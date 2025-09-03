@@ -104,7 +104,6 @@ def create_density_fig(df, DAYS, BOROUGH_COLORS):
                 "color": "powderblue",
                 "family": "verdana",
                 "weight": "bold",
-                "variant": "small-caps",
             },
             "x": 0.05,
             "y": 0.925,
@@ -178,8 +177,7 @@ def create_scatter_fig(df, DAYS):
                 "size": 18,
                 "color": "powderblue",
                 "family": "verdana",
-                "weight": "bold",
-                "variant": "small-caps",
+                "weight": "bold"
             },
             "x": 0.05,
             "y": 0.925,
@@ -246,8 +244,7 @@ def create_histogram_fig(df, DAYS):
                 "size": 18,
                 "color": "powderblue",
                 "family": "verdana",
-                "weight": "bold",
-                "variant": "small-caps",
+                "weight": "bold"
             },
             "x": 0.05,
             "y": 1,
