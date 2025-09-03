@@ -18,7 +18,7 @@ from constants import (
 MAX_DAYS = 60
 FULL_DF_INJURED, FULL_DF_KILLED = constants.get_crash_data(MAX_DAYS)
 FULL_DF_INJURED["crash_date"] = pd.to_datetime(FULL_DF_INJURED["Date"])
-
+FULL_DF_KILLED["crash_date"] = pd.to_datetime(FULL_DF_KILLED["Date"])
 
 def filter_dataframe_by_days(df, days):
     if df.empty:
@@ -47,7 +47,7 @@ df = constants.NYC_BIKE_API_LINK_INJURED
 df["crash_date"] = pd.to_datetime(df["Date"])
 
 
-# Density fig is actually a scatter map with invisible markers and Go density traces added on top
+# Density fig is a scatter map with opaque traces for tooltips and Go density traces added on top
 def create_density_fig(df, DAYS, BOROUGH_COLORS):
     df["crash_date_str"] = df["Date"].dt.strftime("%m/%d/%Y")
 

@@ -55,7 +55,7 @@ def get_crash_data(days=DAYS):
     # Create Deaths variable
     params_killed = {
         "$select": "crash_date, borough, latitude, longitude, number_of_cyclist_injured, number_of_cyclist_killed, contributing_factor_vehicle_1, vehicle_type_code1, vehicle_type_code2",
-        "$where": f"number_of_cyclist_injured > 0 AND number_of_cyclist_killed = 0 AND crash_date >= '{days_ago_str}'",
+        "$where": f"number_of_cyclist_killed > 0 AND crash_date >= '{days_ago_str}'",
         "$order": "crash_date DESC",
     }
     response_killed = requests.get(base_url, params=params_killed)
