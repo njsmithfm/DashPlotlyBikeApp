@@ -368,6 +368,7 @@ app.layout = html.Div(
                             sm=12,
                             md=12,
                             lg=3,
+                            className="left-col d-flex flex-column",
                             align="start",
                         ),
                         dbc.Col(
