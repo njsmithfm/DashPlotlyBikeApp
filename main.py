@@ -434,7 +434,7 @@ def update_all(selected_value, slider_value):
     label_text = f"Currently Showing {slider_value} Days Of Crashes"
 
     crash_count = len(df)
-    crash_count_display = f"In the past {slider_value} days, there have been {crash_count:,} total reported cyclist injuries across NYC."
+    crash_count_display = f"In the past {slider_value} days of available data, there have been {crash_count:,} total reported cyclist injuries across NYC."
 
     return map_fig, histogram_fig, label_text, crash_count_display
 
