@@ -131,14 +131,15 @@ def create_density_fig(df, DAYS, BOROUGH_COLORS):
         ],
     )
 
-    density_fig.add_trace(
-        go.Scattermap(
+    density_fig.add_scattermap(
             lat=FULL_DF_KILLED["Latitude"],
             lon=FULL_DF_KILLED["Longitude"],
-            hoverinfo="skip",
+            marker_size=10,
+            marker_symbol="cross",
+            marker_color="white",
             opacity=1,
+
         )
-    )
 
     return density_fig
 
@@ -213,9 +214,16 @@ def create_scatter_fig(df, DAYS):
             )
         ],
     )
-    # scatter_fig.add_trace(
-
-    #     )
+    scatter_fig.add_trace(
+        go.Scattermap(
+            lat=FULL_DF_KILLED["Latitude"],
+            lon=FULL_DF_KILLED["Longitude"],
+            # hoverinfo="skip",
+            opacity=1,
+            # fill="toself",
+            # fillcolor="#FFFFFF"
+        )
+    )
 
     return scatter_fig
 
