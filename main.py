@@ -131,6 +131,15 @@ def create_density_fig(df, DAYS, BOROUGH_COLORS):
         ],
     )
 
+    density_fig.add_trace(
+        go.Scattermap(
+            lat=FULL_DF_KILLED["Latitude"],
+            lon=FULL_DF_KILLED["Longitude"],
+            hoverinfo="skip",
+            opacity=1,
+        )
+    )
+
     return density_fig
 
 
@@ -204,8 +213,13 @@ def create_scatter_fig(df, DAYS):
             )
         ],
     )
+    # scatter_fig.add_trace(
+
+    #     )
 
     return scatter_fig
+
+
 
 
 def create_histogram_fig(df, DAYS):
@@ -434,7 +448,7 @@ def update_all(selected_value, slider_value):
     label_text = f"Currently Showing {slider_value} Days Of Crashes"
 
     crash_count = len(df)
-    crash_count_display = f"In the past {slider_value} days of available data, there have been {crash_count:,} total reported cyclist injuries across NYC."
+    crash_count_display = f"In the past {slider_value} days of available data, there have been {crash_count:,} total cyclist injury reports across NYC."
 
     return map_fig, histogram_fig, label_text, crash_count_display
 
