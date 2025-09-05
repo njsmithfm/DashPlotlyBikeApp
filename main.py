@@ -20,6 +20,7 @@ FULL_DF_INJURED, FULL_DF_KILLED = constants.get_crash_data(MAX_DAYS)
 FULL_DF_INJURED["crash_date"] = pd.to_datetime(FULL_DF_INJURED["Date"])
 FULL_DF_KILLED["crash_date"] = pd.to_datetime(FULL_DF_KILLED["Date"])
 
+
 def filter_dataframe_by_days(df, days):
     if df.empty:
         return df
@@ -130,16 +131,28 @@ def create_density_fig(df, DAYS, BOROUGH_COLORS):
             )
         ],
     )
-
+    hover_txt = (
+        "Borough: "
+        + FULL_DF_KILLED["Borough"]
+        + "<br>"
+        + "Date: "
+        + FULL_DF_KILLED["Date"].dt.strftime("%m/%d/%Y")
+        + "<br>"
+        + "Cyclists Killed: "
+        + FULL_DF_KILLED["Cyclists_Killed"].astype(str)
+        + "<br>"
+        + "Contributing Factor: "
+        + FULL_DF_KILLED["Contributing_Factor"]
+    )
     density_fig.add_scattermap(
-            lat=FULL_DF_KILLED["Latitude"],
-            lon=FULL_DF_KILLED["Longitude"],
-            marker_size=10,
-            marker_symbol="cross",
-            marker_color="white",
-            opacity=1,
-
-        )
+        lat=FULL_DF_KILLED["Latitude"],
+        lon=FULL_DF_KILLED["Longitude"],
+        mode="markers",
+        marker=dict(symbol="circle", size=10, color="#FFFFFF"),
+        hoverinfo="text",
+        hovertext=hover_txt,
+        opacity=1,
+    )
 
     return density_fig
 
@@ -187,7 +200,7 @@ def create_scatter_fig(df, DAYS):
                 "size": 18,
                 "color": "powderblue",
                 "family": "verdana",
-                "weight": "bold"
+                "weight": "bold",
             },
             "x": 0.05,
             "y": 0.925,
@@ -214,20 +227,31 @@ def create_scatter_fig(df, DAYS):
             )
         ],
     )
-    scatter_fig.add_trace(
-        go.Scattermap(
-            lat=FULL_DF_KILLED["Latitude"],
-            lon=FULL_DF_KILLED["Longitude"],
-            # hoverinfo="skip",
-            opacity=1,
-            # fill="toself",
-            # fillcolor="#FFFFFF"
-        )
+    
+    hover_txt = (
+        "Borough: "
+        + FULL_DF_KILLED["Borough"]
+        + "<br>"
+        + "Date: "
+        + FULL_DF_KILLED["Date"].dt.strftime("%m/%d/%Y")
+        + "<br>"
+        + "Cyclists Killed: "
+        + FULL_DF_KILLED["Cyclists_Killed"].astype(str)
+        + "<br>"
+        + "Contributing Factor: "
+        + FULL_DF_KILLED["Contributing_Factor"]
+    )
+    scatter_fig.add_scattermap(
+        lat=FULL_DF_KILLED["Latitude"],
+        lon=FULL_DF_KILLED["Longitude"],
+        mode="markers",
+        marker=dict(symbol="circle", size=10, color="#FFFFFF"),
+        hoverinfo="text",
+        hovertext=hover_txt,
+        opacity=1,
     )
 
     return scatter_fig
-
-
 
 
 def create_histogram_fig(df, DAYS):
@@ -266,7 +290,7 @@ def create_histogram_fig(df, DAYS):
                 "size": 18,
                 "color": "powderblue",
                 "family": "verdana",
-                "weight": "bold"
+                "weight": "bold",
             },
             "x": 0.05,
             "y": 1,
@@ -455,7 +479,7 @@ def update_all(selected_value, slider_value):
 
     label_text = f"Currently Showing {slider_value} Days Of Crashes"
 
-    crash_count = len(df)
+    crash_count = len(df)+len(FULL_DF_KILLED)
     crash_count_display = f"In the past {slider_value} days of available data, there have been {crash_count:,} total cyclist injury reports across NYC."
 
     return map_fig, histogram_fig, label_text, crash_count_display
