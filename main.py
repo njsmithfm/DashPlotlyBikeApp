@@ -322,7 +322,7 @@ app.layout = html.Div(
                                     "Where In NYC Are Cyclists Getting Hurt?",
                                 ),
                                 html.P(
-                                    "This map displays traffic crash events in NYC wherein at least one cyclist was injured. Adjust the options below to explore different views of the most recent crash events. Hover over the graphs to see more granular contextual data, provided where available."
+                                    "This map displays traffic crash events in NYC wherein at least one cyclist was injured. Adjust the options below to explore different views of the most recent crash events. Hover over the graphs to see more granular contextual data, provided where available. White circles indicate cyclist deaths."
                                 ),
                                 html.Footer(
                                     [
@@ -479,8 +479,9 @@ def update_all(selected_value, slider_value):
 
     label_text = f"Currently Showing {slider_value} Days Of Crashes"
 
-    crash_count = len(df)+len(FULL_DF_KILLED)
-    crash_count_display = f"In the past {slider_value} days of available data, there have been {crash_count:,} total cyclist injury reports across NYC."
+    crash_count_injured = len(df)
+
+    crash_count_display = f"In the past {slider_value} days of available data, there have been {crash_count_injured:,} total cyclist injury reports across NYC."
 
     return map_fig, histogram_fig, label_text, crash_count_display
 
