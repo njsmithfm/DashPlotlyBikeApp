@@ -503,6 +503,7 @@ def update_all(selected_value, slider_value):
     label_text = f"Currently Showing {slider_value} Days Of Crashes"
     crash_count_injured = len(df)
     crash_count_display = (
+        #TODO: add a date range for what is being shown in the dashboard, to tell user what is the most recent date range
         f"In the most recent {slider_value} days of available data, there have been "
         f"{crash_count_injured:,} cyclist injury reports and "
         f"{killed_total:,} cyclist deaths across NYC."
