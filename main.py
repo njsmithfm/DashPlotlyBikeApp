@@ -477,7 +477,17 @@ app.layout = html.Div(
     Input("slider", "value"),
 )
 def update_all(selected_value, slider_value):
+    global FULL_DF_KILLED 
+
     df = filter_dataframe_by_days(FULL_DF_INJURED, slider_value)
+    df_killed = filter_dataframe_by_days(FULL_DF_KILLED, slider_value)
+
+    #temporarily replace the module‑level killed dataframe
+    _original_killed = FULL_DF_KILLED   # save the full set
+    FULL_DF_KILLED = df_killed   # swap in the filtered set
+
+    # count killed cyclists in the selected window
+    killed_total = df_killed["Cyclists_Killed"].astype(int).sum()
 
     if selected_value == "density":
         map_fig = create_density_fig(df, slider_value, BOROUGH_COLORS)
@@ -486,11 +496,16 @@ def update_all(selected_value, slider_value):
 
     histogram_fig = create_histogram_fig(df, slider_value)
 
+    # restore the original killed dataframe
+    FULL_DF_KILLED = _original_killed
+
+
     label_text = f"Currently Showing {slider_value} Days Of Crashes"
-
     crash_count_injured = len(df)
-
-    crash_count_display = f"In the past {slider_value} days of available data, there have been {crash_count_injured:,} total cyclist injury reports across NYC."
+    crash_count_display = (
+        f"In the most-recent {slider_value} days of available data, there have been "
+        f"{crash_count_injured:,} cyclist injury reports and "
+        f"{killed_total:,} cyclist deaths across NYC."
+    )
 
     return map_fig, histogram_fig, label_text, crash_count_display
-
