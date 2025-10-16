@@ -82,6 +82,8 @@ def create_density_fig(df, DAYS, BOROUGH_COLORS):
     for trace in density_fig.data[:-1]:
         trace.marker.opacity = 0
 
+
+
     density_fig.add_trace(
         go.Densitymap(
             lat=df["Latitude"],
