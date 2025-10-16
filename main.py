@@ -1,4 +1,4 @@
-from dash import Dash, dcc, html, Input, Output, callback
+from dash import Dash, dcc, html, Input, Output, callback, callback_context
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
@@ -34,7 +34,6 @@ def filter_dataframe_by_days(df, days):
 pio.templates.default = "plotly_dark"
 app = Dash(
     __name__,
-    pages_folder="",
     title="NYC Bike Crashes",
     update_title="workin on it...",
     external_stylesheets=[dbc.themes.DARKLY, dbc.icons.BOOTSTRAP],
@@ -319,6 +318,67 @@ density_fig = create_density_fig(df, DAYS, BOROUGH_COLORS)
 scatter_fig = create_scatter_fig(df, DAYS)
 histogram_fig = create_histogram_fig(df, DAYS)
 
+attribution_button = dbc.Button(
+    "About This Project",
+    id="open-attribution",
+    n_clicks=0,
+    color="secondary",          # matches the DARKLY theme
+    className="mt-3",           # a little vertical space
+)
+
+attribution_modal = dbc.Modal(
+    [
+      
+        dbc.ModalBody(
+            html.Div(
+                [
+                    html.P(
+                        [
+        "Hi, I'm ", html.Strong( html.A("NJ Smith", href="https://njsmithfm.github.io", target="_blank"),),", an early-career data journalist. ", html.A("(I'm available for hire!)",href="https://www.linkedin.com/in/njsmithfm/", target="_blank"),]),
+          
+
+html.P(
+                        ["The data here are provided courtesy of NYC Open Data's ",
+                                        html.A(
+                                            "Motor Vehicle Collisions-Crashes",
+                                            href="https://data.cityofnewyork.us/Public-Safety/Motor-Vehicle-Collisions-Crashes/h9gi-nx95/about_data",
+                                            target="_blank",
+                                        ),
+                                        " API. The dataset is purported to receive daily updates,but I've found the avaiable data tends to be roughly a week out from today's date."]),
+
+html.P([
+          "This application was built during the ", 
+        html.Strong( html.A(
+            "Data Visualization Society's",
+            href="https://datavisualizationsociety.org",
+            target="_blank",
+        ),),
+        " mentorship program in Spring 2025. I was extremely fortunate to have had", html.Strong(" Adam Kulidjian "), "as my mentor, who not only introduced me to the Plotly library and using Python for data vizualisation, but also completely optimized my workflows around the command line, version control, and dashboard design, all in the short span of 12 weeks."
+  
+                        ]
+                    ),
+
+
+                ],
+                style={"lineHeight": "1.5"},
+            )
+        ),
+        dbc.ModalFooter(
+            dbc.Button(
+                "Close",
+                id="close-attribution",
+                className="ms-auto",
+                n_clicks=0,
+            )
+        ),
+    ],
+    id="attribution-modal",
+    is_open=False,          # start hidden
+    size="lg",              # "sm", "lg", or "xl"
+    backdrop=True,          # dim the background
+    scrollable=True,
+)
+
 app.layout = html.Div(
     [
         dbc.Container(
@@ -333,17 +393,7 @@ app.layout = html.Div(
                                 html.P(
                                     "This map displays traffic crash events in NYC wherein at least one cyclist was injured. Adjust the options below to explore different views of the most recent crash events. Hover over the graphs to see more granular contextual data, provided where available. White circles indicate cyclist deaths."
                                 ),
-                                html.Footer(
-                                    [
-                                        "Data courtesy of the NYC Open Data ",
-                                        html.A(
-                                            "Motor Vehicle Collisions-Crashes",
-                                            href="https://data.cityofnewyork.us/Public-Safety/Motor-Vehicle-Collisions-Crashes/h9gi-nx95/about_data",
-                                            target="_blank",
-                                        ),
-                                        " API, which is stated to receive daily updates. (although it is usually not current up to the present day)",
-                                    ],
-                                ),
+                                
                                 html.Div(
                                     [
                                         html.Label(id="slider-label"),
@@ -418,6 +468,7 @@ app.layout = html.Div(
                                         "margin-bottom": "10px",
                                     },
                                 ),
+                                 attribution_button,
                             ],
                             xs=12,
                             sm=12,
@@ -464,6 +515,7 @@ app.layout = html.Div(
             fluid=True,
             className="bg-black bg-opacity-50",
         ),
+            attribution_modal,
     ],
 )
 
@@ -510,3 +562,37 @@ def update_all(selected_value, slider_value):
     )
 
     return map_fig, histogram_fig, label_text, crash_count_display
+
+
+# --------------------------------------------------------------
+# 2️⃣  Callback that opens / closes the attribution modal
+# --------------------------------------------------------------
+from dash import Input, Output, State, callback_context
+
+@app.callback(
+    Output("attribution-modal", "is_open"),
+    Input("open-attribution", "n_clicks"),
+    Input("close-attribution", "n_clicks"),
+    State("attribution-modal", "is_open"),
+)
+def toggle_attribution_modal(open_clicks, close_clicks, is_open):
+    """
+    - When the “Show attribution” button is clicked -> open the modal.
+    - When the “Close” button (or the backdrop) is clicked -> close the modal.
+    """
+    ctx = callback_context
+
+    # No click yet (first page load)
+    if not ctx.triggered:
+        return is_open
+
+    # Determine which input fired the callback
+    button_id = ctx.triggered[0]["prop_id"].split(".")[0]
+
+    if button_id == "open-attribution":
+        return True      # show the modal
+    elif button_id == "close-attribution":
+        return False     # hide the modal
+
+    # Fallback – keep whatever state we had
+    return is_open
