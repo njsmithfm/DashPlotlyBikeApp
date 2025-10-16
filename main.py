@@ -375,9 +375,9 @@ html.P([
         ),
     ],
     id="attribution-modal",
-    is_open=False,          # start hidden
-    size="lg",              # "sm", "lg", or "xl"
-    backdrop=True,          # dim the background
+    is_open=False,
+    size="lg",
+    backdrop=True,
     scrollable=True,
 )
 
@@ -390,11 +390,11 @@ app.layout = html.Div(
                         dbc.Col(
                             [
                                 html.H2(
-                                    "Where In NYC Are Cyclists Getting Hurt?",
+                                    "Where Are NYC Cyclists Getting Hurt?"
                                 ),
-                                html.P(
-                                    "This map displays traffic crash events in NYC wherein at least one cyclist was injured. Adjust the options below to explore different views of the most recent crash events. Hover over the graphs to see more granular contextual data, provided where available. White circles indicate cyclist deaths."
-                                ),
+                                html.P([
+                                    "This map displays traffic crash events in NYC wherein at least one cyclist was injured. ", html.Strong("Spots marked with white circles indicate cyclist deaths."), " Adjust the options below to explore different views of the most recent crash events. Hover over the graphs to see more granular contextual data, provided where available. "
+                            ]),
                                 
                                 html.Div(
                                     [
