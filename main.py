@@ -346,7 +346,7 @@ html.P(
                                             href="https://data.cityofnewyork.us/Public-Safety/Motor-Vehicle-Collisions-Crashes/h9gi-nx95/about_data",
                                             target="_blank",
                                         ),
-                                        " API. The dataset is purported to receive daily updates,but I've found the avaiable data tends to be roughly a week out from today's date."]),
+                                        " API. The dataset is purported to receive daily updates, but I've found the avaiable data tends to be roughly a week out from today's date."]),
 
 html.P([
           "This application was built during the ", 
