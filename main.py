@@ -132,8 +132,9 @@ def create_density_fig(df, DAYS, BOROUGH_COLORS):
         ],
     )
     hover_txt = (
-        "Borough: "
+        "<b>Borough: </b>"
         + FULL_DF_KILLED["Borough"]
+        + "<br>"
         + "<br>"
         + "Date: "
         + FULL_DF_KILLED["Date"].dt.strftime("%m/%d/%Y")
@@ -234,8 +235,9 @@ def create_scatter_fig(df, DAYS):
     )
     
     hover_txt = (
-        "Borough: "
+        "<b>Borough: </b>"
         + FULL_DF_KILLED["Borough"]
+        + "<br>"
         + "<br>"
         + "Date: "
         + FULL_DF_KILLED["Date"].dt.strftime("%m/%d/%Y")
@@ -336,7 +338,7 @@ attribution_modal = dbc.Modal(
                 [
                     html.P(
                         [
-        "Hi, I'm ", html.Strong( html.A("NJ Smith", href="https://njsmithfm.github.io", target="_blank"),),", an early-career data journalist. ", html.A("(I'm available for hire!)",href="https://www.linkedin.com/in/njsmithfm/", target="_blank"),]),
+        "Hi, I'm ", html.Strong( html.A("NJ Smith", href="https://njsmithfm.github.io", target="_blank"),),", an early-career data journalist and bike commuter. ", html.A("(I'm available for hire!)",href="https://www.linkedin.com/in/njsmithfm/", target="_blank"),]),
           
 
 html.P(
