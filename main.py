@@ -357,7 +357,8 @@ html.P([
             href="https://datavisualizationsociety.org",
             target="_blank",
         ),),
-        " mentorship program in Spring 2025. I was extremely fortunate to have had", html.Strong(" Adam Kulidjian "), "as my mentor, who not only introduced me to the Plotly library and using Python for data vizualisation, but also completely optimized my workflows around the command line, version control, and dashboard design, all in the short span of 12 weeks."
+        " mentorship program in Spring 2025. "
+        # "I was extremely fortunate to have had", html.Strong(" Adam Kulidjian "), "as my mentor, who not only introduced me to the Plotly library and using Python for data vizualisation, but also completely optimized my workflows around the command line, version control, and dashboard design, all in the short span of 12 weeks."
   
                         ]
                     ),
