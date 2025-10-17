@@ -133,7 +133,7 @@ def create_density_fig(df, DAYS, BOROUGH_COLORS):
     )
     hover_txt = (
         "<b>Borough: </b>"
-        + FULL_DF_KILLED["Borough"]
+        +FULL_DF_KILLED["Borough"]
         + "<br>"
         + "<br>"
         + "Date: "
@@ -452,6 +452,7 @@ app.layout = html.Div(
                                             ],
                                             value="density",
                                             clearable=False,
+                                            
                                         ),
                                     ],
                                     style={

@@ -100,24 +100,25 @@ Label{
     margin-right: 30px;
     margin-bottom: 15px;
 
-  bottom: 0;
+
+}
+/* 1️⃣ Wrapper that holds the button */
+.left-col-wrapper {
+    position: relative;               /* needed for absolute child */
 }
 
-@media screen and (max-width: 990px){
-#histogram{
-    margin-top: 30px;
-    margin-bottom: 50px;
+/* 2️⃣ Button styling – default = normal flow (mobile) */
+.attribution-btn {
+    /* No positioning here – let it flow */
 }
 
-    #open-attribution {
-        font-size: x-small;
-        margin-right: 30px;
-        margin-bottom: 15px;
-        position: -webkit-fixed;
-      position: fixed;
-      bottom: 0;
-      right: 0;
+/* 3️⃣ Desktop override – only apply when width ≥ lg (≈992 px) */
+@media (min-width: 992px) {
+    .attribution-btn {
+        position: absolute;
+        bottom: 1rem;   /* distance from bottom of viewport */
+        left: 1rem;     /* distance from left side */
+        /* optional: keep it on top of other content */
+        z-index: 10;
     }
-
-
 }
