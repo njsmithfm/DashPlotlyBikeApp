@@ -393,7 +393,7 @@ app.layout = html.Div(
                         dbc.Col(
                             [
                                 html.H2(
-                                    "Where Are NYC Cyclists Getting Hurt?"
+                                    "Where Do NYC Cyclists Get Hurt?"
                                 ),
                                 html.P([
                                     "This map displays traffic crash events in NYC wherein at least one cyclist was injured. ", html.Strong("Spots marked with white circles indicate cyclist deaths."), " Adjust the options below to explore different views of the most recent crash events. Hover over the graphs to see more granular contextual data, provided where available. "
