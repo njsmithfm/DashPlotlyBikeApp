@@ -145,9 +145,9 @@ def create_density_fig(df, DAYS, BOROUGH_COLORS):
         "Vehicle 1: "
         + FULL_DF_KILLED["Vehicle_1"]
         + "<br>"
-        # + "Vehicle 2: "
-        # + FULL_DF_KILLED["Vehicle_2"]
-        # + "<br>"
+        + "Vehicle 2: "
+        + FULL_DF_KILLED["Vehicle_2"]
+        + "<br>"
         + "Contributing Factor: "
         + FULL_DF_KILLED["Contributing_Factor"]
     )
@@ -248,9 +248,9 @@ def create_scatter_fig(df, DAYS):
         "Vehicle 1: "
         + FULL_DF_KILLED["Vehicle_1"]
         + "<br>"
-        # + "Vehicle 2: "
-        # + FULL_DF_KILLED["Vehicle_2"]
-        # + "<br>"
+        + "Vehicle 2: "
+        + FULL_DF_KILLED["Vehicle_2"]
+        + "<br>"
         + "Contributing Factor: "
         + FULL_DF_KILLED["Contributing_Factor"]
     )
