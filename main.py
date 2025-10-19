@@ -348,7 +348,8 @@ html.P(
                                             href="https://data.cityofnewyork.us/Public-Safety/Motor-Vehicle-Collisions-Crashes/h9gi-nx95/about_data",
                                             target="_blank",
                                         ),
-                                        " API. The dataset is purported to receive daily updates, but I've found the avaiable data tends to be roughly a week out from today's date."]),
+                                        " API. The dataset is purported to receive daily updates, but I've found the available data tends to be roughly a week out from today's date."]),
+
 
 html.P([
           "This application was built during the ", 
@@ -358,7 +359,7 @@ html.P([
             target="_blank",
         ),),
         " mentorship program in Spring 2025. "
-        # "I was extremely fortunate to have had", html.Strong(" Adam Kulidjian "), "as my mentor, who not only introduced me to the Plotly library and using Python for data vizualisation, but also completely optimized my workflows around the command line, version control, and dashboard design, all in the short span of 12 weeks."
+        #"I was extremely fortunate to have had", html.Strong(" Adam Kulidjian "), "as my mentor, who not only introduced me to the Plotly library and using Python for data vizualisation, but also completely optimized my workflows around the command line, version control, and dashboard design, all in the short span of 12 weeks."
   
                         ]
                     ),
