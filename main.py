@@ -82,8 +82,6 @@ def create_density_fig(df, DAYS, BOROUGH_COLORS):
     for trace in density_fig.data[:-1]:
         trace.marker.opacity = 0
 
-
-
     density_fig.add_trace(
         go.Densitymap(
             lat=df["Latitude"],
@@ -133,7 +131,7 @@ def create_density_fig(df, DAYS, BOROUGH_COLORS):
     )
     hover_txt = (
         "<b>Borough: </b>"
-        +FULL_DF_KILLED["Borough"]
+        + FULL_DF_KILLED["Borough"]
         + "<br>"
         + "<br>"
         + "Date: "
@@ -233,7 +231,7 @@ def create_scatter_fig(df, DAYS):
             )
         ],
     )
-    
+
     hover_txt = (
         "<b>Borough: </b>"
         + FULL_DF_KILLED["Borough"]
@@ -326,45 +324,70 @@ attribution_button = dbc.Button(
     "About This Project",
     id="open-attribution",
     n_clicks=0,
-    color="secondary",          # matches the DARKLY theme
-    className="mt-3",           # a little vertical space
+    color="secondary",  # matches the DARKLY theme
+    className="mt-3",  # a little vertical space
 )
 
 attribution_modal = dbc.Modal(
     [
-      
         dbc.ModalBody(
             html.Div(
                 [
                     html.P(
                         [
-        "Hi, I'm ", html.Strong( html.A("NJ Smith", href="https://njsmithfm.github.io", target="_blank"),),", an early-career data journalist and bike commuter. ", html.A("(I'm available for hire!)",href="https://www.linkedin.com/in/njsmithfm/", target="_blank"),]),
-          
-
-html.P(
-                        ["The data here are provided courtesy of NYC Open Data's ",
-                                        html.A(
-                                            "Motor Vehicle Collisions-Crashes",
-                                            href="https://data.cityofnewyork.us/Public-Safety/Motor-Vehicle-Collisions-Crashes/h9gi-nx95/about_data",
-                                            target="_blank",
-                                        ),
-                                        " API. The dataset is purported to receive daily updates, but I've found the available data tends to be roughly a week out from today's date."]),
-
-
-html.P([
-          "This application was built during the ", 
-        html.Strong( html.A(
-            "Data Visualization Society's",
-            href="https://datavisualizationsociety.org",
-            target="_blank",
-        ),),
-        " mentorship program in Spring 2025. "
-        #"I was extremely fortunate to have had", html.Strong(" Adam Kulidjian "), "as my mentor, who not only introduced me to the Plotly library and using Python for data vizualisation, but also completely optimized my workflows around the command line, version control, and dashboard design, all in the short span of 12 weeks."
-  
+                            "Hi, I'm ",
+                            html.Strong(
+                                html.A(
+                                    "NJ Smith",
+                                    href="https://njsmithfm.github.io",
+                                    target="_blank",
+                                ),
+                            ),
+                            ", an early-career data journalist and bike commuter. ",
+                            html.A(
+                                "(I'm available for hire!)",
+                                href="https://www.linkedin.com/in/njsmithfm/",
+                                target="_blank",
+                            ),
                         ]
                     ),
-
-
+                    html.P(
+                        [
+                            "The data here are provided courtesy of NYC Open Data's ",
+                            html.A(
+                                "Motor Vehicle Collisions-Crashes",
+                                href="https://data.cityofnewyork.us/Public-Safety/Motor-Vehicle-Collisions-Crashes/h9gi-nx95/about_data",
+                                target="_blank",
+                            ),
+                            " API. The dataset is purported to receive daily updates, but I've found the available data tends to be roughly a week out from today's date.",
+                        ]
+                    ),
+                    html.P(
+                        [
+                            "This application was built during the ",
+                            html.Strong(
+                                html.A(
+                                    "Data Visualization Society's",
+                                    href="https://datavisualizationsociety.org",
+                                    target="_blank",
+                                ),
+                            ),
+                            " mentorship program in Spring 2025. ",
+                        ]
+                    ),
+                    html.P(
+                        [
+                            "I was extremely fortunate to have had",
+                            html.Strong(
+                                html.A(
+                                    " Adam Kulidjian ",
+                                    href="https://zyphr.ca/#team",
+                                    target="_blank",
+                                ),
+                            ),
+                            "as my mentor, who not only introduced me to the Plotly library and using Python for data vizualisation, but also completely optimized my workflows around the command line, version control, and dashboard design, all in the short span of 12 weeks.",
+                        ]
+                    ),
                 ],
                 style={"lineHeight": "1.5"},
             )
@@ -393,13 +416,16 @@ app.layout = html.Div(
                     [
                         dbc.Col(
                             [
-                                html.H2(
-                                    "Where Do NYC Cyclists Get Hurt?"
+                                html.H2("Where Do NYC Cyclists Get Hurt?"),
+                                html.P(
+                                    [
+                                        "This map displays traffic crash events in NYC wherein at least one cyclist was injured. ",
+                                        html.Strong(
+                                            "Spots marked with white circles indicate cyclist deaths."
+                                        ),
+                                        " Adjust the options below to explore different views of the most recent crash events. Hover over the graphs to see more granular contextual data, provided where available. ",
+                                    ]
                                 ),
-                                html.P([
-                                    "This map displays traffic crash events in NYC wherein at least one cyclist was injured. ", html.Strong("Spots marked with white circles indicate cyclist deaths."), " Adjust the options below to explore different views of the most recent crash events. Hover over the graphs to see more granular contextual data, provided where available. "
-                            ]),
-                                
                                 html.Div(
                                     [
                                         html.Label(id="slider-label"),
@@ -454,7 +480,6 @@ app.layout = html.Div(
                                             ],
                                             value="density",
                                             clearable=False,
-                                            
                                         ),
                                     ],
                                     style={
@@ -475,7 +500,7 @@ app.layout = html.Div(
                                         "margin-bottom": "10px",
                                     },
                                 ),
-                                 attribution_button,
+                                attribution_button,
                             ],
                             xs=12,
                             sm=12,
@@ -522,7 +547,7 @@ app.layout = html.Div(
             fluid=True,
             className="bg-black bg-opacity-50",
         ),
-            attribution_modal,
+        attribution_modal,
     ],
 )
 
@@ -536,14 +561,14 @@ app.layout = html.Div(
     Input("slider", "value"),
 )
 def update_all(selected_value, slider_value):
-    global FULL_DF_KILLED 
+    global FULL_DF_KILLED
 
     df = filter_dataframe_by_days(FULL_DF_INJURED, slider_value)
     df_killed = filter_dataframe_by_days(FULL_DF_KILLED, slider_value)
 
-    #temporarily replace the module‑level killed dataframe
-    _original_killed = FULL_DF_KILLED   # save the full set
-    FULL_DF_KILLED = df_killed   # swap in the filtered set
+    # temporarily replace the module‑level killed dataframe
+    _original_killed = FULL_DF_KILLED  # save the full set
+    FULL_DF_KILLED = df_killed  # swap in the filtered set
 
     # count killed cyclists in the selected window
     killed_total = df_killed["Cyclists_Killed"].astype(int).sum()
@@ -558,11 +583,10 @@ def update_all(selected_value, slider_value):
     # restore the original killed dataframe
     FULL_DF_KILLED = _original_killed
 
-
     label_text = f"Currently Showing {slider_value} Days Of Crashes"
     crash_count_injured = len(df)
     crash_count_display = (
-        #TODO: add a date range for what is being shown in the dashboard, to tell user what is the most recent date range
+        # TODO: add a date range for what is being shown in the dashboard, to tell user what is the most recent date range
         f"In the most recent {slider_value} days of available data, there have been "
         f"{crash_count_injured:,} cyclist injury reports and "
         f"{killed_total:,} cyclist deaths across NYC."
@@ -571,10 +595,8 @@ def update_all(selected_value, slider_value):
     return map_fig, histogram_fig, label_text, crash_count_display
 
 
-# --------------------------------------------------------------
-# 2️⃣  Callback that opens / closes the attribution modal
-# --------------------------------------------------------------
 from dash import Input, Output, State, callback_context
+
 
 @app.callback(
     Output("attribution-modal", "is_open"),
@@ -589,17 +611,14 @@ def toggle_attribution_modal(open_clicks, close_clicks, is_open):
     """
     ctx = callback_context
 
-    # No click yet (first page load)
     if not ctx.triggered:
         return is_open
 
-    # Determine which input fired the callback
     button_id = ctx.triggered[0]["prop_id"].split(".")[0]
 
     if button_id == "open-attribution":
-        return True      # show the modal
+        return True  # show the modal
     elif button_id == "close-attribution":
-        return False     # hide the modal
+        return False  # hide the modal
 
-    # Fallback – keep whatever state we had
     return is_open

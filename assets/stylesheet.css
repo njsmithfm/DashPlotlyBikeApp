@@ -107,15 +107,7 @@ Label{
 
 
 }
-/* 1️⃣ Wrapper that holds the button */
-.left-col-wrapper {
-    position: relative;               /* needed for absolute child */
-}
 
-/* 2️⃣ Button styling – default = normal flow (mobile) */
-.attribution-btn {
-    /* No positioning here – let it flow */
-}
 
 /* 3️⃣ Desktop override – only apply when width ≥ lg (≈992 px) */
 @media (min-width: 992px) {
