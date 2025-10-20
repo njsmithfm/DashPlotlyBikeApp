@@ -372,22 +372,16 @@ attribution_modal = dbc.Modal(
                                     target="_blank",
                                 ),
                             ),
-                            " mentorship program in Spring 2025. ",
-                        ]
-                    ),
-                    html.P(
-                        [
-                            "I was extremely fortunate to have had",
+                            " mentorship program in Spring 2025. I was extremely fortunate to have had ",
                             html.Strong(
                                 html.A(
-                                    " Adam Kulidjian ",
+                                    "Adam Kulidjian",
                                     href="https://zyphr.ca/#team",
                                     target="_blank",
                                 ),
                             ),
-                            "as my mentor, who not only introduced me to the Plotly library and using Python for data vizualisation, but also completely optimized my workflows around the command line, version control, and dashboard design, all in the short span of 12 weeks.",
-                        ]
-                    ),
+                            " as my mentor, who not only introduced me to the Plotly library and using Python for data vizualisation, but also completely optimized my workflows around the command line, version control, and dashboard design, all in the short span of 12 weeks.",
+                        ],),
                 ],
                 style={"lineHeight": "1.5"},
             )
