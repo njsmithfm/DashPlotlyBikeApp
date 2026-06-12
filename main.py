@@ -45,10 +45,16 @@ server = app.server
 
 df = constants.NYC_BIKE_API_LINK_INJURED
 df["crash_date"] = pd.to_datetime(df["Date"])
+df_killed = constants.NYC_BIKE_API_LINK_KILLED
+df_killed["crash_date"] = pd.to_datetime(df_killed["Date"])
+
+# Filter initial data to match default slider value of 30
+df_initial = filter_dataframe_by_days(FULL_DF_INJURED, 30)
+df_killed_initial = filter_dataframe_by_days(FULL_DF_KILLED, 30)
 
 
 # Density fig is a scatter map with opaque traces for tooltips and Go density traces added on top
-def create_density_fig(df, DAYS, BOROUGH_COLORS):
+def create_density_fig(df, df_killed, DAYS, BOROUGH_COLORS):
     df["crash_date_str"] = df["Date"].dt.strftime("%m/%d/%Y")
 
     density_fig = px.scatter_map(
@@ -131,27 +137,27 @@ def create_density_fig(df, DAYS, BOROUGH_COLORS):
     )
     hover_txt = (
         "<b>Borough: </b>"
-        + FULL_DF_KILLED["Borough"]
+        + df_killed["Borough"]
         + "<br>"
         + "<br>"
         + "Date: "
-        + FULL_DF_KILLED["Date"].dt.strftime("%m/%d/%Y")
+        + df_killed["Date"].dt.strftime("%m/%d/%Y")
         + "<br>"
         + "Cyclists Killed: "
-        + FULL_DF_KILLED["Cyclists_Killed"].astype(str)
+        + df_killed["Cyclists_Killed"].astype(str)
         + "<br>"
         "Vehicle 1: "
-        + FULL_DF_KILLED["Vehicle_1"]
+        + df_killed["Vehicle_1"]
         + "<br>"
         + "Vehicle 2: "
-        + FULL_DF_KILLED["Vehicle_2"]
+        + df_killed["Vehicle_2"]
         + "<br>"
         + "Contributing Factor: "
-        + FULL_DF_KILLED["Contributing_Factor"]
+        + df_killed["Contributing_Factor"]
     )
     density_fig.add_scattermap(
-        lat=FULL_DF_KILLED["Latitude"],
-        lon=FULL_DF_KILLED["Longitude"],
+        lat=df_killed["Latitude"],
+        lon=df_killed["Longitude"],
         mode="markers",
         marker=dict(symbol="circle", size=10, color="#FFFFFF"),
         hoverinfo="text",
@@ -162,7 +168,7 @@ def create_density_fig(df, DAYS, BOROUGH_COLORS):
     return density_fig
 
 
-def create_scatter_fig(df, DAYS):
+def create_scatter_fig(df, df_killed, DAYS):
     df["crash_date_str"] = df["Date"].dt.strftime("%m/%d/%Y")
     scatter_fig = px.scatter_map(
         df,
@@ -234,27 +240,27 @@ def create_scatter_fig(df, DAYS):
 
     hover_txt = (
         "<b>Borough: </b>"
-        + FULL_DF_KILLED["Borough"]
+        + df_killed["Borough"]
         + "<br>"
         + "<br>"
         + "Date: "
-        + FULL_DF_KILLED["Date"].dt.strftime("%m/%d/%Y")
+        + df_killed["Date"].dt.strftime("%m/%d/%Y")
         + "<br>"
         + "Cyclists Killed: "
-        + FULL_DF_KILLED["Cyclists_Killed"].astype(str)
+        + df_killed["Cyclists_Killed"].astype(str)
         + "<br>"
         "Vehicle 1: "
-        + FULL_DF_KILLED["Vehicle_1"]
+        + df_killed["Vehicle_1"]
         + "<br>"
         + "Vehicle 2: "
-        + FULL_DF_KILLED["Vehicle_2"]
+        + df_killed["Vehicle_2"]
         + "<br>"
         + "Contributing Factor: "
-        + FULL_DF_KILLED["Contributing_Factor"]
+        + df_killed["Contributing_Factor"]
     )
     scatter_fig.add_scattermap(
-        lat=FULL_DF_KILLED["Latitude"],
-        lon=FULL_DF_KILLED["Longitude"],
+        lat=df_killed["Latitude"],
+        lon=df_killed["Longitude"],
         mode="markers",
         marker=dict(symbol="circle", size=10, color="#FFFFFF"),
         hoverinfo="text",
@@ -316,9 +322,9 @@ def create_histogram_fig(df, DAYS):
     return histogram_fig
 
 
-density_fig = create_density_fig(df, DAYS, BOROUGH_COLORS)
-scatter_fig = create_scatter_fig(df, DAYS)
-histogram_fig = create_histogram_fig(df, DAYS)
+density_fig = create_density_fig(df_initial, df_killed_initial, 30, BOROUGH_COLORS)
+scatter_fig = create_scatter_fig(df_initial, df_killed_initial, 30)
+histogram_fig = create_histogram_fig(df_initial, 30)
 
 attribution_button = dbc.Button(
     "About This Project",
@@ -422,7 +428,7 @@ app.layout = html.Div(
                                 ),
                                 html.Div(
                                     [
-                                        html.Label(id="slider-label"),
+                                        html.Label(id="slider-label", style={"color": "black"}),
                                         dcc.Slider(
                                             min=7,
                                             max=MAX_DAYS,
@@ -459,6 +465,7 @@ app.layout = html.Div(
                                     [
                                         html.Label(
                                             "Select Map View",
+                                            style={"color": "black"}
                                         ),
                                         dcc.Dropdown(
                                             id="dropdown",
@@ -555,27 +562,18 @@ app.layout = html.Div(
     Input("slider", "value"),
 )
 def update_all(selected_value, slider_value):
-    global FULL_DF_KILLED
-
     df = filter_dataframe_by_days(FULL_DF_INJURED, slider_value)
     df_killed = filter_dataframe_by_days(FULL_DF_KILLED, slider_value)
-
-    # temporarily replace the module‑level killed dataframe
-    _original_killed = FULL_DF_KILLED  # save the full set
-    FULL_DF_KILLED = df_killed  # swap in the filtered set
 
     # count killed cyclists in the selected window
     killed_total = df_killed["Cyclists_Killed"].astype(int).sum()
 
     if selected_value == "density":
-        map_fig = create_density_fig(df, slider_value, BOROUGH_COLORS)
+        map_fig = create_density_fig(df, df_killed, slider_value, BOROUGH_COLORS)
     else:
-        map_fig = create_scatter_fig(df, slider_value)
+        map_fig = create_scatter_fig(df, df_killed, slider_value)
 
     histogram_fig = create_histogram_fig(df, slider_value)
-
-    # restore the original killed dataframe
-    FULL_DF_KILLED = _original_killed
 
     label_text = f"Currently Showing {slider_value} Days Of Crashes"
     crash_count_injured = len(df)
