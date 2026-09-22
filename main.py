@@ -53,8 +53,53 @@ df_initial = filter_dataframe_by_days(FULL_DF_INJURED, 30)
 df_killed_initial = filter_dataframe_by_days(FULL_DF_KILLED, 30)
 
 
-# Density fig is a scatter map with opaque traces for tooltips and Go density traces added on top
+def create_empty_geo_fig(title):
+    figure = go.Figure(
+        data=[
+            go.Scatter(
+                x=[0],
+                y=[0],
+                mode="markers",
+                marker=dict(opacity=0),
+                hoverinfo="skip",
+                showlegend=False,
+            )
+        ]
+    )
+    figure.update_layout(
+        margin=dict(l=30, r=20, t=75, b=30),
+        title=dict(
+            text=title,
+            font=dict(size=18, color="powderblue", weight="bold"),
+            x=0.05,
+            y=0.925,
+            xanchor="left",
+            yanchor="top",
+        ),
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        xaxis=dict(visible=False, range=[-1, 1]),
+        yaxis=dict(visible=False, range=[-1, 1]),
+        annotations=[
+            dict(
+                text="No crash data is currently available.",
+                showarrow=False,
+                x=0.5,
+                y=0.5,
+                xref="paper",
+                yref="paper",
+                font=dict(size=14, color="white"),
+            )
+        ],
+    )
+    return figure
+
+
+# Density fig is a scatter map with translucent traces for tooltip locations.
 def create_density_fig(df, df_killed, DAYS, BOROUGH_COLORS):
+    if df.empty and df_killed.empty:
+        return create_empty_geo_fig("Cyclist Injuries By Location")
+
     df["crash_date_str"] = df["Date"].dt.strftime("%m/%d/%Y")
 
     density_fig = px.scatter_map(
@@ -169,6 +214,9 @@ def create_density_fig(df, df_killed, DAYS, BOROUGH_COLORS):
 
 
 def create_scatter_fig(df, df_killed, DAYS):
+    if df.empty and df_killed.empty:
+        return create_empty_geo_fig("Cyclist Injuries By Location")
+
     df["crash_date_str"] = df["Date"].dt.strftime("%m/%d/%Y")
     scatter_fig = px.scatter_map(
         df,
@@ -272,6 +320,9 @@ def create_scatter_fig(df, df_killed, DAYS):
 
 
 def create_histogram_fig(df, DAYS):
+    if "crash_date_str" not in df.columns:
+        df["crash_date_str"] = df["Date"].dt.strftime("%m/%d/%Y")
+
     ordered_boroughs = list(BOROUGH_COLORS.keys())
     df["Borough"] = pd.Categorical(
         df["Borough"], categories=ordered_boroughs, ordered=True
@@ -417,6 +468,8 @@ app.layout = html.Div(
                         dbc.Col(
                             [
                                 html.H2("Where Do NYC Cyclists Get Hurt?"),
+                                html.Strong("NOTE FROM NYC OPEN DATA: This dataset is temporarily not updating while its automated update process is being fixed. This fix is expected to be completed during the month of August.",
+                                ),
                                 html.P(
                                     [
                                         "This map displays traffic crash events in NYC wherein at least one cyclist was injured. ",
@@ -428,7 +481,7 @@ app.layout = html.Div(
                                 ),
                                 html.Div(
                                     [
-                                        html.Label(id="slider-label", style={"color": "black"}),
+                                        html.Label(id="slider-label"),
                                         dcc.Slider(
                                             min=7,
                                             max=MAX_DAYS,
@@ -464,8 +517,7 @@ app.layout = html.Div(
                                 html.Div(
                                     [
                                         html.Label(
-                                            "Select Map View",
-                                            style={"color": "black"}
+                                            "Select Map View"
                                         ),
                                         dcc.Dropdown(
                                             id="dropdown",
