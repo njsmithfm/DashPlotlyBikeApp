@@ -468,7 +468,7 @@ app.layout = html.Div(
                         dbc.Col(
                             [
                                 html.H2("Where Do NYC Cyclists Get Hurt?"),
-                                html.Strong("NOTE FROM NYC OPEN DATA: This dataset is temporarily not updating while its automated update process is being fixed. This fix is expected to be completed during the month of August.",
+                                html.Strong("JULY 2026 NOTE FROM NYC OPEN DATA: This dataset is temporarily not updating while its automated update process is being fixed. This fix is expected to be completed during the month of August.",
                                 ),
                                 html.P(
                                     [
